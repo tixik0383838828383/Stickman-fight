@@ -1,0 +1,7 @@
+{
+  "name": "stickman-duel-arena",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Stickman Duel Arena — HTML5 physics stickman fighting game",
+  "scripts": { "single": "python3 tools/build_single.py" }
+}

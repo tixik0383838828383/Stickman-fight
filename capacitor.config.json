@@ -1,0 +1,7 @@
+{
+  "appId": "com.stickman.duelarena",
+  "appName": "Stickman Duel Arena",
+  "webDir": "www",
+  "server": { "androidScheme": "https" },
+  "android": { "allowMixedContent": true }
+}
