@@ -5,7 +5,8 @@ const CHAR_UNLOCK=[['yellow',1],['purple',2],['victim',3],['chosen',5],['kingora
 const ARENA_UNLOCK=[['cave',1],['ice',2],['lava',3],['sky',4],['future',5],['bridge',6],['traps',8],['final',10]];
 const DEFAULT_KEYS={
  p1:{left:'KeyA',right:'KeyD',jump:'KeyW',down:'KeyS',light:'KeyF',heavy:'KeyG',block:'KeyH',ability:'KeyE',throw:'KeyQ',interact:'KeyR'},
- p2:{left:'ArrowLeft',right:'ArrowRight',jump:'ArrowUp',down:'ArrowDown',light:'KeyK',heavy:'KeyL',block:'KeyJ',ability:'KeyO',throw:'KeyU',interact:'KeyI'}};
+ p2:{left:'ArrowLeft',right:'ArrowRight',jump:'ArrowUp',down:'ArrowDown',light:'KeyK',heavy:'KeyL',block:'KeyJ',ability:'KeyO',throw:'KeyU',interact:'KeyI'},
+ p3:{left:'Numpad4',right:'Numpad6',jump:'Numpad8',down:'Numpad5',light:'Numpad1',heavy:'Numpad2',block:'Numpad3',ability:'Numpad0',throw:'Numpad7',interact:'Numpad9'}};
 function defaults(){return {
  unlockedChars:['second','red','blue','green'],unlockedArenas:['training','stone','minecraft','forest'],
  settings:{master:0.7,sfx:1,quality:'auto',shake:true,touch:'auto',keys:JSON.parse(JSON.stringify(DEFAULT_KEYS))},

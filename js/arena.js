@@ -10,6 +10,8 @@ function arena(id,name,o){DEF[id]=Object.assign({id,name,W,H,killY:1100,gy:GY,pa
 
 arena('training','Тренировочная площадка',{desc:'Ровная площадка с сеткой.',pal:{sky1:'#2a3550',sky2:'#506a8a',solid:'#6b7684',top:'#9aa6b6',line:'#555f6c'},
  build(a){a.solids.push(R(0,GY,W,300,{type:'concrete'}),OW(260,540,260),OW(980,540,260));a.spawns=[330,1170,500,1000,700,800];}});
+arena('stadium','Футбольный стадион',{desc:'Ровное поле, ворота и стены. Режим «Футбол».',pal:{sky1:'#14304a',sky2:'#4a86b0',solid:'#2e7a3a',top:'#58b04a',line:'#1f5a2a'},
+ build(a){a.solids.push(R(0,GY,W,300,{type:'grass'}),R(-60,-600,60,1400,{type:'concrete'}),R(W,-600,60,1400,{type:'concrete'}));a.spawns=[420,1080,330,1170,250,1250]}});
 arena('stone','Каменная арена',{desc:'Колонны, факелы и разрушаемые стены.',pal:{sky1:'#1d1a24',sky2:'#3b3040',solid:'#6f6a66',top:'#9a948c',line:'#4a4642'},
  build(a){a.solids.push(R(0,GY,W,300,{type:'stone'}),OW(120,540,240),OW(1140,540,240),OW(560,430,380));
   a.solids.push(R(730,GY-130,40,130,{type:'wall',destructible:true,hp:90,maxhp:90}));a.spawns=[300,1200,450,1050,600,900];a.crate(420,GY-44,false,true);a.crate(1040,GY-44,false,true)}});
@@ -45,7 +47,7 @@ arena('final','Финальная арена',{desc:'Разрушаемый по
   a.solids.push(R(180,GY-110,40,110,{type:'wall',destructible:true,hp:80,maxhp:80}),R(1280,GY-110,40,110,{type:'wall',destructible:true,hp:80,maxhp:80}));
   a.hazards.push({type:'lava',x:0,y:900,w:W,h:200,dps:40});a.fallers=true;a.fallT=6;a.fallKind='block';a.spawns=[220,1280,450,1050,650,850];a.crate(60,GY-44,true);a.crate(1396,GY-44,true)}});
 SD.ARENAS=DEF;
-SD.ARENA_ORDER=['training','stone','minecraft','forest','cave','ice','lava','sky','future','bridge','traps','final'];
+SD.ARENA_ORDER=['training','stadium','stone','minecraft','forest','cave','ice','lava','sky','future','bridge','traps','final'];
 
 class Arena{
  constructor(id,game,opts={}){this.def=DEF[id];this.id=id;this.game=game;this.W=W;this.H=H;this.killY=this.def.killY;this.gy=GY;this.friction=this.def.friction;this.pal=this.def.pal;

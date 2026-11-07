@@ -52,7 +52,7 @@ Wp.fireEvent=(f,ev,game)=>{
  if(ev.type==='shoot'){const w=f.main;if(!w){return}const d=w.def;if(d.ammo&&w.ammo<(ev.spec.heavy?2:1)){game.audio.play('click');return}
   if(d.ammo)w.ammo-=ev.spec.heavy?2:1;const g=w.geom;const ox=g.tx,oy=g.ty;let ang=Wp.aim(f,{x:ox,y:oy});
   const pw=ev.spec.power*(1+f.charge*0.6);const base=d.dmg*SD.RARITY[w.rarity].dmg*f.dmgMult;
-  const mk=(a,extra)=>game.proj.spawn(Object.assign({type:d.proj,x:ox,y:oy,vx:Math.cos(a),vy:Math.sin(a),dmg:base*pw,owner:f,power:pw,heavy:ev.spec.heavy,rar:w.rarity,fxName:d.fx},extra||{}));
+  const mk=(a,extra)=>{const pr=game.proj.spawn(Object.assign({type:d.proj,x:ox,y:oy,vx:Math.cos(a),vy:Math.sin(a),dmg:base*pw,owner:f,power:pw,heavy:ev.spec.heavy,rar:w.rarity,fxName:d.fx},extra||{}));if(d.proj==='pearl'){pr.onEnd=(pp)=>{if(!f.alive)return;game.particles.ring(f.root.x,f.root.y,40,'#8fffe0',0.3,4);const A=game.arena;f.root.x=Math.max(30,Math.min(A.W-30,pp.x));f.root.y=Math.min(pp.y,A.killY-120)-20;f.root.vy=0;f.root.vx=0;f.root.ground=null;f.invuln=Math.max(f.invuln,0.3);game.particles.ring(f.root.x,f.root.y,40,'#8fffe0',0.3,4);game.particles.sparks(f.root.x,f.root.y,16,'#8fffe0',300,0.4);game.audio.play('zap',0.7);f.hp-=0;}}return pr};
   if(d.style==='knives'){if(ev.spec.heavy){for(let i=-1;i<=1;i++)mk(ang+i*0.16)}else mk(ang)}
   else if(d.style==='magic'&&ev.spec.heavy){for(let i=-1;i<=1;i++)mk(ang+i*0.22)}
   else mk(ang);
@@ -76,6 +76,15 @@ function mcSprite(d){const key=d.id;if(mcCache[key])return mcCache[key];const c=
  case 'trident':diag(1,14,12,3,brown,1);diag(8,1,15,8,m,1);for(const [a,b] of [[11,1],[12,0],[14,2],[15,3],[10,2],[14,4],[13,3]])px(a,b,li);diag(9,2,14,7,m,1);px(13,0,m);px(15,2,m);px(12,1,m);px(15,5,dk);break;
  case 'bow':for(let i=0;i<16;i++){const a=Math.round(5+Math.sin(i/15*Math.PI)*6);px(a,i,m);px(a+1,i,dk)}for(let i=1;i<15;i++)px(3,i,'#ddd');px(5,0,m);px(5,15,m);px(6,7,brown);px(7,8,brown);break;
  case 'crossbow':for(let i=2;i<14;i++)px(i,8,brown);px(2,7,dk);px(12,7,dk);for(let i=1;i<15;i++)px(11-Math.round(Math.abs(i-8)*0.4),i,m);for(let i=2;i<14;i+=1)if(i%1===0)px(11,i,'#ddd');px(13,8,li);px(14,8,li);break;
+ case 'shovel':diag(2,13,10,5,brown,1);for(let a=9;a<=14;a++)for(let b=0;b<=6;b++){const dx=a-11.5,dy=b-3;if(dx*dx/9+dy*dy/12<1.2)px(a,b,(a+b)%4===0?li:m)}px(14,1,dk);px(14,2,dk);px(10,5,dk);break;
+ case 'rod':diag(1,14,11,3,brown,1);diag(11,3,15,3,'#ddd',1);diag(15,3,15,11,'#ddd',1);px(14,12,'#c33');px(15,12,'#c33');px(15,13,'#c33');px(14,13,'#fff');break;
+ case 'tnt':for(let a=3;a<=12;a++)for(let b=3;b<=12;b++){px(a,b,(b>=6&&b<=9)?'#f2f2f2':'#c8302a')}for(let a=3;a<=12;a++){px(a,3,'#8a1a16');px(a,12,'#8a1a16')}for(const [a,b] of [[4,7],[4,8],[5,7],[6,8],[6,7],[7,7],[7,8],[9,7],[9,8],[10,7],[11,7],[11,8],[10,8]])px(a,b,'#222');px(8,2,'#444');px(8,1,'#fa4');px(9,0,'#ff0');break;
+ case 'pearl':for(let a=3;a<=12;a++)for(let b=3;b<=12;b++){const d=Math.hypot(a-7.5,b-7.5);if(d<4.8)px(a,b,d<3?m:dk)}px(6,5,li);px(7,5,li);px(5,6,li);px(9,9,'#2fe0c0');px(10,8,'#2fe0c0');break;
+ case 'fire':for(let a=2;a<=13;a++)for(let b=2;b<=13;b++){const d=Math.hypot(a-7.5,b-7.5);if(d<5.4)px(a,b,d<2.4?li:d<4?'#ff9a22':m)}px(7,1,dk);px(8,0,dk);px(11,2,'#ffd24a');px(12,3,'#ffd24a');break;
+ case 'cmdstaff':diag(1,14,10,5,'#3a2a1a',1);diag(2,14,11,5,'#5a4128',1);for(let a=9;a<=14;a++)for(let b=0;b<=5;b++){const e=a===9||a===14||b===0||b===5;px(a,b,e?dk:m)}for(const [a,b] of [[10,1],[12,1],[11,2],[13,2],[10,3],[12,3],[11,4],[13,4]])px(a,b,li);break;
+ case 'trophy':diag(2,14,8,8,'#6a4a1a',1);for(let a=8;a<=14;a++)for(let b=1;b<=7;b++){const w=7-(b-1)*0.5;if(Math.abs(a-11)<w/2+0.5)px(a,b,b<4?li:m)}px(8,3,dk);px(14,3,dk);px(7,3,m);px(15,3,m);for(let a=9;a<=13;a++)px(a,8,dk);break;
+ case 'pencil':diag(1,14,12,3,m,1);diag(2,14,13,3,dk,1);diag(12,3,15,0,'#ecd0a0',1);px(15,0,'#222');px(0,15,li);px(1,15,li);px(1,14,li);px(2,13,'#bbb');px(3,12,'#bbb');break;
+ case 'guitar':for(let a=1;a<=7;a++)for(let b=8;b<=14;b++){const d=Math.hypot(a-4,b-11);if(d<3.6)px(a,b,m)}px(3,10,dk);px(4,11,'#ddd');px(5,12,dk);diag(6,9,14,1,'#5a3a1a',1);diag(14,1,15,0,'#222',1);px(4,9,li);break;
  case 'shield':for(let a=3;a<=12;a++)for(let b=1;b<=14;b++){const edge=a===3||a===12||b===1||b===14;if(b>10&&Math.abs(a-7.5)>(14-b)*1.4+0.5)continue;px(a,b,edge?dk:(a<8?m:li))}for(let a=6;a<=9;a++)for(let b=5;b<=8;b++)px(a,b,dk);break;
  }
  mcCache[key]=c;return c}

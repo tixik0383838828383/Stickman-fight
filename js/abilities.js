@@ -96,6 +96,36 @@ const FN={
 function throwPotion(f,g,eff,vx,vy){const cols={slow:'#6cf',poison:'#7c3',lev:'#fcf',heal:'#6f6'};
  const p=g.proj.spawn({owner:f,type:'orb',sprite:'potion',x:f.P[6].x,y:f.P[6].y,vx:vx,vy:vy,spd:Math.hypot(vx,vy),r:10,col:cols[eff],dmg:D(f,3),kb:[80,-50],life:2,g:1400,glow:0,noExpl:true,pot:eff});
  p.onLand=1}
+
+// ---------- lore abilities (AvA / AvM) ----------
+Object.assign(AB,{
+ pencil:{at:0.2,dur:0.45,anim:'slam'},sclaser:{at:0.2,dur:0.45,anim:'blast'},cvision:{at:0.25,dur:0.5,anim:'blast'},
+ shuriken:{at:0.15,dur:0.4,anim:'blast'},lasso:{at:0.15,dur:0.4,anim:'blast'},
+ pig:{at:0.2,dur:0.45,anim:'blast'},tntdrop:{at:0.15,dur:0.4,anim:'raise'},herobrine:{at:0.45,dur:0.9,anim:'raise',invuln:0.9},
+ dirtwall:{at:0.2,dur:0.5,anim:'slam'},hook:{at:0.15,dur:0.4,anim:'blast'},piston:{at:0.15,dur:0.4,anim:'blast'},windmill:{at:0.4,dur:0.9,anim:'raise',invuln:0.9},
+ tnt:{at:0.2,dur:0.45,anim:'blast'},brutes:{at:0.4,dur:0.9,anim:'raise',invuln:0.9},forcehold:{at:0.2,dur:0.55,anim:'raise'},fireball:{at:0.2,dur:0.45,anim:'blast'}});
+const nearE=(f,g,range)=>{let best=null,bd=range;for(const e of g.fighters){if(!e.alive||e.team===f.team)continue;const d=Math.hypot(e.P[1].x-f.P[1].x,e.P[1].y-f.P[1].y);if(d<bd){bd=d;best=e}}return best};
+Object.assign(FN,{
+ pencil:(f,g)=>{FN.wall(f,g);const x=f.P[0].x+f.face*110;g.particles.sparks(x,f.root.y-60,16,'#ffd24a',250,0.5);g.particles.ring(x,f.root.y-70,50,'#ffd24a',0.3,3)},
+ sclaser:(f,g)=>{const a=SD.Weapons.aim(f,hand(f));g.proj.beam(f,hand(f).x,hand(f).y,a,1100,16,D(f,15),0.22,'#ff9a30',{every:0.1,kb:[420,-140]});g.audio.play('zap');f.root.vx-=f.face*120},
+ cvision:(f,g)=>{const h=f.P[2];const a=SD.Weapons.aim(f,h);g.proj.beam(f,h.x,h.y,a,1000,12,D(f,14),0.35,'#ff3030',{every:0.1,kb:[260,-120],eff:'burn',follow:true});g.audio.play('zap',0.8)},
+ shuriken:(f,g)=>{for(let i=-1;i<=1;i++)g.proj.spawn({owner:f,type:'knife',x:hand(f).x,y:hand(f).y,dirx:f.face,diry:i*0.16,spd:1100,r:7,dmg:D(f,7),kb:[260,-90],life:1.2,col:'#ddd',glow:0});g.audio.play('shoot',1.4)},
+ lasso:(f,g)=>g.proj.spawn({owner:f,type:'orb',sprite:'net',x:hand(f).x,y:hand(f).y,dirx:f.face,diry:-0.05,spd:1000,r:18,col:'#ddd',dmg:D(f,5),kb:[-300,-60],eff:'net',life:0.55,glow:0}),
+ pig:(f,g)=>runner(f,g,'boar',{dmg:D(f,12)}),
+ tntdrop:(f,g)=>{g.proj.spawn({owner:f,type:'tnt',x:hand(f).x,y:hand(f).y,dirx:f.face*0.5,diry:0.9,spd:600,dmg:D(f,26)})},
+ tnt:(f,g)=>{g.proj.spawn({owner:f,type:'tnt',x:hand(f).x,y:hand(f).y-6,dirx:f.face,diry:-0.55,spd:760,dmg:D(f,24)});g.audio.play('swing',0.8)},
+ herobrine:(f,g)=>FN.forcehold(f,g,{big:true}),
+ forcehold:(f,g,o)=>{o=o||{};const e=nearE(f,g,560);const col=o.big?'#fff':'#ff9a00';g.particles.ring(f.P[6].x,f.P[6].y,60,col,0.3,4);if(!e)return;
+  g.combat.applyEff(e,'stun',f);e.root.ground=null;e.root.vy=-260;let t=1.0;g.particles.ring(e.P[1].x,e.P[1].y,50,col,0.4,4);g.audio.play('zap',0.7);
+  e.hooks.push((ff,dt,gg)=>{t-=dt;ff.root.vy=Math.min(ff.root.vy,-25)*0.9;ff.root.vx*=0.9;ff.stun=Math.max(ff.stun,0.2);if(gg.quality!=='low'&&Math.random()<0.4)gg.particles.add({type:'spark',x:ff.P[1].x+U.rand(-14,14),y:ff.P[1].y+U.rand(-14,14),vy:-30,life:0.3,size:3,color:col});
+   if(t<=0||!f.alive){if(f.alive&&ff.alive){ff.root.vy=1300;ff.root.vx=f.face*300;gg.proj.after(0.14,()=>{if(ff.alive){gg.particles.ring(ff.root.x,ff.root.y+ff.footOff,90,col,0.3,6);gg.shake(8);gg.audio.play('hitheavy');gg.combat.direct(ff,f,D(f,o.big?24:16),f.face*260,-250,{src:'forcehold',color:col})}})}return true}})},
+ fireball:(f,g)=>{g.proj.spawn({owner:f,type:'fireball',x:hand(f).x,y:hand(f).y,dirx:f.face,diry:-0.05,spd:900,dmg:D(f,15)});g.audio.play('fire')},
+ dirtwall:(f,g)=>{FN.wall(f,g);const x=f.P[0].x+f.face*110;g.particles.debris&&g.particles.debris(x-18,f.root.y-140,36,140,'#7a5230',8)},
+ hook:(f,g)=>{g.proj.spawn({owner:f,type:'orb',x:hand(f).x,y:hand(f).y,dirx:f.face,diry:-0.04,spd:1300,r:12,col:'#cbb089',dmg:D(f,6),kb:[-460,-120],eff:'pull',life:0.42,glow:0,trail:1});g.audio.play('swing',1.3)},
+ piston:(f,g)=>{g.proj.spawn({owner:f,type:'orb',x:hand(f).x,y:f.root.y+f.footOff-10,dirx:f.face,diry:0,spd:950,r:16,col:'#8a8',dmg:D(f,8),kb:[150,-900],eff:'lev',life:0.5,glow:0,trail:1});g.audio.play('break',0.8)},
+ windmill:(f,g)=>{g.proj.zone({kind:'pulse',owner:f,follow:true,x:f.P[1].x,y:f.P[1].y,r:210,t:5,dmg:D(f,7),col:'#8fd'})},
+ brutes:(f,g)=>{for(let i=0;i<3;i++)g.proj.after(i*0.2,()=>{if(f.alive)runner(f,g,'boar',{dmg:D(f,10),spd:720+i*50})})}
+});
 // potions create a cloud when they hit something or run out
 const origUpdate=SD.Projectiles.prototype.update;
 SD.Projectiles.prototype.update=function(dt){

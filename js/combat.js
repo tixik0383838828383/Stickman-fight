@@ -88,6 +88,8 @@ class Combat{
    if(wdef.burn){t.setFx('burn',3);t.dotT=0.2}
    if(wdef.slow){t.setFx('slow',3);g.particles.sparks(pt[0],pt[1],6,'#bff',200)}
    if(wdef.stun){t.stun=Math.max(t.stun,wdef.stun)}
+   if(wdef.pull)this.applyEff(t,'pull',a);
+   if(wdef.shock&&heavy){g.particles.ring(pt[0],pt[1],120,'#ffee55',0.3,5);g.particles.sparks(pt[0],pt[1],18,'#ffee55',500,0.4);g.audio.play('zap');this.areaDamage(pt[0],pt[1],120,wdef.shock,a,{kb:[320,-320],noSelf:true,eff:'stun',src:'shock'})}
    if(wdef.fx==='dark'){a.addEnergy(fin*0.4)}
    g.fxHit(wdef.fx,pt[0],pt[1],heavy,a.face)}
   else g.fxHit('blunt',pt[0],pt[1],heavy,a.face);
@@ -118,7 +120,7 @@ class Combat{
   const k=by||f.lastAttacker;if(k){k.stats.disarms++;if(k.human){g.save.data.stats.disarms++;g.achieve('disarm')}}}
  // damage over time / environmental
  dot(f,amount,color,src){if(!f.alive||f.invuln>0&&src!=='burn')return;const g=this.game;f.hp-=amount*g.dmgScale;f.flash=0.05;g.particles.text(f.P[2].x,f.P[2].y-30,Math.round(amount),color||'#fa5',14,0.6);g.stats(f.lastAttacker,'damage',amount);if(f.hp<=0)this.kill(f,f.lastAttacker,src||'dot')}
- hazardHit(f,spec,x,y,silent){const g=this.game;if(!f.alive||f.invuln>0)return;const d=spec.dmg*f.incoming*g.dmgScale;f.hp-=d;f.flash=0.12;f.stats.taken+=d;
+ hazardHit(f,spec,x,y,silent){const g=this.game;if(!f.alive||f.invuln>0)return;const d=g.cfg.instaKO?99999:spec.dmg*f.incoming*g.dmgScale;f.hp-=d;f.flash=0.12;f.stats.taken+=d;
   g.particles.text(x,y-20,Math.round(d),'#f84',20);g.particles.sparks(x,y,10,'#f84',300,0.4);g.audio.play(spec.src==='lava'?'fire':'hit');g.shake(3);
   if(f.hp<=0){f.root.vx=spec.kx;f.root.vy=spec.ky;this.kill(f,f.lastAttacker,spec.src);return}
   if(f.w>0.15){f.root.vx=spec.kx;f.root.vy=spec.ky;f.root.ground=null;f.enterRagdoll(0.9)}else{P.impulse(f.P[0],spec.kx,spec.ky)}}
@@ -151,10 +153,10 @@ class Combat{
    this.direct(t,owner,dmg*fall*self,sx*kb[0]*fall,(kb[1])*fall+dy/l*100,{eff:o.eff,src:o.src,color:o.color,blockable:o.blockable})}
   if(o.dust)g.particles.dust(x,y,6)
  }
- explosion(x,y,r,dmg,owner,src){
+ explosion(x,y,r,dmg,owner,src,xo={}){
   const g=this.game;if(this.depth>3)return;this.depth++;
   g.particles.ring(x,y,r,'#ffcc44',0.45,8);g.particles.ring(x,y,r*0.6,'#ff6622',0.35,6);g.particles.glow(x,y,r*0.9,'#ffaa33',0.35);g.particles.sparks(x,y,26,'#ffa030',600,0.7,5);g.particles.dust(x,y,10,'#555');g.audio.play('explode');g.shake(14);g.hitstop(0.1);
-  this.areaDamage(x,y,r,dmg,owner,{kb:[900,-780],src:src||'explosion',color:'#fa4'});
+  this.areaDamage(x,y,r,dmg,owner,{kb:[900,-780],src:src||'explosion',color:'#fa4',noSelf:xo.noSelf});
   for(const R of g.arena.solids){if(!R.active)continue;const cx=U.clamp(x,R.x,R.x+R.w),cy=U.clamp(y,R.y,R.y+R.h);if(Math.hypot(cx-x,cy-y)<r){if(R.destructible||R.crate||R.crumble)g.arena.damageRect(R,dmg*(R.crumble?9:3),cx,cy,owner)}}
   this.depth--}
  kill(t,killer,cause){
@@ -177,7 +179,10 @@ SD.Combat=Combat;
 // ---------------- projectiles & zones ----------------
 const PT={
  arrow:{spd:1300,g:420,r:5,col:'#c9a36a',stick:1,len:28,life:3},bolt:{spd:1600,g:150,r:5,col:'#bbb',stick:1,len:24,life:3},knife:{spd:1150,g:420,r:6,col:'#dde',spin:1,stick:1,life:3},
- energy:{spd:1400,g:0,r:7,col:'#37e0ff',glow:1,life:1.6,burst:1},magic:{spd:850,g:0,r:9,col:'#c070ff',glow:1,home:0.9,life:2,burst:1},orb:{spd:900,g:0,r:12,col:'#fff',glow:1,life:1.5,burst:1}
+ energy:{spd:1400,g:0,r:7,col:'#37e0ff',glow:1,life:1.6,burst:1},magic:{spd:850,g:0,r:9,col:'#c070ff',glow:1,home:0.9,life:2,burst:1},orb:{spd:900,g:0,r:12,col:'#fff',glow:1,life:1.5,burst:1},
+ tnt:{spd:650,g:900,r:13,col:'#ff4a30',sprite:'tnt',explodeR:125,tnt:1,life:1.7,burst:1,kb:[500,-500]},
+ fireball:{spd:900,g:60,r:11,col:'#ff7a22',glow:1,explodeR:60,eff:'burn',life:1.6,burst:1,trail:1,kb:[420,-200]},
+ pearl:{spd:800,g:700,r:9,col:'#2fb39a',sprite:'pearl',noExpl:1,life:1.6,pearl:1,kb:[40,-30]}
 };
 class Projectiles{
  constructor(game){this.game=game;this.list=[];this.zones=[];this.later=[]}
@@ -194,7 +199,7 @@ class Projectiles{
   for(let i=this.later.length-1;i>=0;i--){const l=this.later[i];l.t-=dt;if(l.t<=0){this.later.splice(i,1);l.fn()}}
   for(let i=this.list.length-1;i>=0;i--){const p=this.list[i];p.age+=dt;p.life-=dt;
    if(p.stuck>0){p.stuck-=dt;if(p.stuck<=0||p.life<=-3)this.list.splice(i,1);continue}
-   if(p.life<=0){if(p.explodeR&&!p.noExpl)this.explode(p);this.list.splice(i,1);continue}
+   if(p.life<=0){if(p.explodeR&&!p.noExpl)this.explode(p);if(p.onEnd)p.onEnd(p);this.list.splice(i,1);continue}
    if(p.home){let e=null,bd=700;for(const f of g.fighters){if(!f.alive||f.team===p.team)continue;const d=Math.hypot(f.P[1].x-p.x,f.P[1].y-p.y);if(d<bd){bd=d;e=f}}
     if(e){const sp=Math.hypot(p.vx,p.vy);let a=Math.atan2(p.vy,p.vx),ta=Math.atan2(e.P[1].y-p.y,e.P[1].x-p.x),da=ta-a;while(da>Math.PI)da-=6.283;while(da<-Math.PI)da+=6.283;a+=U.clamp(da,-p.home*dt*4,p.home*dt*4);p.vx=Math.cos(a)*sp;p.vy=Math.sin(a)*sp}}
    p.vy+=(p.g||0)*dt;
@@ -220,7 +225,7 @@ class Projectiles{
       if(p.pierce>0)p.pierce--;else{dead=true;break}}}
     // barrier from energy shield blocks
    }
-   if(dead){if(p.explodeR&&!p.noExpl&&!p.stuck)this.explode(p);if(!p.stuck)this.list.splice(i,1)}
+   if(dead){if(p.explodeR&&!p.noExpl&&!p.stuck)this.explode(p);if(!p.stuck){if(p.onEnd)p.onEnd(p);this.list.splice(i,1)}}
    else if(!p.stuck){p.rot=Math.atan2(p.vy,p.vx);if(p.trail&&g.quality!=='low'&&Math.random()<0.7)g.particles.add({type:'smoke',x:p.x,y:p.y,vx:U.rand(-20,20),vy:U.rand(-20,20),life:0.25,size:p.r*0.6,color:p.col,drag:0.9})}
   }
   // zones
@@ -238,7 +243,7 @@ class Projectiles{
   g.particles.sparks(p.x,p.y,8,p.col,260,0.3);g.audio.play(p.glow?'zap':'hit',1.2,0.8);g.hitstop(0.03);
   if(p.owner&&p.owner.human){}
   if(p.explodeR)this.explode(p);return true}
- explode(p){const g=this.game;p.noExpl=true;g.particles.ring(p.x,p.y,p.explodeR,p.col,0.3,4);g.particles.glow(p.x,p.y,p.explodeR,p.col,0.25);g.particles.sparks(p.x,p.y,10,p.col,300,0.4);g.audio.play('energy',0.8);
+ explode(p){const g=this.game;p.noExpl=true;if(p.tnt){g.combat.explosion(p.x,p.y,p.explodeR,p.dmg,p.owner,'tnt',{noSelf:true});return}g.particles.ring(p.x,p.y,p.explodeR,p.col,0.3,4);g.particles.glow(p.x,p.y,p.explodeR,p.col,0.25);g.particles.sparks(p.x,p.y,10,p.col,300,0.4);g.audio.play('energy',0.8);
   g.combat.areaDamage(p.x,p.y,p.explodeR,p.dmg*0.6,p.owner,{kb:p.kb||[300,-200],noSelf:true,eff:p.eff,color:p.col,src:'proj'})}
  updateZone(z,dt){
   const g=this.game;
@@ -290,6 +295,8 @@ class Projectiles{
   case 'flame':ctx.rotate(-p.rot);ctx.fillStyle='#ff7a22';ctx.beginPath();ctx.moveTo(-14,0);ctx.quadraticCurveTo(-6,-28-Math.sin(t*30)*6,6,-6);ctx.quadraticCurveTo(10,-20,16,0);ctx.closePath();ctx.fill();ctx.fillStyle='#ffe066';ctx.beginPath();ctx.arc(0,-6,6,0,6.3);ctx.fill();break;
   case 'potion':ctx.rotate(t*12);ctx.fillStyle=p.col;ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,3,8,0,6.3);ctx.fill();ctx.stroke();ctx.fillRect(-3,-10,6,8);ctx.strokeRect(-3,-10,6,8);break;
   case 'bomb':ctx.rotate(-p.rot);ctx.fillStyle='#222';ctx.strokeStyle='#ffd34a';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,9,0,6.3);ctx.fill();ctx.stroke();ctx.fillStyle=Math.floor(t*8)%2?'#f44':'#fa4';ctx.fillRect(-2,-14,4,6);break;
+  case 'tnt':ctx.rotate(t*6);ctx.fillStyle='#d33';ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.fillRect(-11,-11,22,22);ctx.strokeRect(-11,-11,22,22);ctx.fillStyle='#fff';ctx.fillRect(-11,-4,22,8);ctx.fillStyle='#000';ctx.font='bold 8px sans-serif';ctx.textAlign='center';ctx.fillText('TNT',0,3);break;
+  case 'pearl':ctx.fillStyle='#1c7a6a';ctx.strokeStyle='#8fffe0';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,9,0,6.3);ctx.fill();ctx.stroke();ctx.fillStyle='#8fffe0';ctx.beginPath();ctx.arc(-2,-2,3,0,6.3);ctx.fill();break;
   case 'net':ctx.strokeStyle='#ddd';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,16,0,6.3);ctx.moveTo(-16,0);ctx.lineTo(16,0);ctx.moveTo(0,-16);ctx.lineTo(0,16);ctx.stroke();break;
   case 'shock':ctx.rotate(-p.rot);ctx.strokeStyle=p.col;ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-8,-30);ctx.lineTo(8,-30);ctx.closePath();ctx.stroke();break;
  }}

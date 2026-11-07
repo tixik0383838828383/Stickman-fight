@@ -65,35 +65,67 @@ input[type=range]{touch-action:pan-x;width:150px}
 #toast{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:20;display:flex;flex-direction:column;gap:6px;align-items:center;pointer-events:none}
 .toastItem{background:#000c;border:1px solid #ffd24a;padding:8px 14px;border-radius:8px;font-size:14px;animation:tin .25s}
 @keyframes tin{from{opacity:0;transform:translateY(-10px)}}
-/* touch */
+/* touch pads */
 #touch{position:fixed;inset:0;z-index:3;pointer-events:none;display:none}
 body.touchon.playing #touch{display:block}
-#joy{position:absolute;left:max(18px,env(safe-area-inset-left));bottom:max(18px,env(safe-area-inset-bottom));width:min(34vw,34vh,190px);height:min(34vw,34vh,190px);border-radius:50%;background:#ffffff18;border:2px solid #fff4;pointer-events:auto}
-#knob{position:absolute;left:50%;top:50%;width:42%;height:42%;margin:-21%;border-radius:50%;background:#ffffff66;border:2px solid #fff9}
-.tbtns{position:absolute;right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(3,min(15vw,15vh,80px));gap:8px;pointer-events:none}
-.tb{pointer-events:auto;aspect-ratio:1;border-radius:50%;border:2px solid #fff6;background:#2a3a7a99;color:#fff;font-size:22px;line-height:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0}
-.tb small{font-size:10px;opacity:.85;margin-top:2px}.tb.on{background:#e8453ccc}
-.tb.pause{position:absolute;top:96px;left:50%;margin-left:-19px;width:38px;height:38px;font-size:13px;opacity:.7}
+.pad{position:absolute;display:flex;align-items:flex-end;gap:2vmin;pointer-events:none;--u:min(12vmin,64px)}
+.pad .joy{pointer-events:auto;width:calc(var(--u)*2.7);height:calc(var(--u)*2.7);border-radius:50%;background:#ffffff18;border:2px solid #fff4;position:relative;flex:none}
+.pad .knob{position:absolute;left:50%;top:50%;width:42%;height:42%;margin:-21%;border-radius:50%;background:#ffffff66;border:2px solid #fff9}
+.pad .pbtns{display:grid;grid-template-columns:repeat(3,var(--u));gap:1vmin}
+.pad.small{--u:min(9vmin,50px)}
+.pad.pos0{left:max(12px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom))}
+.pad.single.pos0{right:max(12px,env(safe-area-inset-right));justify-content:space-between;--u:min(14vmin,76px)}
+.pad.pos1{right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));flex-direction:row-reverse}
+.pad.pos2{left:max(12px,env(safe-area-inset-left));top:14vh}
+.pad.pos3{right:max(12px,env(safe-area-inset-right));top:14vh;flex-direction:row-reverse}
+.tb{pointer-events:auto;aspect-ratio:1;border-radius:50%;border:2px solid #fff6;background:#2a3a7a99;color:#fff;font-size:calc(var(--u)*.38);line-height:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0}
+.tb small{font-size:calc(var(--u)*.17);opacity:.85;margin-top:2px}.tb.on{background:#e8453ccc}
+.tb.pause{position:absolute;top:96px;left:50%;margin-left:-19px;width:38px;height:38px;font-size:13px;opacity:.7;--u:40px}
 @media (max-width:700px){.two{flex-direction:column}.detail{width:100%;order:-1;max-height:42%}.menu{grid-template-columns:1fr 1fr}.panel{padding:6px}}
+
+/* main menu */
+.main .plrow{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn.big.pl1,.btn.big.pl2,.btn.big.pl3,.btn.big.pl4{min-width:130px;display:flex;flex-direction:column;align-items:center;gap:0;line-height:1.1;font-size:15px}
+.btn .num{font-size:38px;font-weight:800}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(110px,150px));gap:8px;margin-top:4px}
+.tile{background:#171d36;border:2px solid #38457c;border-radius:12px;color:#fff;padding:8px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;touch-action:manipulation;font-size:13px}
+.tile:hover{border-color:#8aa0ff}.tile .ti{font-size:24px}
+/* lobby */
+.lobby{height:100%;display:flex;flex-direction:column;padding:8px 12px;gap:8px;position:relative}
+.lh{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.lh h2{margin:0;font-size:20px}.ld{opacity:.7;font-size:12px;flex:1;min-width:120px}
+.mapsel{display:flex;align-items:center;gap:4px}.mp{width:150px;height:34px;border-radius:6px;position:relative;overflow:hidden;border:2px solid #5d6fb8;display:flex;align-items:center;justify-content:center}.mp i{position:absolute;bottom:0;left:0;right:0;height:8px}.mp span{position:relative;font-size:12px;font-weight:700;text-shadow:0 1px 3px #000;text-align:center;padding:0 4px}
+.ar{background:#1c2340;color:#fff;border:1px solid #4a5a9a;border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer;touch-action:manipulation;flex:none}.ar:disabled{opacity:.3}
+.slots{flex:1;display:flex;gap:10px;overflow-x:auto;overflow-y:auto;padding-bottom:6px;touch-action:pan-x pan-y;align-items:stretch;min-height:0}
+.slot{flex:1 0 190px;max-width:260px;background:#141a33f0;border:2px solid #38457c;border-radius:14px;padding:8px;display:flex;flex-direction:column;gap:4px;text-align:center}
+.slot.st1{border-color:#4a8cff}.slot.st2{border-color:#ff5a5a}.slot.st3{border-color:#5fd35f}.slot.st4{border-color:#ffd24a}.slot.st5{border-color:#c070ff}.slot.st6{border-color:#4ac3ff}
+.sh{display:flex;gap:4px;align-items:center;justify-content:center;flex-wrap:wrap}
+.chip{background:#232c4d;color:#fff;border:1px solid #5d6fb8;border-radius:14px;padding:3px 9px;font-size:12px;cursor:pointer;touch-action:manipulation}.chip.bot{background:#4a2a2a}
+.chip.t1{background:#2a4a8a}.chip.t2{background:#8a2a2a}
+.sp{display:flex;align-items:center;justify-content:center;gap:2px}.sp canvas{width:min(150px,28vw);height:auto;aspect-ratio:150/170}
+.sn{font-weight:800;font-size:15px}.sd{font-size:11px;opacity:.75;min-height:26px}
+.wrow{display:flex;align-items:center;gap:4px;justify-content:center;font-size:13px}.wrow span{flex:1;min-width:0}.wrow .ar{width:30px;height:28px}
+.wcv{width:100%;max-width:170px;height:40px;margin:0 auto}
+.lf{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.cnt{display:flex;align-items:center;gap:6px}
+.btn.big.go{padding:12px 34px}
+.modal{position:absolute;inset:0;background:#000a;display:flex;align-items:center;justify-content:center;z-index:5}
+.mbox{background:#121830;border:2px solid #5d6fb8;border-radius:14px;padding:14px;width:min(520px,94vw);max-height:92%;display:flex;flex-direction:column;gap:8px}
+.mbox h3{margin:0}.orow{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;padding:3px 0}.ck{display:flex;gap:8px;align-items:center;font-size:14px;padding:3px 0}
+/* wiki */
+.wcard{display:flex;gap:12px;background:#171d36;border:2px solid #38457c;border-radius:12px;padding:10px;margin-bottom:10px}.wcard canvas{flex:none;width:130px;height:160px}.wb h3{margin:0 0 4px}.wb p{margin:4px 0;font-size:13px}.wb small{opacity:.6;font-weight:400}
+.wrow2{display:flex;gap:10px;align-items:center;background:#171d36;border:1px solid #38457c;border-radius:10px;padding:6px 10px;margin:6px 0}.wrow2 canvas{flex:none;width:150px;height:46px}.wrow2 p{margin:2px 0 0;font-size:13px;opacity:.9}
+.cat{margin:14px 0 4px;color:#ffd24a}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.upg{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:10px 0}.card.up{width:170px}
+@media (max-width:700px){.tiles{grid-template-columns:repeat(2,1fr)}.wcard{flex-direction:column;align-items:center}.slot{flex-basis:170px}}
+@media (max-height:480px){.title{font-size:clamp(26px,9vh,50px)}.main{gap:6px}.btn .num{font-size:24px}.sd{display:none}.sp canvas{width:min(100px,20vw)}.tile{padding:4px}.tile .ti{font-size:18px}}
 
 </style></head>
 <body>
 <canvas id="game"></canvas>
 <div id="ui"></div>
 <div id="trainPanel" class="hidden"></div>
-<div id="touch">
- <div id="joy"><div id="knob"></div></div>
- <button data-b="pause" class="tb pause">❚❚</button>
- <div class="tbtns">
-  <button data-b="jump" class="tb">⤒<small>Прыжок</small></button>
-  <button data-b="light" class="tb">👊<small>Удар</small></button>
-  <button data-b="heavy" class="tb">💥<small>Сильн.</small></button>
-  <button data-b="block" class="tb">🛡<small>Блок</small></button>
-  <button data-b="ability" class="tb">✨<small>Спец</small></button>
-  <button data-b="interact" class="tb">✋<small>Взять</small></button>
-  <button data-b="throw" class="tb">🎯<small>Бросок</small></button>
- </div>
-</div>
+<div id="touch"></div>
 <div id="toast"></div>
 <noscript>Требуется JavaScript</noscript>
 <script>
@@ -180,7 +212,8 @@ const CHAR_UNLOCK=[['yellow',1],['purple',2],['victim',3],['chosen',5],['kingora
 const ARENA_UNLOCK=[['cave',1],['ice',2],['lava',3],['sky',4],['future',5],['bridge',6],['traps',8],['final',10]];
 const DEFAULT_KEYS={
  p1:{left:'KeyA',right:'KeyD',jump:'KeyW',down:'KeyS',light:'KeyF',heavy:'KeyG',block:'KeyH',ability:'KeyE',throw:'KeyQ',interact:'KeyR'},
- p2:{left:'ArrowLeft',right:'ArrowRight',jump:'ArrowUp',down:'ArrowDown',light:'KeyK',heavy:'KeyL',block:'KeyJ',ability:'KeyO',throw:'KeyU',interact:'KeyI'}};
+ p2:{left:'ArrowLeft',right:'ArrowRight',jump:'ArrowUp',down:'ArrowDown',light:'KeyK',heavy:'KeyL',block:'KeyJ',ability:'KeyO',throw:'KeyU',interact:'KeyI'},
+ p3:{left:'Numpad4',right:'Numpad6',jump:'Numpad8',down:'Numpad5',light:'Numpad1',heavy:'Numpad2',block:'Numpad3',ability:'Numpad0',throw:'Numpad7',interact:'Numpad9'}};
 function defaults(){return {
  unlockedChars:['second','red','blue','green'],unlockedArenas:['training','stone','minecraft','forest'],
  settings:{master:0.7,sfx:1,quality:'auto',shake:true,touch:'auto',keys:JSON.parse(JSON.stringify(DEFAULT_KEYS))},
@@ -357,38 +390,48 @@ SD.ParticleSystem=Particles;
 // ---------- Characters (colours come from the real .nodes header; stats/abilities are game design) ----------
 // stats: hp, power, def(0..0.3 dmg reduction), kbRes, speed, jump, stamina, scale
 SD.CHARS={
- second:{id:'second',name:'The Second Coming',rig:'The Second Coming',group:'AvA',style:'Скоростной боец. Быстрые удары и энергетические атаки.',
-  hp:100,power:1.0,def:0.03,kbRes:0.1,speed:1.1,jump:1.05,stamina:100,scale:1,acc:{hair:'#ff741a',eyes:'#fff'},
-  ab:{n:{id:'surge',name:'Surge',cost:25,cd:9,desc:'Ускорение +50% на 6 c'},f:{id:'estrike',name:'Energy Strike',cost:30,cd:6,desc:'Мощный энергетический удар'},a:{id:'skystrike',name:'Sky Strike',cost:25,cd:6,desc:'Пикирующая воздушная атака'},u:{id:'secondform',name:'Second Form',cost:100,cd:25,desc:'Усиленная форма 9 c'}}},
- chosen:{id:'chosen',name:'The Chosen One',rig:'The Chosen One',group:'AvA',style:'Энергия и огонь. Сбалансированный боец-маг.',
-  hp:100,power:1.05,def:0.04,kbRes:0.12,speed:1.0,jump:1.0,stamina:100,scale:1,acc:{hair:'#222',eyes:'#fff',fire:1},
-  ab:{n:{id:'ki',name:'Energy Blast',cost:25,cd:4,desc:'Энергетический шар'},f:{id:'empower',name:'Empower',cost:30,cd:10,desc:'Усиленные удары +35% на 7 c'},a:{id:'firerain',name:'Fire Rain',cost:30,cd:7,desc:'Огненный дождь в воздухе'},u:{id:'inferno',name:'Inferno',cost:100,cd:25,desc:'Огненная нова'}}},
- darklord:{id:'darklord',name:'The Dark Lord',rig:'The Dark Lord',group:'AvA',style:'Тяжёлый мечник. Тёмная энергия, медленный, но мощный.',
-  hp:115,power:1.12,def:0.08,kbRes:0.3,speed:0.9,jump:0.95,stamina:105,scale:1.05,weapon:'darklord_sword',acc:{cape:'#7f0000',horns:1,eyes:'#f22'},
-  ab:{n:{id:'darkorb',name:'Dark Orb',cost:30,cd:6,desc:'Тёмная энергия'},f:{id:'frenzy',name:'Blade Frenzy',cost:30,cd:10,desc:'Усиленные удары мечом 6 c'},a:{id:'shadowvolley',name:'Shadow Volley',cost:30,cd:7,desc:'Залп снарядов вниз'},u:{id:'annihilate',name:'Annihilation',cost:100,cd:28,desc:'Заряженный луч'}}},
- victim:{id:'victim',name:'Victim',rig:'Victim',group:'AvA',style:'Тактик. Ловушки и контроль пространства.',
-  hp:95,power:0.95,def:0.02,kbRes:0.08,speed:1.05,jump:1.05,stamina:110,scale:0.97,acc:{hair:'#444',scarf:'#8a8a8a'},
-  ab:{n:{id:'mine',name:'Mine',cost:25,cd:5,desc:'Ловушка-мина'},f:{id:'wall',name:'Barrier',cost:30,cd:9,desc:'Стена-блок на 5 c'},a:{id:'net',name:'Net Trap',cost:25,cd:8,desc:'Сеть замедляет врага'},u:{id:'minefield',name:'Minefield',cost:100,cd:25,desc:'Минное поле'}}},
- red:{id:'red',name:'Red',rig:'Red',group:'MC',style:'Агрессор с животными. Быстрые комбинации.',
-  hp:100,power:1.08,def:0.02,kbRes:0.1,speed:1.08,jump:1.0,stamina:100,scale:1,acc:{},
-  ab:{n:{id:'wolf',name:'Wolf Rush',cost:25,cd:6,desc:'Волк бежит вперёд'},f:{id:'rage',name:'Rage',cost:30,cd:10,desc:'+40% скорость атак, +20% урон 6 c'},a:{id:'eagle',name:'Eagle Dive',cost:25,cd:7,desc:'Орёл пикирует на врага'},u:{id:'stampede',name:'Stampede',cost:100,cd:25,desc:'Стадо животных'}}},
- blue:{id:'blue',name:'Blue',rig:'Blue',group:'MC',style:'Алхимик. Зелья с необычными эффектами.',
-  hp:95,power:0.95,def:0.02,kbRes:0.08,speed:1.02,jump:1.0,stamina:105,scale:1,acc:{},
-  ab:{n:{id:'potion',name:'Potion',cost:25,cd:5,desc:'Бросок зелья со случайным эффектом'},f:{id:'swift',name:'Swiftness',cost:30,cd:10,desc:'Скорость и прыжок 6 c'},a:{id:'splash',name:'Splash',cost:30,cd:7,desc:'Два зелья вниз'},u:{id:'elixir',name:'Elixir',cost:100,cd:30,desc:'Лечение 30% и сила 8 c'}}},
- green:{id:'green',name:'Green',rig:'Green',group:'MC',style:'Музыкант. Ритмичные звуковые волны.',
-  hp:100,power:0.98,def:0.03,kbRes:0.1,speed:1.0,jump:1.0,stamina:100,scale:1,acc:{},
-  ab:{n:{id:'soundwave',name:'Sound Wave',cost:25,cd:5,desc:'Звуковые ноты'},f:{id:'rhythm',name:'Rhythm',cost:30,cd:10,desc:'Ритм-комбо 6 c: удары излучают волны'},a:{id:'bassdrop',name:'Bass Drop',cost:30,cd:7,desc:'Бас-удар в воздухе'},u:{id:'concert',name:'Concert',cost:100,cd:25,desc:'Пульсирующие волны 5 c'}}},
- yellow:{id:'yellow',name:'Yellow',rig:'Yellow',group:'MC',style:'Инженер. Турели и дальние атаки.',
-  hp:92,power:0.95,def:0.02,kbRes:0.06,speed:1.03,jump:1.0,stamina:100,scale:0.98,acc:{},
-  ab:{n:{id:'turret',name:'Turret',cost:30,cd:9,desc:'Турель на 8 c'},f:{id:'laser',name:'Laser',cost:25,cd:5,desc:'Мгновенный лазер'},a:{id:'drone',name:'Drone Bombs',cost:30,cd:7,desc:'Бомбы с дрона'},u:{id:'orbital',name:'Orbital Beam',cost:100,cd:25,desc:'Орбитальный луч'}}},
- purple:{id:'purple',name:'Purple',rig:'Purple',group:'MC',style:'Манёвренный. Двойной прыжок, блинк, серии ударов.',
-  hp:88,power:0.95,def:0.0,kbRes:0.04,speed:1.18,jump:1.1,stamina:100,scale:0.96,doubleJump:1,acc:{},
-  ab:{n:{id:'blink',name:'Blink',cost:25,cd:6,desc:'Телепорт за спину врага'},f:{id:'dashslash',name:'Dash Slash',cost:25,cd:5,desc:'Рывок сквозь врага'},a:{id:'airdash',name:'Air Dash',cost:20,cd:4,desc:'Воздушный рывок'},u:{id:'flurry',name:'Flurry',cost:100,cd:22,desc:'Шквал ударов'}}},
- kingorange:{id:'kingorange',name:'King Orange',rig:'King Orange',group:'MC',style:'Тяжеловес в короне. Мощные удары и защита.',
-  hp:130,power:1.15,def:0.1,kbRes:0.45,speed:0.82,jump:0.9,stamina:100,scale:1.14,acc:{cape:'#fccd03',crown:'#fccd03'},
-  ab:{n:{id:'slam',name:'Ground Slam',cost:30,cd:7,desc:'Ударная волна'},f:{id:'ironwill',name:'Iron Will',cost:30,cd:11,desc:'Броня -50% урона 5 c'},a:{id:'meteor',name:'Meteor Drop',cost:30,cd:8,desc:'Падение-удар'},u:{id:'royalbeam',name:'Royal Beam',cost:100,cd:28,desc:'Королевский луч'}}}
+ second:{id:'second',name:'The Second Coming',rig:'The Second Coming',group:'AvA / AvM',weapon:'pencil',
+  lore:'Оранжевый стикмен-аниматор, главный герой серий Alan Becker. Рисует всё что угодно инструментом «Карандаш», стреляет из лазерного ружья и бьёт ударной волной электрогитары.',
+  style:'Быстрый универсал: рисует стены, бьёт лазером, пикирует гитарой.',hp:100,power:1.0,def:0.03,kbRes:0.1,speed:1.1,jump:1.05,stamina:100,scale:1,acc:{hair:'#ff741a',eyes:'#fff'},
+  ab:{n:{id:'pencil',name:'Pencil Tool',cost:25,cd:6,desc:'Рисует стену-блок перед собой на 5 с'},f:{id:'sclaser',name:'Laser Gun',cost:30,cd:6,desc:'Лазерный луч вперёд'},a:{id:'skystrike',name:'Guitar Slam',cost:25,cd:6,desc:'Пикирующий удар гитарой, ударная волна'},u:{id:'secondform',name:'Awakening',cost:100,cd:25,desc:'Усиленная форма на 9 c: скорость, урон, снаряды при ударах'}}},
+ chosen:{id:'chosen',name:'The Chosen One',rig:'The Chosen One',group:'AvA',weapon:'none',
+  lore:'«Избранный» — обладатель скрытых сил: пирокинез и лазерное зрение. Сражается голыми руками, усиливая удары огнём.',
+  style:'Огненный маг: пирокинез и лазерное зрение.',hp:100,power:1.05,def:0.04,kbRes:0.12,speed:1.0,jump:1.0,stamina:100,scale:1,acc:{hair:'#222',eyes:'#fff',fire:1},
+  ab:{n:{id:'ki',name:'Fireball',cost:25,cd:4,desc:'Огненный шар с поджогом'},f:{id:'cvision',name:'Laser Vision',cost:30,cd:6,desc:'Лазер из глаз'},a:{id:'firerain',name:'Fire Rain',cost:30,cd:7,desc:'Огненный дождь в воздухе'},u:{id:'inferno',name:'Inferno',cost:100,cd:25,desc:'Огненная нова вокруг'}}},
+ darklord:{id:'darklord',name:'The Dark Lord',rig:'The Dark Lord',group:'AvA',weapon:'darklord_sword',
+  lore:'Тёмный властелин с красным мечом. Тяжёлый и медленный, но каждый удар сметает противника; призывает тёмную энергию.',
+  style:'Тяжёлый мечник: тёмная энергия и сингулярность.',hp:115,power:1.12,def:0.08,kbRes:0.3,speed:0.9,jump:0.95,stamina:105,scale:1.05,acc:{cape:'#7f0000',horns:1,eyes:'#f22'},
+  ab:{n:{id:'darkorb',name:'Dark Orb',cost:30,cd:6,desc:'Тёмная сфера притягивает врага'},f:{id:'frenzy',name:'Blade Frenzy',cost:30,cd:10,desc:'Усиленные удары мечом 6 c'},a:{id:'shadowvolley',name:'Shadow Volley',cost:30,cd:7,desc:'Залп теней вниз'},u:{id:'annihilate',name:'Singularity',cost:100,cd:28,desc:'Заряженный луч уничтожения'}}},
+ victim:{id:'victim',name:'Victim',rig:'Victim',group:'AvA',weapon:'sword',
+  lore:'Тактик, который окружает себя ловушками, ракетными турелями и сюрикенами-клонами.',
+  style:'Тактик: сюрикены, лассо, мины, турель.',hp:95,power:0.95,def:0.02,kbRes:0.08,speed:1.05,jump:1.05,stamina:110,scale:0.97,acc:{hair:'#444',scarf:'#8a8a8a'},
+  ab:{n:{id:'shuriken',name:'Shuriken Clones',cost:25,cd:5,desc:'Веер из трёх сюрикенов'},f:{id:'lasso',name:'Lasso',cost:25,cd:7,desc:'Лассо: связывает врага'},a:{id:'mine',name:'Rocket Mine',cost:25,cd:5,desc:'Мина под ногами цели'},u:{id:'minefield',name:'Time Acceleration',cost:100,cd:25,desc:'Ряд мин под противником'}}},
+ red:{id:'red',name:'Red',rig:'Red',group:'AvM',weapon:'mc_diamond_sword',
+  lore:'Задорный задира Stick Gang. Дружит со свиньёй-героем, обожает TNT, а в ярости использует силу Херобрина.',
+  style:'Агрессор: TNT, Героическая свинья, ярость.',hp:100,power:1.08,def:0.02,kbRes:0.1,speed:1.08,jump:1.0,stamina:100,scale:1,acc:{band:'#7a1010'},
+  ab:{n:{id:'pig',name:'Heroic Pig',cost:25,cd:6,desc:'Свинья-герой несётся вперёд'},f:{id:'rage',name:'Rage',cost:30,cd:10,desc:'+скорость атак, +урон 6 c'},a:{id:'tntdrop',name:'TNT Drop',cost:30,cd:7,desc:'Бросок TNT вниз-вперёд'},u:{id:'herobrine',name:"Herobrine's Power",cost:100,cd:26,desc:'Телекинез: поднимает врага и швыряет об землю'}}},
+ blue:{id:'blue',name:'Blue',rig:'Blue',group:'AvM',weapon:'mc_bow',
+  lore:'Хитрый алхимик Stick Gang: зелья, стрелы и земляные укрепления.',
+  style:'Алхимик: зелья, стрелы и земляная стена.',hp:95,power:0.95,def:0.02,kbRes:0.08,speed:1.02,jump:1.0,stamina:105,scale:1,acc:{},
+  ab:{n:{id:'potion',name:'Potion',cost:25,cd:5,desc:'Зелье со случайным эффектом'},f:{id:'dirtwall',name:'Dirt Barrier',cost:30,cd:9,desc:'Земляная стена на 5 с'},a:{id:'splash',name:'Splash Potions',cost:30,cd:7,desc:'Два зелья вниз'},u:{id:'elixir',name:'Elixir',cost:100,cd:30,desc:'Лечение 30% и сила на 8 c'}}},
+ green:{id:'green',name:'Green',rig:'Green',group:'AvM',weapon:'mc_pickaxe',
+  lore:'Строитель и шахтёр Stick Gang: алмазная кирка, удочка-крюк, поршни и маяки.',
+  style:'Строитель: крюк-удочка, поршень, кирка-пикирование.',hp:100,power:0.98,def:0.04,kbRes:0.12,speed:1.0,jump:1.0,stamina:100,scale:1,acc:{},
+  ab:{n:{id:'hook',name:'Fishing Rod',cost:25,cd:5,desc:'Крюк притягивает врага к вам'},f:{id:'piston',name:'Piston Launch',cost:25,cd:7,desc:'Поршень подбрасывает врага вверх'},a:{id:'meteor',name:'Pickaxe Dive',cost:30,cd:8,desc:'Пикирующий удар кирки'},u:{id:'windmill',name:'Windmill',cost:100,cd:25,desc:'Вращающиеся лопасти 5 c вокруг'}}},
+ yellow:{id:'yellow',name:'Yellow',rig:'Yellow',group:'AvM',weapon:'mc_crossbow',
+  lore:'Инженер Stick Gang: раздатчики со стрелами, TNT и лучи маяков.',
+  style:'Инженер: раздатчик, TNT, маяк.',hp:92,power:0.95,def:0.02,kbRes:0.06,speed:1.03,jump:1.0,stamina:100,scale:0.98,acc:{},
+  ab:{n:{id:'turret',name:'Dispenser',cost:30,cd:9,desc:'Раздатчик стреляет стрелами 8 c'},f:{id:'tnt',name:'TNT',cost:30,cd:6,desc:'Бросает динамит'},a:{id:'drone',name:'TNT Rain',cost:30,cd:7,desc:'Бомбы сверху'},u:{id:'orbital',name:'Beacon Beam',cost:100,cd:25,desc:'Луч маяка с неба'}}},
+ purple:{id:'purple',name:'Purple',rig:'Purple',group:'AvM',weapon:'mc_golden_sword',
+  lore:'Король жителей и пиглинов: в короне, с элитрами и жемчугом Края. Ловкий, но хрупкий.',
+  style:'Король-акробат: жемчуг Края, элитры, пиглины.',hp:88,power:0.95,def:0.0,kbRes:0.04,speed:1.18,jump:1.1,stamina:100,scale:0.96,doubleJump:1,acc:{crown:'#d4af37',cape:'#8a8fa0'},
+  ab:{n:{id:'blink',name:'Ender Pearl',cost:25,cd:6,desc:'Телепорт за спину врага'},f:{id:'dashslash',name:'Gold Dash',cost:25,cd:5,desc:'Рывок мечом сквозь врага'},a:{id:'airdash',name:'Elytra Boost',cost:20,cd:4,desc:'Воздушный рывок'},u:{id:'brutes',name:'Piglin Brutes',cost:100,cd:25,desc:'Три пиглина-громилы бегут вперёд'}}},
+ kingorange:{id:'kingorange',name:'King Orange',rig:'King Orange',group:'AvM',weapon:'mc_command_staff',
+  lore:'Властелин с посохом командных блоков: удерживает врагов силой (Forcehold), запускает огненные шары и чёрные дыры.',
+  style:'Тяжеловес-маг: посох командных блоков.',hp:130,power:1.15,def:0.1,kbRes:0.45,speed:0.82,jump:0.9,stamina:100,scale:1.14,acc:{cape:'#fccd03',crown:'#fccd03'},
+  ab:{n:{id:'forcehold',name:'Forcehold',cost:30,cd:7,desc:'Удерживает врага в воздухе и швыряет вниз'},f:{id:'fireball',name:'Fireball',cost:25,cd:4,desc:'Огненный шар'},a:{id:'meteor',name:'Netherite Smash',cost:30,cd:8,desc:'Падение-удар'},u:{id:'royalbeam',name:'Command Beam',cost:100,cd:28,desc:'Мощный луч командного блока'}}}
 };
-SD.CHAR_ORDER=['second','chosen','darklord','victim','red','blue','green','yellow','purple','kingorange'];
+SD.CHAR_ORDER=['second','red','blue','green','yellow','purple','kingorange','chosen','darklord','victim'];
 
 SD.RARITY=[{id:0,name:'Обычное',color:'#bbbbbb',w:55,dmg:1,spd:1},{id:1,name:'Необычное',color:'#5fd35f',w:25,dmg:1.04,spd:1},{id:2,name:'Редкое',color:'#4aa3ff',w:12,dmg:1.08,spd:1.02},{id:3,name:'Эпическое',color:'#b05cff',w:6,dmg:1.12,spd:1.03},{id:4,name:'Легендарное',color:'#ffb62e',w:2,dmg:1.16,spd:1.05}];
 
@@ -428,19 +471,32 @@ def('flamesword','Огненный меч','Особое',{len:105,dmg:11,speed:
 def('icesword','Ледяной меч','Особое',{len:105,dmg:11,speed:1.05,mass:1.0,fx:'ice',snd:'ice',col:'#9fe8ff',glow:'#9fe8ff',slow:1,w:4});
 def('energyhammer','Энергетический молот','Особое',{len:105,dmg:18,speed:0.65,mass:2.0,style:'smash',two:true,kb:1.7,stam:1.6,fx:'energy',snd:'hitheavy',col:'#ff55dd',glow:'#ff55dd',w:3});
 def('darklord_sword','Меч Dark Lord','Особое',{len:165,pivot:0.1,dmg:17,speed:0.8,mass:2.4,two:false,kb:1.5,stam:1.4,fx:'dark',snd:'hitheavy',col:'#222',glow:'#ff1a1a',style:'slash2',w:2,rig:'The Dark Lord Sword'});
-// Minecraft category (pixel-art sprites drawn procedurally)
-def('mc_diamond_sword','Алмазный меч','Minecraft',{len:100,dmg:12,speed:1.05,mass:1.0,mc:'sword',pal:['#4aedd9','#2ab5a5','#b8fff5'],w:8});
-def('mc_netherite_sword','Незеритовый меч','Minecraft',{len:100,dmg:14,speed:1.0,mass:1.3,mc:'sword',pal:['#4a3f4a','#2a232a','#7a6a7a'],w:5});
-def('mc_iron_sword','Железный меч','Minecraft',{len:100,dmg:10,speed:1.05,mass:1.0,mc:'sword',pal:['#d8d8d8','#9a9a9a','#fff'],w:14});
-def('mc_diamond_axe','Алмазный топор','Minecraft',{len:95,dmg:14,speed:0.85,mass:1.5,style:'smash',kb:1.3,mc:'axe',pal:['#4aedd9','#2ab5a5','#b8fff5'],w:7});
-def('mc_trident','Трезубец (MC)','Minecraft',{len:165,pivot:0.3,dmg:13,speed:0.95,mass:1.4,style:'stab',two:true,mc:'trident',pal:['#4fc9b5','#2a8a7a','#b8fff5'],w:5,thrown:1});
-def('mc_bow','Лук (MC)','Minecraft',{len:75,pivot:0.5,dmg:9,speed:1.0,mass:0.6,style:'bow',two:true,ammo:14,proj:'arrow',mc:'bow',pal:['#8a5a2a','#c0e0c0','#fff'],w:8});
-def('mc_crossbow','Арбалет (MC)','Minecraft',{len:70,pivot:0.4,dmg:14,speed:0.8,mass:1.0,style:'xbow',ammo:10,proj:'bolt',mc:'crossbow',pal:['#8a5a2a','#555','#ddd'],w:6});
-def('mc_shield','Щит (MC)','Minecraft',{slot:'off',len:60,style:'shield',block:0.9,stam:0.5,mc:'shield',pal:['#a0703a','#d0d0d0','#6a4a22'],mass:1.2,w:8});
-def('mc_mace','Булава (MC)','Minecraft',{len:90,dmg:16,speed:0.7,mass:2.2,style:'smash',kb:1.7,stam:1.5,fx:'blunt',snd:'hitheavy',mc:'mace',pal:['#6a6a72','#3a3a42','#a0a0aa'],w:5});
-def('mc_pickaxe','Кирка','Minecraft',{len:95,dmg:11,speed:0.95,mass:1.4,style:'smash',mc:'pickaxe',pal:['#4aedd9','#2ab5a5','#8a5a2a'],w:8});
+// Animation vs. Minecraft (Alan Becker) — items seen in the series
+const GOLD=['#f5d142','#c79a1c','#fff3a8'],DIA=['#4aedd9','#2ab5a5','#b8fff5'],IRON=['#d8d8d8','#9a9a9a','#fff'],NETH=['#4a3f4a','#2a232a','#7a6a7a'],STONE=['#8a8a8a','#5e5e5e','#bdbdbd'];
+def('mc_stone_sword','Каменный меч','AvM',{len:98,dmg:9,speed:1.0,mass:1.1,mc:'sword',pal:STONE,w:14,desc:'Серия 27: меч скелета-стража Witton.'});
+def('mc_iron_sword','Железный меч','AvM',{len:100,dmg:10,speed:1.05,mass:1.0,mc:'sword',pal:IRON,w:14,desc:'Серия 27: такими мечами вооружены клоны Стива.'});
+def('mc_golden_sword','Золотой меч','AvM',{len:100,dmg:8,speed:1.3,mass:0.7,mc:'sword',pal:GOLD,w:10,desc:'Лёгкий и очень быстрый. Золото любят пиглины (серия 20).'});
+def('mc_diamond_sword','Алмазный меч','AvM',{len:100,dmg:12,speed:1.05,mass:1.0,mc:'sword',pal:DIA,w:8,desc:'Серия 7 (PvP): основное оружие дуэли.'});
+def('mc_netherite_sword','Незеритовый меч','AvM',{len:100,dmg:14,speed:1.0,mass:1.3,mc:'sword',pal:NETH,w:5,desc:'Самый мощный меч, огнеупорный.',burn:1});
+def('mc_diamond_axe','Алмазный топор','AvM',{len:95,dmg:14,speed:0.85,mass:1.5,style:'smash',kb:1.3,mc:'axe',pal:DIA,w:7,desc:'Серия 12: из ловушки Кролика-убийцы. Тяжёлые удары.'});
+def('mc_pickaxe','Алмазная кирка','AvM',{len:95,dmg:11,speed:0.95,mass:1.4,style:'smash',mc:'pickaxe',pal:['#4aedd9','#2ab5a5','#8a5a2a'],w:8,desc:'Серия 25: кирка Green. Ломает блоки и стены арены.'});
+def('mc_shovel','Алмазная лопата','AvM',{len:100,dmg:9,speed:1.1,mass:1.0,style:'smash',kb:1.0,mc:'shovel',pal:DIA,w:9,desc:'Серия 25: лопата Green, отлично выбивает оружие.',stun:0.15});
+def('mc_trident','Трезубец','AvM',{len:165,pivot:0.3,dmg:13,speed:0.95,mass:1.4,style:'stab',two:true,mc:'trident',pal:['#4fc9b5','#2a8a7a','#b8fff5'],w:5,thrown:1,fx:'elec',shock:14,desc:'Серии 13 и 16: призывает молнию. Сильный удар бьёт током вокруг.'});
+def('mc_bow','Лук','AvM',{len:75,pivot:0.5,dmg:9,speed:1.0,mass:0.6,style:'bow',two:true,ammo:14,proj:'arrow',mc:'bow',pal:['#8a5a2a','#c0e0c0','#fff'],w:8,desc:'Серии 6, 7, 24: лук. Зарядка усиливает выстрел.'});
+def('mc_crossbow','Арбалет','AvM',{len:70,pivot:0.4,dmg:14,speed:0.8,mass:1.0,style:'xbow',ammo:10,proj:'bolt',mc:'crossbow',pal:['#8a5a2a','#555','#ddd'],w:6,desc:'Оружие пиглинов (серии 20, 25): мощный болт.'});
+def('mc_shield','Щит','AvM',{slot:'off',len:60,style:'shield',block:0.9,stam:0.5,mc:'shield',pal:['#a0703a','#d0d0d0','#6a4a22'],mass:1.2,w:8,desc:'Серия 7: щит в левой руке. Блокирует почти весь урон.'});
+def('mc_mace','Булава','AvM',{len:90,dmg:16,speed:0.7,mass:2.2,style:'smash',kb:1.7,stam:1.5,fx:'blunt',snd:'hitheavy',mc:'mace',pal:['#6a6a72','#3a3a42','#a0a0aa'],w:5,desc:'Сокрушительные удары, огромный нокбэк.'});
+def('mc_fishing_rod','Удочка','AvM',{len:140,pivot:0.2,dmg:5,speed:1.15,mass:0.6,style:'sweep',two:false,kb:0.5,mc:'rod',pal:['#8a5a2a','#ddd','#fff'],w:7,pull:1,desc:'Серии 8, 10, 14, 22, 25: крюк-захват. Удар притягивает врага к вам.'});
+def('mc_tnt','TNT','AvM',{len:40,pivot:0.5,dmg:26,speed:1.0,mass:0.6,style:'knives',ammo:2,regen:0.25,proj:'tnt',mc:'tnt',pal:['#d33','#fff','#000'],w:7,desc:'Серии 1, 2, 7, 17: бросаемый динамит — взрывается при контакте. Заряды восстанавливаются.'});
+def('mc_ender_pearl','Жемчуг Края','AvM',{len:30,pivot:0.5,dmg:3,speed:1.2,mass:0.3,style:'knives',ammo:3,regen:0.3,proj:'pearl',mc:'pearl',pal:['#1c7a6a','#0a4a40','#8fffe0'],w:6,desc:'Серии 7, 25: бросьте — и телепортируетесь туда, куда упал.'});
+def('mc_fire_charge','Огненный заряд','AvM',{len:45,pivot:0.4,dmg:11,speed:1.0,mass:0.7,style:'blaster',ammo:12,regen:0.7,proj:'fireball',mc:'fire',pal:['#ff7a22','#c23a0a','#ffd24a'],w:6,fx:'fire',desc:'Огненные шары гастов и King Orange. Поджигают.'});
+def('mc_command_staff','Посох командных блоков','AvM',{len:140,pivot:0.4,dmg:12,speed:1.0,mass:1.0,style:'magic',two:true,ammo:24,regen:1.0,proj:'magic',mc:'cmdstaff',pal:['#c07830','#6a4020','#f5b060'],w:2,fx:'magic',desc:'Серии 22–26: посох King Orange. Лучи энергии; сильный выстрел — веер из трёх.'});
+def('mc_trophy','Кубок','AvM',{len:80,dmg:9,speed:1.0,mass:1.2,style:'smash',kb:1.4,fx:'blunt',mc:'trophy',pal:GOLD,w:6,desc:'Серия 17: им бьют как битой во время Build Battle.'});
+// Alan Becker / Animator vs. Animation
+def('pencil','Pencil Tool','Особое',{len:100,pivot:0.15,dmg:9,speed:1.35,mass:0.5,style:'stab',kb:0.7,stam:0.6,mc:'pencil',pal:['#ffd24a','#c8982a','#ffb0b0'],w:5,desc:'Инструмент The Second Coming — рисует и колет.'});
+def('electric_guitar','Электрогитара','Особое',{len:95,dmg:12,speed:0.9,mass:1.4,style:'smash',kb:1.3,fx:'elec',shock:12,mc:'guitar',pal:['#c0392b','#7a1f16','#ddd'],w:4,desc:'Серия 16: гитара The Second Coming — сильный удар создаёт ударную волну.'});
 SD.WEAPONS=W;
-SD.WEAPON_CATS=['Холодное','Дальнобойное','Защита','Особое','Minecraft'];
+SD.WEAPON_CATS=['AvM','Холодное','Дальнобойное','Защита','Особое'];
 SD.rollRarity=()=>{let t=0;SD.RARITY.forEach(r=>t+=r.w);let x=Math.random()*t;for(const r of SD.RARITY){x-=r.w;if(x<=0)return r.id}return 0};
 SD.rollWeapon=(excl)=>{const ids=Object.keys(W).filter(i=>i!=='darklord_sword'||Math.random()<0.25);let tot=0;ids.forEach(i=>tot+=W[i].w);let x=Math.random()*tot;for(const i of ids){x-=W[i].w;if(x<=0)return i}return 'sword'};
 })(window.SD);
@@ -458,6 +514,8 @@ function arena(id,name,o){DEF[id]=Object.assign({id,name,W,H,killY:1100,gy:GY,pa
 
 arena('training','Тренировочная площадка',{desc:'Ровная площадка с сеткой.',pal:{sky1:'#2a3550',sky2:'#506a8a',solid:'#6b7684',top:'#9aa6b6',line:'#555f6c'},
  build(a){a.solids.push(R(0,GY,W,300,{type:'concrete'}),OW(260,540,260),OW(980,540,260));a.spawns=[330,1170,500,1000,700,800];}});
+arena('stadium','Футбольный стадион',{desc:'Ровное поле, ворота и стены. Режим «Футбол».',pal:{sky1:'#14304a',sky2:'#4a86b0',solid:'#2e7a3a',top:'#58b04a',line:'#1f5a2a'},
+ build(a){a.solids.push(R(0,GY,W,300,{type:'grass'}),R(-60,-600,60,1400,{type:'concrete'}),R(W,-600,60,1400,{type:'concrete'}));a.spawns=[420,1080,330,1170,250,1250]}});
 arena('stone','Каменная арена',{desc:'Колонны, факелы и разрушаемые стены.',pal:{sky1:'#1d1a24',sky2:'#3b3040',solid:'#6f6a66',top:'#9a948c',line:'#4a4642'},
  build(a){a.solids.push(R(0,GY,W,300,{type:'stone'}),OW(120,540,240),OW(1140,540,240),OW(560,430,380));
   a.solids.push(R(730,GY-130,40,130,{type:'wall',destructible:true,hp:90,maxhp:90}));a.spawns=[300,1200,450,1050,600,900];a.crate(420,GY-44,false,true);a.crate(1040,GY-44,false,true)}});
@@ -493,7 +551,7 @@ arena('final','Финальная арена',{desc:'Разрушаемый по
   a.solids.push(R(180,GY-110,40,110,{type:'wall',destructible:true,hp:80,maxhp:80}),R(1280,GY-110,40,110,{type:'wall',destructible:true,hp:80,maxhp:80}));
   a.hazards.push({type:'lava',x:0,y:900,w:W,h:200,dps:40});a.fallers=true;a.fallT=6;a.fallKind='block';a.spawns=[220,1280,450,1050,650,850];a.crate(60,GY-44,true);a.crate(1396,GY-44,true)}});
 SD.ARENAS=DEF;
-SD.ARENA_ORDER=['training','stone','minecraft','forest','cave','ice','lava','sky','future','bridge','traps','final'];
+SD.ARENA_ORDER=['training','stadium','stone','minecraft','forest','cave','ice','lava','sky','future','bridge','traps','final'];
 
 class Arena{
  constructor(id,game,opts={}){this.def=DEF[id];this.id=id;this.game=game;this.W=W;this.H=H;this.killY=this.def.killY;this.gy=GY;this.friction=this.def.friction;this.pal=this.def.pal;
@@ -1016,6 +1074,7 @@ class Fighter{
   ctx.save();ctx.translate(h.x,h.y);
   // eyes
   const ec=a.eyes||(this.color==='#1c1c1c'?'#fff':'#111');ctx.fillStyle=flash?'#000':ec;ctx.beginPath();ctx.arc(f*hr*0.45,-hr*0.1,hr*0.18,0,6.3);ctx.arc(f*hr*0.05,-hr*0.1,hr*0.15,0,6.3);ctx.fill();
+  if(a.band){ctx.fillStyle=a.band;ctx.fillRect(-hr,-hr*0.62,hr*2,hr*0.3);ctx.fillRect(-hr-hr*0.6,-hr*0.5,hr*0.7,hr*0.14)}
   if(a.crown){ctx.fillStyle=a.crown;ctx.strokeStyle='#000';ctx.lineWidth=1.5;ctx.beginPath();const y0=-hr+1,w=hr*0.9;ctx.moveTo(-w,y0);ctx.lineTo(-w,y0-hr*0.9);ctx.lineTo(-w/2,y0-hr*0.4);ctx.lineTo(0,y0-hr*1.1);ctx.lineTo(w/2,y0-hr*0.4);ctx.lineTo(w,y0-hr*0.9);ctx.lineTo(w,y0);ctx.closePath();ctx.fill();ctx.stroke()}
   if(a.horns){ctx.fillStyle='#222';ctx.strokeStyle='#600';ctx.lineWidth=1.5;for(const sx of [-1,1]){ctx.beginPath();ctx.moveTo(sx*hr*0.5,-hr*0.8);ctx.quadraticCurveTo(sx*hr*1.3,-hr*1.3,sx*hr*0.9,-hr*2);ctx.lineTo(sx*hr*0.2,-hr*0.9);ctx.fill();ctx.stroke()}}
   ctx.restore()}
@@ -1210,7 +1269,7 @@ Wp.fireEvent=(f,ev,game)=>{
  if(ev.type==='shoot'){const w=f.main;if(!w){return}const d=w.def;if(d.ammo&&w.ammo<(ev.spec.heavy?2:1)){game.audio.play('click');return}
   if(d.ammo)w.ammo-=ev.spec.heavy?2:1;const g=w.geom;const ox=g.tx,oy=g.ty;let ang=Wp.aim(f,{x:ox,y:oy});
   const pw=ev.spec.power*(1+f.charge*0.6);const base=d.dmg*SD.RARITY[w.rarity].dmg*f.dmgMult;
-  const mk=(a,extra)=>game.proj.spawn(Object.assign({type:d.proj,x:ox,y:oy,vx:Math.cos(a),vy:Math.sin(a),dmg:base*pw,owner:f,power:pw,heavy:ev.spec.heavy,rar:w.rarity,fxName:d.fx},extra||{}));
+  const mk=(a,extra)=>{const pr=game.proj.spawn(Object.assign({type:d.proj,x:ox,y:oy,vx:Math.cos(a),vy:Math.sin(a),dmg:base*pw,owner:f,power:pw,heavy:ev.spec.heavy,rar:w.rarity,fxName:d.fx},extra||{}));if(d.proj==='pearl'){pr.onEnd=(pp)=>{if(!f.alive)return;game.particles.ring(f.root.x,f.root.y,40,'#8fffe0',0.3,4);const A=game.arena;f.root.x=Math.max(30,Math.min(A.W-30,pp.x));f.root.y=Math.min(pp.y,A.killY-120)-20;f.root.vy=0;f.root.vx=0;f.root.ground=null;f.invuln=Math.max(f.invuln,0.3);game.particles.ring(f.root.x,f.root.y,40,'#8fffe0',0.3,4);game.particles.sparks(f.root.x,f.root.y,16,'#8fffe0',300,0.4);game.audio.play('zap',0.7);f.hp-=0;}}return pr};
   if(d.style==='knives'){if(ev.spec.heavy){for(let i=-1;i<=1;i++)mk(ang+i*0.16)}else mk(ang)}
   else if(d.style==='magic'&&ev.spec.heavy){for(let i=-1;i<=1;i++)mk(ang+i*0.22)}
   else mk(ang);
@@ -1234,6 +1293,15 @@ function mcSprite(d){const key=d.id;if(mcCache[key])return mcCache[key];const c=
  case 'trident':diag(1,14,12,3,brown,1);diag(8,1,15,8,m,1);for(const [a,b] of [[11,1],[12,0],[14,2],[15,3],[10,2],[14,4],[13,3]])px(a,b,li);diag(9,2,14,7,m,1);px(13,0,m);px(15,2,m);px(12,1,m);px(15,5,dk);break;
  case 'bow':for(let i=0;i<16;i++){const a=Math.round(5+Math.sin(i/15*Math.PI)*6);px(a,i,m);px(a+1,i,dk)}for(let i=1;i<15;i++)px(3,i,'#ddd');px(5,0,m);px(5,15,m);px(6,7,brown);px(7,8,brown);break;
  case 'crossbow':for(let i=2;i<14;i++)px(i,8,brown);px(2,7,dk);px(12,7,dk);for(let i=1;i<15;i++)px(11-Math.round(Math.abs(i-8)*0.4),i,m);for(let i=2;i<14;i+=1)if(i%1===0)px(11,i,'#ddd');px(13,8,li);px(14,8,li);break;
+ case 'shovel':diag(2,13,10,5,brown,1);for(let a=9;a<=14;a++)for(let b=0;b<=6;b++){const dx=a-11.5,dy=b-3;if(dx*dx/9+dy*dy/12<1.2)px(a,b,(a+b)%4===0?li:m)}px(14,1,dk);px(14,2,dk);px(10,5,dk);break;
+ case 'rod':diag(1,14,11,3,brown,1);diag(11,3,15,3,'#ddd',1);diag(15,3,15,11,'#ddd',1);px(14,12,'#c33');px(15,12,'#c33');px(15,13,'#c33');px(14,13,'#fff');break;
+ case 'tnt':for(let a=3;a<=12;a++)for(let b=3;b<=12;b++){px(a,b,(b>=6&&b<=9)?'#f2f2f2':'#c8302a')}for(let a=3;a<=12;a++){px(a,3,'#8a1a16');px(a,12,'#8a1a16')}for(const [a,b] of [[4,7],[4,8],[5,7],[6,8],[6,7],[7,7],[7,8],[9,7],[9,8],[10,7],[11,7],[11,8],[10,8]])px(a,b,'#222');px(8,2,'#444');px(8,1,'#fa4');px(9,0,'#ff0');break;
+ case 'pearl':for(let a=3;a<=12;a++)for(let b=3;b<=12;b++){const d=Math.hypot(a-7.5,b-7.5);if(d<4.8)px(a,b,d<3?m:dk)}px(6,5,li);px(7,5,li);px(5,6,li);px(9,9,'#2fe0c0');px(10,8,'#2fe0c0');break;
+ case 'fire':for(let a=2;a<=13;a++)for(let b=2;b<=13;b++){const d=Math.hypot(a-7.5,b-7.5);if(d<5.4)px(a,b,d<2.4?li:d<4?'#ff9a22':m)}px(7,1,dk);px(8,0,dk);px(11,2,'#ffd24a');px(12,3,'#ffd24a');break;
+ case 'cmdstaff':diag(1,14,10,5,'#3a2a1a',1);diag(2,14,11,5,'#5a4128',1);for(let a=9;a<=14;a++)for(let b=0;b<=5;b++){const e=a===9||a===14||b===0||b===5;px(a,b,e?dk:m)}for(const [a,b] of [[10,1],[12,1],[11,2],[13,2],[10,3],[12,3],[11,4],[13,4]])px(a,b,li);break;
+ case 'trophy':diag(2,14,8,8,'#6a4a1a',1);for(let a=8;a<=14;a++)for(let b=1;b<=7;b++){const w=7-(b-1)*0.5;if(Math.abs(a-11)<w/2+0.5)px(a,b,b<4?li:m)}px(8,3,dk);px(14,3,dk);px(7,3,m);px(15,3,m);for(let a=9;a<=13;a++)px(a,8,dk);break;
+ case 'pencil':diag(1,14,12,3,m,1);diag(2,14,13,3,dk,1);diag(12,3,15,0,'#ecd0a0',1);px(15,0,'#222');px(0,15,li);px(1,15,li);px(1,14,li);px(2,13,'#bbb');px(3,12,'#bbb');break;
+ case 'guitar':for(let a=1;a<=7;a++)for(let b=8;b<=14;b++){const d=Math.hypot(a-4,b-11);if(d<3.6)px(a,b,m)}px(3,10,dk);px(4,11,'#ddd');px(5,12,dk);diag(6,9,14,1,'#5a3a1a',1);diag(14,1,15,0,'#222',1);px(4,9,li);break;
  case 'shield':for(let a=3;a<=12;a++)for(let b=1;b<=14;b++){const edge=a===3||a===12||b===1||b===14;if(b>10&&Math.abs(a-7.5)>(14-b)*1.4+0.5)continue;px(a,b,edge?dk:(a<8?m:li))}for(let a=6;a<=9;a++)for(let b=5;b<=8;b++)px(a,b,dk);break;
  }
  mcCache[key]=c;return c}
@@ -1424,6 +1492,8 @@ class Combat{
    if(wdef.burn){t.setFx('burn',3);t.dotT=0.2}
    if(wdef.slow){t.setFx('slow',3);g.particles.sparks(pt[0],pt[1],6,'#bff',200)}
    if(wdef.stun){t.stun=Math.max(t.stun,wdef.stun)}
+   if(wdef.pull)this.applyEff(t,'pull',a);
+   if(wdef.shock&&heavy){g.particles.ring(pt[0],pt[1],120,'#ffee55',0.3,5);g.particles.sparks(pt[0],pt[1],18,'#ffee55',500,0.4);g.audio.play('zap');this.areaDamage(pt[0],pt[1],120,wdef.shock,a,{kb:[320,-320],noSelf:true,eff:'stun',src:'shock'})}
    if(wdef.fx==='dark'){a.addEnergy(fin*0.4)}
    g.fxHit(wdef.fx,pt[0],pt[1],heavy,a.face)}
   else g.fxHit('blunt',pt[0],pt[1],heavy,a.face);
@@ -1454,7 +1524,7 @@ class Combat{
   const k=by||f.lastAttacker;if(k){k.stats.disarms++;if(k.human){g.save.data.stats.disarms++;g.achieve('disarm')}}}
  // damage over time / environmental
  dot(f,amount,color,src){if(!f.alive||f.invuln>0&&src!=='burn')return;const g=this.game;f.hp-=amount*g.dmgScale;f.flash=0.05;g.particles.text(f.P[2].x,f.P[2].y-30,Math.round(amount),color||'#fa5',14,0.6);g.stats(f.lastAttacker,'damage',amount);if(f.hp<=0)this.kill(f,f.lastAttacker,src||'dot')}
- hazardHit(f,spec,x,y,silent){const g=this.game;if(!f.alive||f.invuln>0)return;const d=spec.dmg*f.incoming*g.dmgScale;f.hp-=d;f.flash=0.12;f.stats.taken+=d;
+ hazardHit(f,spec,x,y,silent){const g=this.game;if(!f.alive||f.invuln>0)return;const d=g.cfg.instaKO?99999:spec.dmg*f.incoming*g.dmgScale;f.hp-=d;f.flash=0.12;f.stats.taken+=d;
   g.particles.text(x,y-20,Math.round(d),'#f84',20);g.particles.sparks(x,y,10,'#f84',300,0.4);g.audio.play(spec.src==='lava'?'fire':'hit');g.shake(3);
   if(f.hp<=0){f.root.vx=spec.kx;f.root.vy=spec.ky;this.kill(f,f.lastAttacker,spec.src);return}
   if(f.w>0.15){f.root.vx=spec.kx;f.root.vy=spec.ky;f.root.ground=null;f.enterRagdoll(0.9)}else{P.impulse(f.P[0],spec.kx,spec.ky)}}
@@ -1487,10 +1557,10 @@ class Combat{
    this.direct(t,owner,dmg*fall*self,sx*kb[0]*fall,(kb[1])*fall+dy/l*100,{eff:o.eff,src:o.src,color:o.color,blockable:o.blockable})}
   if(o.dust)g.particles.dust(x,y,6)
  }
- explosion(x,y,r,dmg,owner,src){
+ explosion(x,y,r,dmg,owner,src,xo={}){
   const g=this.game;if(this.depth>3)return;this.depth++;
   g.particles.ring(x,y,r,'#ffcc44',0.45,8);g.particles.ring(x,y,r*0.6,'#ff6622',0.35,6);g.particles.glow(x,y,r*0.9,'#ffaa33',0.35);g.particles.sparks(x,y,26,'#ffa030',600,0.7,5);g.particles.dust(x,y,10,'#555');g.audio.play('explode');g.shake(14);g.hitstop(0.1);
-  this.areaDamage(x,y,r,dmg,owner,{kb:[900,-780],src:src||'explosion',color:'#fa4'});
+  this.areaDamage(x,y,r,dmg,owner,{kb:[900,-780],src:src||'explosion',color:'#fa4',noSelf:xo.noSelf});
   for(const R of g.arena.solids){if(!R.active)continue;const cx=U.clamp(x,R.x,R.x+R.w),cy=U.clamp(y,R.y,R.y+R.h);if(Math.hypot(cx-x,cy-y)<r){if(R.destructible||R.crate||R.crumble)g.arena.damageRect(R,dmg*(R.crumble?9:3),cx,cy,owner)}}
   this.depth--}
  kill(t,killer,cause){
@@ -1513,7 +1583,10 @@ SD.Combat=Combat;
 // ---------------- projectiles & zones ----------------
 const PT={
  arrow:{spd:1300,g:420,r:5,col:'#c9a36a',stick:1,len:28,life:3},bolt:{spd:1600,g:150,r:5,col:'#bbb',stick:1,len:24,life:3},knife:{spd:1150,g:420,r:6,col:'#dde',spin:1,stick:1,life:3},
- energy:{spd:1400,g:0,r:7,col:'#37e0ff',glow:1,life:1.6,burst:1},magic:{spd:850,g:0,r:9,col:'#c070ff',glow:1,home:0.9,life:2,burst:1},orb:{spd:900,g:0,r:12,col:'#fff',glow:1,life:1.5,burst:1}
+ energy:{spd:1400,g:0,r:7,col:'#37e0ff',glow:1,life:1.6,burst:1},magic:{spd:850,g:0,r:9,col:'#c070ff',glow:1,home:0.9,life:2,burst:1},orb:{spd:900,g:0,r:12,col:'#fff',glow:1,life:1.5,burst:1},
+ tnt:{spd:650,g:900,r:13,col:'#ff4a30',sprite:'tnt',explodeR:125,tnt:1,life:1.7,burst:1,kb:[500,-500]},
+ fireball:{spd:900,g:60,r:11,col:'#ff7a22',glow:1,explodeR:60,eff:'burn',life:1.6,burst:1,trail:1,kb:[420,-200]},
+ pearl:{spd:800,g:700,r:9,col:'#2fb39a',sprite:'pearl',noExpl:1,life:1.6,pearl:1,kb:[40,-30]}
 };
 class Projectiles{
  constructor(game){this.game=game;this.list=[];this.zones=[];this.later=[]}
@@ -1530,7 +1603,7 @@ class Projectiles{
   for(let i=this.later.length-1;i>=0;i--){const l=this.later[i];l.t-=dt;if(l.t<=0){this.later.splice(i,1);l.fn()}}
   for(let i=this.list.length-1;i>=0;i--){const p=this.list[i];p.age+=dt;p.life-=dt;
    if(p.stuck>0){p.stuck-=dt;if(p.stuck<=0||p.life<=-3)this.list.splice(i,1);continue}
-   if(p.life<=0){if(p.explodeR&&!p.noExpl)this.explode(p);this.list.splice(i,1);continue}
+   if(p.life<=0){if(p.explodeR&&!p.noExpl)this.explode(p);if(p.onEnd)p.onEnd(p);this.list.splice(i,1);continue}
    if(p.home){let e=null,bd=700;for(const f of g.fighters){if(!f.alive||f.team===p.team)continue;const d=Math.hypot(f.P[1].x-p.x,f.P[1].y-p.y);if(d<bd){bd=d;e=f}}
     if(e){const sp=Math.hypot(p.vx,p.vy);let a=Math.atan2(p.vy,p.vx),ta=Math.atan2(e.P[1].y-p.y,e.P[1].x-p.x),da=ta-a;while(da>Math.PI)da-=6.283;while(da<-Math.PI)da+=6.283;a+=U.clamp(da,-p.home*dt*4,p.home*dt*4);p.vx=Math.cos(a)*sp;p.vy=Math.sin(a)*sp}}
    p.vy+=(p.g||0)*dt;
@@ -1556,7 +1629,7 @@ class Projectiles{
       if(p.pierce>0)p.pierce--;else{dead=true;break}}}
     // barrier from energy shield blocks
    }
-   if(dead){if(p.explodeR&&!p.noExpl&&!p.stuck)this.explode(p);if(!p.stuck)this.list.splice(i,1)}
+   if(dead){if(p.explodeR&&!p.noExpl&&!p.stuck)this.explode(p);if(!p.stuck){if(p.onEnd)p.onEnd(p);this.list.splice(i,1)}}
    else if(!p.stuck){p.rot=Math.atan2(p.vy,p.vx);if(p.trail&&g.quality!=='low'&&Math.random()<0.7)g.particles.add({type:'smoke',x:p.x,y:p.y,vx:U.rand(-20,20),vy:U.rand(-20,20),life:0.25,size:p.r*0.6,color:p.col,drag:0.9})}
   }
   // zones
@@ -1574,7 +1647,7 @@ class Projectiles{
   g.particles.sparks(p.x,p.y,8,p.col,260,0.3);g.audio.play(p.glow?'zap':'hit',1.2,0.8);g.hitstop(0.03);
   if(p.owner&&p.owner.human){}
   if(p.explodeR)this.explode(p);return true}
- explode(p){const g=this.game;p.noExpl=true;g.particles.ring(p.x,p.y,p.explodeR,p.col,0.3,4);g.particles.glow(p.x,p.y,p.explodeR,p.col,0.25);g.particles.sparks(p.x,p.y,10,p.col,300,0.4);g.audio.play('energy',0.8);
+ explode(p){const g=this.game;p.noExpl=true;if(p.tnt){g.combat.explosion(p.x,p.y,p.explodeR,p.dmg,p.owner,'tnt',{noSelf:true});return}g.particles.ring(p.x,p.y,p.explodeR,p.col,0.3,4);g.particles.glow(p.x,p.y,p.explodeR,p.col,0.25);g.particles.sparks(p.x,p.y,10,p.col,300,0.4);g.audio.play('energy',0.8);
   g.combat.areaDamage(p.x,p.y,p.explodeR,p.dmg*0.6,p.owner,{kb:p.kb||[300,-200],noSelf:true,eff:p.eff,color:p.col,src:'proj'})}
  updateZone(z,dt){
   const g=this.game;
@@ -1626,6 +1699,8 @@ class Projectiles{
   case 'flame':ctx.rotate(-p.rot);ctx.fillStyle='#ff7a22';ctx.beginPath();ctx.moveTo(-14,0);ctx.quadraticCurveTo(-6,-28-Math.sin(t*30)*6,6,-6);ctx.quadraticCurveTo(10,-20,16,0);ctx.closePath();ctx.fill();ctx.fillStyle='#ffe066';ctx.beginPath();ctx.arc(0,-6,6,0,6.3);ctx.fill();break;
   case 'potion':ctx.rotate(t*12);ctx.fillStyle=p.col;ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,3,8,0,6.3);ctx.fill();ctx.stroke();ctx.fillRect(-3,-10,6,8);ctx.strokeRect(-3,-10,6,8);break;
   case 'bomb':ctx.rotate(-p.rot);ctx.fillStyle='#222';ctx.strokeStyle='#ffd34a';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,9,0,6.3);ctx.fill();ctx.stroke();ctx.fillStyle=Math.floor(t*8)%2?'#f44':'#fa4';ctx.fillRect(-2,-14,4,6);break;
+  case 'tnt':ctx.rotate(t*6);ctx.fillStyle='#d33';ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.fillRect(-11,-11,22,22);ctx.strokeRect(-11,-11,22,22);ctx.fillStyle='#fff';ctx.fillRect(-11,-4,22,8);ctx.fillStyle='#000';ctx.font='bold 8px sans-serif';ctx.textAlign='center';ctx.fillText('TNT',0,3);break;
+  case 'pearl':ctx.fillStyle='#1c7a6a';ctx.strokeStyle='#8fffe0';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,9,0,6.3);ctx.fill();ctx.stroke();ctx.fillStyle='#8fffe0';ctx.beginPath();ctx.arc(-2,-2,3,0,6.3);ctx.fill();break;
   case 'net':ctx.strokeStyle='#ddd';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,16,0,6.3);ctx.moveTo(-16,0);ctx.lineTo(16,0);ctx.moveTo(0,-16);ctx.lineTo(0,16);ctx.stroke();break;
   case 'shock':ctx.rotate(-p.rot);ctx.strokeStyle=p.col;ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-8,-30);ctx.lineTo(8,-30);ctx.closePath();ctx.stroke();break;
  }}
@@ -1733,6 +1808,36 @@ const FN={
 function throwPotion(f,g,eff,vx,vy){const cols={slow:'#6cf',poison:'#7c3',lev:'#fcf',heal:'#6f6'};
  const p=g.proj.spawn({owner:f,type:'orb',sprite:'potion',x:f.P[6].x,y:f.P[6].y,vx:vx,vy:vy,spd:Math.hypot(vx,vy),r:10,col:cols[eff],dmg:D(f,3),kb:[80,-50],life:2,g:1400,glow:0,noExpl:true,pot:eff});
  p.onLand=1}
+
+// ---------- lore abilities (AvA / AvM) ----------
+Object.assign(AB,{
+ pencil:{at:0.2,dur:0.45,anim:'slam'},sclaser:{at:0.2,dur:0.45,anim:'blast'},cvision:{at:0.25,dur:0.5,anim:'blast'},
+ shuriken:{at:0.15,dur:0.4,anim:'blast'},lasso:{at:0.15,dur:0.4,anim:'blast'},
+ pig:{at:0.2,dur:0.45,anim:'blast'},tntdrop:{at:0.15,dur:0.4,anim:'raise'},herobrine:{at:0.45,dur:0.9,anim:'raise',invuln:0.9},
+ dirtwall:{at:0.2,dur:0.5,anim:'slam'},hook:{at:0.15,dur:0.4,anim:'blast'},piston:{at:0.15,dur:0.4,anim:'blast'},windmill:{at:0.4,dur:0.9,anim:'raise',invuln:0.9},
+ tnt:{at:0.2,dur:0.45,anim:'blast'},brutes:{at:0.4,dur:0.9,anim:'raise',invuln:0.9},forcehold:{at:0.2,dur:0.55,anim:'raise'},fireball:{at:0.2,dur:0.45,anim:'blast'}});
+const nearE=(f,g,range)=>{let best=null,bd=range;for(const e of g.fighters){if(!e.alive||e.team===f.team)continue;const d=Math.hypot(e.P[1].x-f.P[1].x,e.P[1].y-f.P[1].y);if(d<bd){bd=d;best=e}}return best};
+Object.assign(FN,{
+ pencil:(f,g)=>{FN.wall(f,g);const x=f.P[0].x+f.face*110;g.particles.sparks(x,f.root.y-60,16,'#ffd24a',250,0.5);g.particles.ring(x,f.root.y-70,50,'#ffd24a',0.3,3)},
+ sclaser:(f,g)=>{const a=SD.Weapons.aim(f,hand(f));g.proj.beam(f,hand(f).x,hand(f).y,a,1100,16,D(f,15),0.22,'#ff9a30',{every:0.1,kb:[420,-140]});g.audio.play('zap');f.root.vx-=f.face*120},
+ cvision:(f,g)=>{const h=f.P[2];const a=SD.Weapons.aim(f,h);g.proj.beam(f,h.x,h.y,a,1000,12,D(f,14),0.35,'#ff3030',{every:0.1,kb:[260,-120],eff:'burn',follow:true});g.audio.play('zap',0.8)},
+ shuriken:(f,g)=>{for(let i=-1;i<=1;i++)g.proj.spawn({owner:f,type:'knife',x:hand(f).x,y:hand(f).y,dirx:f.face,diry:i*0.16,spd:1100,r:7,dmg:D(f,7),kb:[260,-90],life:1.2,col:'#ddd',glow:0});g.audio.play('shoot',1.4)},
+ lasso:(f,g)=>g.proj.spawn({owner:f,type:'orb',sprite:'net',x:hand(f).x,y:hand(f).y,dirx:f.face,diry:-0.05,spd:1000,r:18,col:'#ddd',dmg:D(f,5),kb:[-300,-60],eff:'net',life:0.55,glow:0}),
+ pig:(f,g)=>runner(f,g,'boar',{dmg:D(f,12)}),
+ tntdrop:(f,g)=>{g.proj.spawn({owner:f,type:'tnt',x:hand(f).x,y:hand(f).y,dirx:f.face*0.5,diry:0.9,spd:600,dmg:D(f,26)})},
+ tnt:(f,g)=>{g.proj.spawn({owner:f,type:'tnt',x:hand(f).x,y:hand(f).y-6,dirx:f.face,diry:-0.55,spd:760,dmg:D(f,24)});g.audio.play('swing',0.8)},
+ herobrine:(f,g)=>FN.forcehold(f,g,{big:true}),
+ forcehold:(f,g,o)=>{o=o||{};const e=nearE(f,g,560);const col=o.big?'#fff':'#ff9a00';g.particles.ring(f.P[6].x,f.P[6].y,60,col,0.3,4);if(!e)return;
+  g.combat.applyEff(e,'stun',f);e.root.ground=null;e.root.vy=-260;let t=1.0;g.particles.ring(e.P[1].x,e.P[1].y,50,col,0.4,4);g.audio.play('zap',0.7);
+  e.hooks.push((ff,dt,gg)=>{t-=dt;ff.root.vy=Math.min(ff.root.vy,-25)*0.9;ff.root.vx*=0.9;ff.stun=Math.max(ff.stun,0.2);if(gg.quality!=='low'&&Math.random()<0.4)gg.particles.add({type:'spark',x:ff.P[1].x+U.rand(-14,14),y:ff.P[1].y+U.rand(-14,14),vy:-30,life:0.3,size:3,color:col});
+   if(t<=0||!f.alive){if(f.alive&&ff.alive){ff.root.vy=1300;ff.root.vx=f.face*300;gg.proj.after(0.14,()=>{if(ff.alive){gg.particles.ring(ff.root.x,ff.root.y+ff.footOff,90,col,0.3,6);gg.shake(8);gg.audio.play('hitheavy');gg.combat.direct(ff,f,D(f,o.big?24:16),f.face*260,-250,{src:'forcehold',color:col})}})}return true}})},
+ fireball:(f,g)=>{g.proj.spawn({owner:f,type:'fireball',x:hand(f).x,y:hand(f).y,dirx:f.face,diry:-0.05,spd:900,dmg:D(f,15)});g.audio.play('fire')},
+ dirtwall:(f,g)=>{FN.wall(f,g);const x=f.P[0].x+f.face*110;g.particles.debris&&g.particles.debris(x-18,f.root.y-140,36,140,'#7a5230',8)},
+ hook:(f,g)=>{g.proj.spawn({owner:f,type:'orb',x:hand(f).x,y:hand(f).y,dirx:f.face,diry:-0.04,spd:1300,r:12,col:'#cbb089',dmg:D(f,6),kb:[-460,-120],eff:'pull',life:0.42,glow:0,trail:1});g.audio.play('swing',1.3)},
+ piston:(f,g)=>{g.proj.spawn({owner:f,type:'orb',x:hand(f).x,y:f.root.y+f.footOff-10,dirx:f.face,diry:0,spd:950,r:16,col:'#8a8',dmg:D(f,8),kb:[150,-900],eff:'lev',life:0.5,glow:0,trail:1});g.audio.play('break',0.8)},
+ windmill:(f,g)=>{g.proj.zone({kind:'pulse',owner:f,follow:true,x:f.P[1].x,y:f.P[1].y,r:210,t:5,dmg:D(f,7),col:'#8fd'})},
+ brutes:(f,g)=>{for(let i=0;i<3;i++)g.proj.after(i*0.2,()=>{if(f.alive)runner(f,g,'boar',{dmg:D(f,10),spd:720+i*50})})}
+});
 // potions create a cloud when they hit something or run out
 const origUpdate=SD.Projectiles.prototype.update;
 SD.Projectiles.prototype.update=function(dt){
@@ -1870,41 +1975,54 @@ SD.BotController=BotController;
 
 </script><script>
 'use strict';
-// Keyboard (rebindable) + multi-touch controllers.
+// Controllers: keyboard sets (rebindable), gamepads, per-player touch pads.
 (function(SD){
 const U=SD.U;
 const down=new Set(),edges=new Set();
-const I=SD.Input={down,edges,touch:{x:0,y:0,jumpHeld:false,block:false,lightHeld:false,heavyHeld:false,ev:{light:false,heavy:false,ability:false,throw:false,interact:false,jump:false},active:false},
+const mkTouch=()=>({x:0,y:0,jumpHeld:false,block:false,lightHeld:false,heavyHeld:false,ev:{light:false,heavy:false,ability:false,throw:false,interact:false,jump:false}});
+const I=SD.Input={down,edges,touches:[mkTouch(),mkTouch(),mkTouch(),mkTouch()],touchActive:false,
  init(){
   addEventListener('keydown',e=>{if(e.target&&/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)&&!I.rebind)return;
    if(I.rebind){e.preventDefault();I.rebind(e.code);return}
-   if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','Tab'].includes(e.code))e.preventDefault();
+   if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','Tab'].includes(e.code)||/^Numpad/.test(e.code))e.preventDefault();
    if(!e.repeat){edges.add(e.code);if(I.onKey)I.onKey(e.code)}down.add(e.code)});
   addEventListener('keyup',e=>{down.delete(e.code)});
   addEventListener('blur',()=>{down.clear();edges.clear()});
- }};
+ },
+ pads(){const g=navigator.getGamepads?navigator.getGamepads():[];return Array.from(g).filter(Boolean)}};
+I.touch=I.touches[0];
 class KeyboardController{
- constructor(slot){this.slot=slot;this.hv=0;this.last=0}
+ constructor(slot){this.slot=slot}
  poll(f,game){
   const k=SD.Save.data.settings.keys[this.slot],o=Object.assign({},SD.NOIN);
-  const d=c=>down.has(k[c]);const e=c=>{const v=edges.has(k[c]);return v};
+  const d=c=>down.has(k[c]),e=c=>edges.has(k[c]);
   o.x=(d('right')?1:0)-(d('left')?1:0);o.down=d('down');o.jumpHeld=d('jump');o.jump=e('jump');
   o.light=e('light');o.heavy=e('heavy');o.heavyHeld=d('heavy');o.lightHeld=d('light');o.block=d('block');o.ability=e('ability');o.throw=e('throw');o.interact=e('interact');
   for(const c of ['jump','light','heavy','ability','throw','interact'])edges.delete(k[c]);
   return o}
 }
 class TouchController{
- poll(f,game){const t=I.touch,o=Object.assign({},SD.NOIN);
+ constructor(i){this.i=i;this.prevUp=false}
+ poll(f,game){const t=I.touches[this.i],o=Object.assign({},SD.NOIN);
   o.x=t.x;o.down=t.y>0.55;o.jumpHeld=t.jumpHeld||t.y<-0.55;o.jump=t.ev.jump;o.light=t.ev.light;o.heavy=t.ev.heavy;o.heavyHeld=t.heavyHeld;o.lightHeld=t.lightHeld;o.block=t.block;o.ability=t.ev.ability;o.throw=t.ev.throw;o.interact=t.ev.interact;
+  const up=t.y<-0.55;if(up&&!this.prevUp)o.jump=true;this.prevUp=up;
   for(const k in t.ev)t.ev[k]=false;return o}
 }
-class Combined{ // P1: keyboard + touch
- constructor(slot){this.kb=new KeyboardController(slot);this.tc=new TouchController();this.prevUp=false}
- poll(f,game){const a=this.kb.poll(f,game);if(!I.touch.active)return a;const b=this.tc.poll(f,game);
-  const upNow=I.touch.y<-0.55;if(upNow&&!this.prevUp)b.jump=true;this.prevUp=upNow;
-  return {x:a.x||b.x,down:a.down||b.down,jumpHeld:a.jumpHeld||b.jumpHeld,jump:a.jump||b.jump,light:a.light||b.light,heavy:a.heavy||b.heavy,heavyHeld:a.heavyHeld||b.heavyHeld,lightHeld:a.lightHeld||b.lightHeld,block:a.block||b.block,ability:a.ability||b.ability,throw:a.throw||b.throw,interact:a.interact||b.interact}}
+class GamepadController{
+ constructor(i){this.i=i;this.prev={}}
+ poll(f,game){const o=Object.assign({},SD.NOIN);const gp=I.pads()[this.i];if(!gp)return o;
+  const b=n=>!!(gp.buttons[n]&&gp.buttons[n].pressed),ax=gp.axes[0]||0,ay=gp.axes[1]||0;
+  const edge=n=>{const v=b(n),p=this.prev[n];this.prev[n]=v;return v&&!p};
+  o.x=Math.abs(ax)>0.35?Math.sign(ax):(b(15)?1:0)-(b(14)?1:0);o.down=ay>0.6||b(13);
+  o.jumpHeld=b(0)||ay<-0.6||b(12);o.jump=edge(0)||(ay<-0.6&&!this.prevUp);this.prevUp=ay<-0.6;
+  o.light=edge(2);o.heavy=edge(3);o.lightHeld=b(2);o.heavyHeld=b(3);o.block=b(1)||b(4)||b(6);o.ability=edge(5)||edge(7);o.throw=edge(8);o.interact=edge(9)||edge(10);
+  return o}
 }
-I.KeyboardController=KeyboardController;I.Combined=Combined;
+I.KeyboardController=KeyboardController;I.TouchController=TouchController;I.GamepadController=GamepadController;
+// controller ids: k1 (WASD) k2 (arrows) k3 (numpad) g0-g3 t0-t3 bot off
+I.make=(id)=>{if(id==='k1'||id==='p1')return new KeyboardController('p1');if(id==='k2'||id==='p2')return new KeyboardController('p2');if(id==='k3'||id==='p3')return new KeyboardController('p3');
+ if(id[0]==='g')return new GamepadController(+id[1]);if(id[0]==='t')return new TouchController(+id[1]);return null};
+I.label=id=>({k1:'⌨ WASD',k2:'⌨ Стрелки',k3:'⌨ Numpad',g0:'🎮 Геймпад 1',g1:'🎮 Геймпад 2',g2:'🎮 Геймпад 3',g3:'🎮 Геймпад 4',t0:'📱 Сенсор 1',t1:'📱 Сенсор 2',t2:'📱 Сенсор 3',t3:'📱 Сенсор 4',bot:'🤖 Бот',off:'— Пусто'})[id]||id;
 })(window.SD);
 
 </script>
@@ -1913,10 +2031,11 @@ I.KeyboardController=KeyboardController;I.Combined=Combined;
 // GameEngine: loop, camera, match/mode logic, HUD.
 (function(SD){
 const U=SD.U,P=SD.Phys,STEP=1/60;
-const MODE_NAMES={versus:'1 VS 1',bot:'1 VS BOT',tournament:'Tournament',survival:'Survival',chaos:'Weapon Chaos',team:'Team Battle',free:'Free Fight',training:'Training'};
+const MODE_NAMES={versus:'Дуэль',tournament:'Турнир',survival:'Выживание',zombie:'Зомби',chaos:'Хаос оружия',team:'Команды',free:'Свободный бой',football:'Футбол',training:'Тренировка'};
 SD.MODE_NAMES=MODE_NAMES;
-SD.defaultCfg=()=>({mode:'bot',arena:'training',p1:{char:'second',weapon:'auto',off:'none'},p2:{char:'red',weapon:'auto',off:'none'},bot:{char:'rand',weapon:'auto',off:'none'},botLevel:1,rounds:2,time:60,hp:100,speed:1,gravity:1,knockback:1,pickups:true,destruct:true,teamSize:2,count:4,
- fslots:[{char:'second',weapon:'auto',ctrl:'p1',team:1},{char:'red',weapon:'auto',ctrl:'bot',team:2},{char:'blue',weapon:'auto',ctrl:'bot',team:3},{char:'green',weapon:'auto',ctrl:'bot',team:4}],dummy:'stand',infHp:true});
+const SLOT_TEAMS=[1,2,3,4,5,6];
+SD.defaultSlots=()=>[{ctrl:'k1',char:'second',weapon:'auto',off:'none',team:1},{ctrl:'bot',char:'red',weapon:'auto',off:'none',team:2},{ctrl:'off',char:'blue',weapon:'auto',off:'none',team:3},{ctrl:'off',char:'green',weapon:'auto',off:'none',team:4},{ctrl:'off',char:'yellow',weapon:'auto',off:'none',team:5},{ctrl:'off',char:'purple',weapon:'auto',off:'none',team:6}];
+SD.defaultCfg=()=>({mode:'versus',arena:'training',slots:SD.defaultSlots(),botLevel:1,rounds:2,time:60,hp:100,speed:1,gravity:1,knockback:1,pickups:true,destruct:true,instaKO:false,goals:5,dummy:'stand',infHp:true});
 class Game{
  constructor(canvas){
   this.canvas=canvas;this.ctx=canvas.getContext('2d');this.save=SD.Save;this.audio=SD.Audio;this.particles=new SD.ParticleSystem();this.combat=new SD.Combat(this);this.proj=new SD.Projectiles(this);this.items=new SD.Items(this);
@@ -1945,7 +2064,7 @@ class Game{
   default:p.slash(x,y,U.rand(-1,1)+(face>0?0:Math.PI),32*n,'#fff',0.16);p.sparks(x,y,Math.round(10*n),'#ffe9a0',380,0.35,3,face>0?0:Math.PI,2)}
  }
  // ---------- building fighters ----------
- mkCtrl(kind,level){if(kind==='p1')return new SD.Input.Combined('p1');if(kind==='p2')return new SD.Input.KeyboardController('p2');return new SD.BotController(level)}
+ mkCtrl(kind,level){const c=kind==='bot'?null:SD.Input.make(kind);return c||new SD.BotController(level)}
  loadout(f,slot){
   const def=f.def;let w=slot.weapon;
   if(w==='auto')w=def.weapon||'none';
@@ -1954,8 +2073,8 @@ class Game{
   let o=slot.off;if(o&&o!=='none'&&SD.WEAPONS[o]&&!(f.main&&f.main.def.two))this.items.give(f,o,0)}
  mkFighter(slot,i,n,opts={}){
   const cfg=this.cfg;let cid=slot.char;if(cid==='rand'||!SD.CHARS[cid]){const ids=SD.CHAR_ORDER.filter(c=>!opts.avoid||c!==opts.avoid);cid=U.pick(ids)}
-  const ctrl=this.mkCtrl(slot.ctrl,slot.level!==undefined?slot.level:cfg.botLevel);
-  const f=new SD.Fighter(this,cid,{ctrl,bot:slot.ctrl==='bot',human:slot.ctrl!=='bot',team:slot.team,hpMult:cfg.hp/100,slot:i,name:slot.name});
+  const ctrl=this.mkCtrl(slot.ctrl,slot.level!==undefined?slot.level:cfg.botLevel);if(opts.color)opts.colorOv=opts.color;
+  const f=new SD.Fighter(this,cid,{ctrl,bot:slot.ctrl==='bot',human:slot.ctrl!=='bot',team:slot.team,hpMult:(opts.hpMult||1)*cfg.hp/100,slot:i,name:slot.name,color:opts.color});f.slotCfg=slot;f.slotTag=slot.tag||null;
   if(slot.ctrl==='bot'&&!f.name.includes('(')){}
   this.loadout(f,slot);return f}
  placeAll(){const n=this.fighters.length;this.fighters.forEach((f,i)=>{const sp=this.arena.spawnPos(i,n);
@@ -1966,53 +2085,99 @@ class Game{
   this.cfg=cfg=Object.assign(SD.defaultCfg(),cfg);this.gravity=cfg.gravity||1;this.dmgScale=1;
   const m=this.m={mode:cfg.mode,state:'intro',t:0,round:1,wins:{},roundsToWin:cfg.rounds,timer:cfg.time,startTime:performance.now(),over:false,kills:0,wave:0,bracket:null,bi:0,names:{},totalTime:0,banner:'',bannerT:0,resp:{}};
   this.menuBg=false;this.running=true;this.paused=false;this.train={last:0,total:0,hits:0,dps:[],combo:0,dummy:cfg.dummy||'stand'};
-  if(cfg.mode==='tournament'){m.roundsToWin=1;const ids=U.shuffle?null:null;const pool=SD.CHAR_ORDER.filter(c=>c!==cfg.p1.char);for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}
+  if(cfg.mode==='tournament'){m.roundsToWin=1;const ids=U.shuffle?null:null;const h0=(cfg.slots.find(x=>x.ctrl!=='bot'&&x.ctrl!=='off')||cfg.slots[0]).char;const pool=SD.CHAR_ORDER.filter(c=>c!==h0);for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}
    m.bracket=[0,1,2,3,4,5,6].map(i=>({char:pool[i%pool.length],level:Math.min(3,Math.floor(i/2)+(cfg.botLevel>1?1:0)),won:false}));m.bi=0;m.roundsToWin=1}
-  if(cfg.mode==='survival'){m.roundsToWin=999}
-  if(cfg.mode==='training'||cfg.mode==='survival')m.timer=0;
+  if(cfg.mode==='survival'||cfg.mode==='zombie'){m.roundsToWin=999}
+  if(cfg.mode==='football'){m.roundsToWin=999;m.score={};m.goalT=0}
+  if(cfg.mode==='training'||cfg.mode==='survival'||cfg.mode==='zombie')m.timer=0;
   this.beginRound(true);
   if(SD.UI)SD.UI.onMatchStart(this)}
  slotsForMode(){
-  const cfg=this.cfg,m=this.m,mode=cfg.mode;const botSlot=(team,lvl,char)=>({char:char||cfg.bot.char,weapon:cfg.bot.weapon,off:cfg.bot.off,ctrl:'bot',team,level:lvl===undefined?cfg.botLevel:lvl});
-  const p1=Object.assign({ctrl:'p1',team:1},cfg.p1),p2=Object.assign({ctrl:'p2',team:2},cfg.p2);
+  const cfg=this.cfg,m=this.m,mode=cfg.mode;
+  const act=cfg.slots.map((s,i)=>Object.assign({},s,{tag:s.ctrl==='bot'?'CPU':'P'+(i+1),level:s.level!==undefined?s.level:cfg.botLevel})).filter(s=>s.ctrl!=='off');
+  const humans=act.filter(s=>s.ctrl!=='bot');if(!humans.length&&mode!=='versus'&&mode!=='free'&&mode!=='team'&&mode!=='football')humans.push(Object.assign({},act[0]||cfg.slots[0],{ctrl:'k1',tag:'P1'}));
+  const botSlot=(team,lvl,char)=>({char:char||'rand',weapon:'auto',off:'none',ctrl:'bot',team,level:lvl,tag:'CPU'});
   switch(mode){
-   case 'versus':return [p1,p2];
-   case 'bot':return [p1,botSlot(2,cfg.botLevel,cfg.bot.char==='rand'?undefined:cfg.bot.char)];
-   case 'tournament':{const b=m.bracket[m.bi];return [p1,botSlot(2,b.level,b.char)]}
-   case 'survival':return [p1];
-   case 'chaos':return [Object.assign({},p1,{weapon:'none'}),Object.assign(botSlot(2,cfg.botLevel,cfg.bot.char==='rand'?undefined:cfg.bot.char),{weapon:'none'}),Object.assign(botSlot(3,cfg.botLevel),{weapon:'none'})];
-   case 'team':{const n=cfg.teamSize,out=[p1];for(let i=1;i<n;i++)out.push(Object.assign(botSlot(1,cfg.botLevel),{}));for(let i=0;i<n;i++)out.push(botSlot(2,cfg.botLevel));return out}
-   case 'free':return cfg.fslots.slice(0,cfg.count).map(s=>Object.assign({level:cfg.botLevel,off:'none'},s));
-   case 'training':return [p1,{char:cfg.p2.char,weapon:cfg.p2.weapon,off:cfg.p2.off,ctrl:'bot',team:2,level:1}];
+   case 'tournament':{const b=m.bracket[m.bi];return [Object.assign({},humans[0],{team:1}),botSlot(2,b.level,b.char)]}
+   case 'survival':case 'zombie':return humans.map(h=>Object.assign({},h,{team:1}));
+   case 'chaos':return act.map(s=>Object.assign({},s,{weapon:'none',off:'none'}));
+   case 'football':{let a=act;if(a.length<2)a=a.concat([botSlot(2,cfg.botLevel)]);return a.map(s=>Object.assign({},s,{weapon:'none',off:'none',team:s.team===1?1:2}))}
+   case 'training':{const d=cfg.slots[1]&&cfg.slots[1].ctrl!=='off'?cfg.slots[1]:cfg.slots[0];return [Object.assign({},humans[0],{team:1}),{char:d.char,weapon:d.weapon,off:d.off,ctrl:'bot',team:2,level:1,tag:'DUMMY'}]}
+   case 'versus':{let a=act.slice(0,4);if(a.length<2)a=a.concat([botSlot(2,cfg.botLevel)]);return a.map((s,i)=>Object.assign({},s,{team:s.team||i+1}))}
+   default:{let a=act;if(a.length<2)a=a.concat([botSlot(2,cfg.botLevel)]);return a}
   }}
  beginRound(first){
   const cfg=this.cfg,m=this.m;
   this.arena=new SD.Arena(cfg.arena,this,{destruct:cfg.destruct});this.items.reset();this.proj.reset();this.particles.list.length=0;this.particles.texts.length=0;
   this.fighters=[];
-  const slots=this.slotsForMode();const avoid=cfg.p1.char;
+  const slots=this.slotsForMode();const avoid=slots[0]&&slots[0].char;
   slots.forEach((s,i)=>{const f=this.mkFighter(s,i,slots.length,{avoid});this.fighters.push(f)});
   if(cfg.mode==='training'){const d=this.fighters[1];d.ctrl.dummy={mode:this.train.dummy}}
   // distinct names
-  const cnt={};this.fighters.forEach((f,i)=>{let nm=f.def.name;const tag=f.ctrl instanceof SD.Input.Combined?'P1':f.ctrl instanceof SD.Input.KeyboardController?'P2':'CPU';f.name=tag+' · '+nm})
-  this.placeAll();
+  const cnt={};this.fighters.forEach((f,i)=>{let nm=f.def.name;f.name=(f.slotTag||'CPU')+' · '+nm});if(cfg.mode==='football'){this.dmgScale=0.12;this.ballInit()}else this.dmgScale=1;
+  this.placeAll();if(cfg.mode==='football')this.footballPlace();
   m.state='intro';m.t=0;m.timer=cfg.mode==='training'||cfg.mode==='survival'?0:cfg.time;m.over=false;m.endT=0;m.elapsed=0;this.inputLock=true;this.slowmo=1;this.hudHp={};
   m.wave=0;m.waveT=0;m.itemT=cfg.mode==='chaos'?1:6;m.resp={};
-  if(cfg.mode==='survival'){this.spawnWave(1)}
+  if(cfg.mode==='survival'||cfg.mode==='zombie'){this.spawnWave(1)}
   if(cfg.pickups!==false||cfg.mode==='chaos'){const n=cfg.mode==='chaos'?3:(cfg.mode==='training'?0:2);for(let i=0;i<n;i++){const d=this.arena.randomDropX();this.items.spawn(d.x,U.rand(100,300))}}
   this.cam.x=this.arena.W/2;this.cam.y=this.arena.H/2;this.cam.z=0.001;this.camSnap=true;
   this.audio.play('beep');m.cd=3;
  }
- spawnWave(n){const m=this.m,cfg=this.cfg;m.wave=n;m.waveT=0;const cnt=Math.min(1+Math.floor((n-1)/2),4),lvl=Math.min(3,Math.floor((n-1)/2));
-  for(let i=0;i<cnt;i++){const f=this.mkFighter({char:'rand',weapon:Math.random()<0.4?'random':'auto',off:'none',ctrl:'bot',team:2,level:lvl},this.fighters.length,0,{avoid:cfg.p1.char});f.name='CPU · '+f.def.name;
+ spawnWave(n){const m=this.m,cfg=this.cfg,zomb=cfg.mode==='zombie';m.wave=n;m.waveT=0;
+  const nh=Math.max(1,this.fighters.filter(f=>f.team===1).length);
+  const cnt=zomb?Math.min(8,Math.floor((2+n*1.2)*(1+(nh-1)*0.5))):Math.min(1+Math.floor((n-1)/2),4)+(nh-1);
+  const lvl=Math.min(3,Math.floor((n-1)/2));const avoid=this.fighters[0]&&this.fighters[0].cid;
+  for(let i=0;i<cnt;i++){
+   const f=this.mkFighter({char:'rand',weapon:zomb?'none':(Math.random()<0.4?'random':'auto'),off:'none',ctrl:'bot',team:2,level:zomb?Math.min(2,lvl):lvl},this.fighters.length,0,zomb?{color:'#6f9a5a',hpMult:0.55+n*0.07}:{avoid});
+   f.name=zomb?'Зомби':'CPU · '+f.def.name;if(zomb){f.spdMul=0.82;f.zombie=true}
    const x=Math.random()<0.5?U.rand(120,380):U.rand(this.arena.W-380,this.arena.W-120);f.place(x,-100-i*80,x<this.arena.W/2?1:-1);f.invuln=1;this.fighters.push(f)}
-  this.particles.text(this.arena.W/2,200,'ВОЛНА '+n,'#ffd24a',46,1.6);
+  this.particles.text(this.arena.W/2,200,(zomb?'ЗОМБИ-ВОЛНА ':'ВОЛНА ')+n,zomb?'#8fdc6a':'#ffd24a',46,1.6);
   if(n>=5)this.achieve('surv5')}
+ upgradeOptions(){const all=[
+  {id:'hp',name:'+25% здоровья',desc:'Макс. HP ×1.25 и полное лечение',fn:f=>{f.maxHp*=1.25;f.hp=f.maxHp}},
+  {id:'dmg',name:'+20% урона',desc:'Все атаки сильнее',fn:f=>{f.dmgMul*=1.2}},
+  {id:'spd',name:'+12% скорости',desc:'Бегаете быстрее',fn:f=>{f.spdMul*=1.12}},
+  {id:'atk',name:'+15% скорость атак',desc:'Удары быстрее',fn:f=>{f.atkSpd*=1.15}},
+  {id:'heal',name:'Аптечка',desc:'Восстановить всё здоровье',fn:f=>{f.hp=f.maxHp}},
+  {id:'energy',name:'Энергия',desc:'Энергия до 100',fn:f=>{f.energy=100}},
+  {id:'armor',name:'Броня',desc:'Входящий урон −12%',fn:f=>{f.incoming*=0.88}},
+  {id:'regen',name:'Регенерация',desc:'Лечение 8 с после каждой волны',fn:f=>{f.setFx('regen',8)}}];
+  for(let i=all.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[all[i],all[j]]=[all[j],all[i]]}return all.slice(0,3)}
+ applyUpgrade(o){for(const f of this.fighters)if(f.team===1&&f.alive)o.fn(f);this.particles.text(this.arena.W/2,240,o.name,'#8fdc6a',34,1.4);this.m.state='fight';this.inputLock=false;this.m.waveT=0;this.fighters=this.fighters.filter(f=>f.alive||f.team===1);this.spawnWave(this.m.wave+1)}
+ // ---------- football ----------
+ ballInit(){const A=this.arena;this.ball={x:A.W/2,y:300,vx:0,vy:0,r:26,rot:0,trail:[]}}
+ footballPlace(){const A=this.arena,cnt={};this.fighters.forEach(f=>{const k=cnt[f.team]=(cnt[f.team]||0)+1;const left=f.team===1;f.place(left?A.W*0.5-170-(k-1)*90:A.W*0.5+170+(k-1)*90,200,left?1:-1)});this.ballInit()}
+ ballStep(dt){const b=this.ball,A=this.arena,m=this.m;if(!b)return;
+  if(m.goalT>0){m.goalT-=dt;if(m.goalT<=0){this.footballPlace();m.state='fight'}return}
+  if(m.state==='intro')return;
+  b.vy+=1500*dt*this.gravity;b.x+=b.vx*dt;b.y+=b.vy*dt;b.rot+=b.vx*dt/b.r;b.vx*=1-0.35*dt;
+  if(b.y+b.r>A.gy){b.y=A.gy-b.r;if(b.vy>0){b.vy=b.vy>140?-b.vy*0.55:0}b.vx*=1-1.6*dt}
+  if(b.y-b.r<0){b.y=b.r;b.vy=Math.abs(b.vy)*0.5}
+  const gl=A.gy-190,inGoalY=b.y>gl;
+  if(b.x<b.r&&!inGoalY){b.x=b.r;b.vx=Math.abs(b.vx)*0.6}else if(b.x>A.W-b.r&&!inGoalY){b.x=A.W-b.r;b.vx=-Math.abs(b.vx)*0.6}
+  if(inGoalY&&b.y-b.r<gl){if(b.vy<0&&b.y-b.r<gl+4){b.vy=Math.abs(b.vy)*0.4;b.y=gl+b.r}}
+  if(b.x<-10||b.x>A.W+10)this.goal(b.x<0?2:1);
+  for(const f of this.fighters){if(!f.alive)continue;const pts=[f.P[1],f.P[2],f.P[4],f.P[6],f.P[8],f.P[10],f.P[0]];
+   for(const q of pts){const dx=b.x-q.x,dy=b.y-q.y,d=Math.hypot(dx,dy);if(d<b.r+9&&d>0.01){const nx=dx/d,ny=dy/d;b.x=q.x+nx*(b.r+9);b.y=q.y+ny*(b.r+9);
+     const vqx=(q.x-q.px)/dt+f.root.vx*0.3,vqy=(q.y-q.py)/dt;const vr=(vqx-b.vx)*nx+(vqy-b.vy)*ny;if(vr>0){b.vx+=nx*vr*1.15;b.vy+=ny*vr*1.15}
+     b.vx+=f.root.vx*0.35;b.last=f.team;this.audio.play('click',0.7)}}
+   const d2=Math.hypot(b.x-f.P[1].x,b.y-f.P[1].y);
+   if(f.hitActive&&!f._bk&&d2<130&&Math.sign(b.x-f.root.x)===f.face){f._bk=true;const hv=f.move&&f.move.kind==='heavy';b.vx=f.face*(760+f.def.power*220+(hv?620:0));b.vy=-(260+(hv?200:0));b.last=f.team;this.audio.play('hit',0.8);this.shake(3);this.particles.ring(b.x,b.y,40,'#fff',0.2,3)}
+   if(!f.hitActive)f._bk=false}
+  const sp=Math.hypot(b.vx,b.vy);if(sp>1900){b.vx*=1900/sp;b.vy*=1900/sp}
+  }
+ goal(team){const m=this.m;if(m.goalT>0)return;m.score[team]=(m.score[team]||0)+1;m.goalT=2.2;m.state='goal';m.banner='ГОЛ!';m.bannerT=0;this.audio.play('win');this.shake(10);this.particles.sparks(this.ball.x<0?20:this.arena.W-20,this.arena.gy-90,40,'#ffd24a',700,0.9,5);this.slowmo=0.5;
+  if(m.score[team]>=this.cfg.goals)this.endMatch(team,true)}
+ drawFootball(ctx){const A=this.arena,b=this.ball,gl=A.gy-190;
+  ctx.save();ctx.lineWidth=5;for(const [x,sx] of [[0,1],[A.W,-1]]){ctx.strokeStyle='rgba(255,255,255,.9)';ctx.beginPath();ctx.moveTo(x,A.gy);ctx.lineTo(x,gl);ctx.lineTo(x+sx*60,gl);ctx.stroke();ctx.lineWidth=1;ctx.strokeStyle='rgba(255,255,255,.35)';for(let i=0;i<=6;i++){ctx.beginPath();ctx.moveTo(x+sx*i*10,gl+(i?0:0));ctx.lineTo(x+sx*i*10,A.gy);ctx.stroke()}for(let j=0;j<=5;j++){ctx.beginPath();ctx.moveTo(x,gl+j*38);ctx.lineTo(x+sx*60,gl+j*38);ctx.stroke()}ctx.lineWidth=5}
+  if(b){ctx.translate(b.x,b.y);ctx.rotate(b.rot);ctx.fillStyle='#fff';ctx.strokeStyle='#111';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,b.r,0,6.3);ctx.fill();ctx.stroke();ctx.fillStyle='#111';ctx.beginPath();for(let i=0;i<5;i++){const a=i/5*6.283-1.57;ctx.lineTo(Math.cos(a)*b.r*0.45,Math.sin(a)*b.r*0.45)}ctx.closePath();ctx.fill();for(let i=0;i<5;i++){const a=i/5*6.283-1.57;ctx.beginPath();ctx.moveTo(Math.cos(a)*b.r*0.45,Math.sin(a)*b.r*0.45);ctx.lineTo(Math.cos(a)*b.r,Math.sin(a)*b.r);ctx.stroke()}}
+  ctx.restore()}
  restart(){this.start(this.cfg)}
  stop(){this.running=false;this.menuBg=true;this.arena=new SD.Arena(this.cfg.arena,this,{destruct:false});this.camSnap=true;this.m=null;this.fighters=[];this.items.reset();this.proj.reset();if(SD.UI)SD.UI.onMatchStop()}
  pause(v){if(!this.running||!this.m||this.m.state==='over')return;this.paused=v===undefined?!this.paused:v;if(SD.UI)SD.UI.onPause(this.paused)}
  // ---------- rounds ----------
  onKill(t,killer,cause){const m=this.m;if(!m)return;m.koT=0;this.slowmo=0.35;this.koFlash=0.5;
-  if(this.cfg.mode==='survival'&&t.team===2){m.kills++}}
+  if((this.cfg.mode==='survival'||this.cfg.mode==='zombie')&&t.team===2){m.kills++}}
  teamsAlive(){const s=new Set();for(const f of this.fighters)if(f.alive)s.add(f.team);return s}
  checkRound(dt){
   const m=this.m,cfg=this.cfg,mode=m.mode;
@@ -2020,10 +2185,17 @@ class Game{
     if(cfg.infHp&&f.alive&&f.team===2&&f.hp<f.maxHp*0.25)f.hp=f.maxHp}
    const p=this.fighters[0];if(p.alive){p.hp=Math.min(p.maxHp,p.hp+(p.hp<p.maxHp*0.3?30*dt:0))}return}
   if(m.state!=='fight')return;
-  if(mode==='survival'){
-   const p=this.fighters[0];const enemies=this.fighters.filter(f=>f.team===2&&f.alive).length;
-   if(!p.alive){this.endMatch(null,false);return}
-   if(enemies===0){m.waveT+=dt;if(m.waveT>2.2){p.hp=Math.min(p.maxHp,p.hp+p.maxHp*0.25);p.energy=Math.min(100,p.energy+30);this.fighters=this.fighters.filter(f=>f.alive||f===p);this.spawnWave(m.wave+1)}}
+  if(mode==='survival'||mode==='zombie'){
+   const hum=this.fighters.filter(f=>f.team===1);const enemies=this.fighters.filter(f=>f.team===2&&f.alive).length;
+   if(!hum.some(f=>f.alive)){this.endMatch(null,false);return}
+   if(enemies===0){m.waveT+=dt;if(m.waveT>2.0){for(const p of hum){if(p.alive){p.hp=Math.min(p.maxHp,p.hp+p.maxHp*0.25);p.energy=Math.min(100,p.energy+30)}else this.respawn(p)}
+     if(mode==='zombie'){m.state='upgrade';this.inputLock=true;m.upg=this.upgradeOptions();if(SD.UI)SD.UI.showUpgrade(this,m.upg)}
+     else{this.fighters=this.fighters.filter(f=>f.alive||f.team===1);this.spawnWave(m.wave+1)}}}
+   return}
+  if(mode==='football'){
+   if(m.state==='fight'||m.state==='goal'){for(const f of this.fighters){if(!f.alive){m.resp[f.id]=(m.resp[f.id]||0)+dt;if(m.resp[f.id]>1.5){m.resp[f.id]=0;this.respawn(f)}}}}
+   if(m.state!=='fight')return;
+   m.elapsed+=dt;if(m.timer>0){m.timer-=dt;if(m.timer<=0){m.timer=0;const s1=m.score[1]||0,s2=m.score[2]||0;this.endMatch(s1===s2?null:(s1>s2?1:2),true)}}
    return}
   m.elapsed+=dt;
   if(m.timer>0){m.timer-=dt;if(m.timer<=0){m.timer=0;
@@ -2033,7 +2205,7 @@ class Game{
   const alive=this.teamsAlive();
   if(alive.size<=1){this.endRound(alive.size?[...alive][0]:null,'ko')}
  }
- respawn(f){const A=this.arena;f.place(A.spawns[1],200,-1);f.hp=f.maxHp;f.energy=0;f.main=null;f.off=null;this.loadout(f,f.team===2?{weapon:this.cfg.p2.weapon,off:this.cfg.p2.off}:{weapon:this.cfg.p1.weapon,off:this.cfg.p1.off})}
+ respawn(f){const A=this.arena;if(this.cfg.mode==='football'){f.place(f.team===1?A.W*0.4:A.W*0.6,200,f.team===1?1:-1)}else f.place(A.spawns[f.team===1?0:1],200,f.team===1?1:-1);f.hp=f.maxHp;f.energy=0;f.main=null;f.off=null;this.loadout(f,f.slotCfg||{weapon:'none',off:'none'})}
  endRound(team,why){const m=this.m;if(m.state!=='fight')return;m.state='roundend';m.endT=0;m.winTeam=team;
   if(team!==null){m.wins[team]=(m.wins[team]||0)+1}
   const w=this.fighters.find(f=>f.team===team&&f.alive);if(w&&team!==null){w.state='victory';w.stateT=0;w.move=null;w.hitActive=false;this.audio.play('win')}
@@ -2043,10 +2215,10 @@ class Game{
  endMatch(winTeam,won){const m=this.m;if(m.over)return;m.over=true;m.state='over';this.inputLock=true;
   const dur=(performance.now()-m.startTime)/1000;
   const data={mode:m.mode,win:winTeam,duration:dur,fighters:this.fighters.map(f=>({name:f.name,team:f.team,hits:Math.round(f.stats.hits),damage:Math.round(f.stats.damage),kills:f.stats.kills,alive:f.alive,human:f.human,cid:f.cid,maxCombo:f.stats.maxCombo})),wave:m.wave,kills:m.kills,wins:m.wins};
-  const d=this.save.data;const humanWon=m.mode==='survival'?false:(winTeam!==null&&this.fighters.some(f=>f.human&&f.team===winTeam&&!(m.mode==='versus'&&f.ctrl instanceof SD.Input.KeyboardController&&false)));
+  const d=this.save.data;const humanWon=(m.mode==='survival'||m.mode==='zombie')?false:(winTeam!==null&&this.fighters.some(f=>f.human&&f.team===winTeam&&!(m.mode==='versus'&&f.ctrl instanceof SD.Input.KeyboardController&&false)));
   d.stats.matches++;
   data.humanWon=humanWon;let unlocked=[];
-  if(m.mode==='survival'){if(m.kills>d.records.survivalBest)d.records.survivalBest=m.kills;data.record=d.records.survivalBest;data.win=null}
+  if(m.mode==='survival'||m.mode==='zombie'){const key=m.mode==='zombie'?'zombieBest':'survivalBest';d.records[key]=d.records[key]||0;if(m.kills>d.records[key])d.records[key]=m.kills;data.record=d.records[key];data.win=null}
   if(m.mode==='tournament'&&humanWon&&m.bi>=6){d.records.tournamentWins++;this.achieve('tourney')}
   if(humanWon&&m.mode!=='training'){d.stats.wins++;if(d.stats.wins>=1)this.achieve('win1');if(d.stats.wins>=10)this.achieve('win10');if(!d.records.bestWinTime||dur<d.records.bestWinTime)d.records.bestWinTime=dur;unlocked=this.save.checkUnlocks()}
   data.unlocked=unlocked;this.save.save();this.audio.play(humanWon?'win':'lose');
@@ -2066,13 +2238,13 @@ class Game{
   this.arena.update(dt);
   for(const f of this.fighters)f.update(dt,this);
   this.bodyCollide();
-  this.combat.update(dt);this.proj.update(dt);this.items.update(dt);this.particles.update(dt,this.arena);
+  if(m&&m.mode==='football')this.ballStep(dt);this.combat.update(dt);this.proj.update(dt);this.items.update(dt);this.particles.update(dt,this.arena);
   if(m&&this.running){this.checkRound(dt);this.itemSpawner(dt)}
   if(this.shakeAmt>0)this.shakeAmt=Math.max(0,this.shakeAmt-dt*40);
   if(this.slowmo<1)this.slowmo=Math.min(1,this.slowmo+dt*0.7);
   if(this.koFlash>0)this.koFlash-=dt;
  }
- itemSpawner(dt){const m=this.m,cfg=this.cfg;if(m.state!=='fight'||cfg.pickups===false&&cfg.mode!=='chaos')return;
+ itemSpawner(dt){const m=this.m,cfg=this.cfg;if(m.state!=='fight'||cfg.mode==='football'||cfg.pickups===false&&cfg.mode!=='chaos')return;
   m.itemT-=dt;if(m.itemT<=0){const chaos=cfg.mode==='chaos';m.itemT=chaos?2.6:13;const cap=chaos?9:4;if(this.items.list.length<cap){const d=this.arena.randomDropX();this.items.spawn(d.x,d.y)}}}
  bodyCollide(){const F=this.fighters;
   for(let i=0;i<F.length;i++){const a=F[i];if(!a.alive&&a.w===0&&false)continue;
@@ -2111,7 +2283,7 @@ class Game{
   ctx.save();
   const sx=this.shakeAmt?U.rand(-1,1)*this.shakeAmt:0,sy=this.shakeAmt?U.rand(-1,1)*this.shakeAmt:0;
   ctx.translate(w/2+sx,h/2+sy);ctx.scale(cam.z,cam.z);ctx.translate(-cam.x,-cam.y);
-  A.drawSolids(ctx,this.time);
+  A.drawSolids(ctx,this.time);if(this.m&&this.m.mode==='football'&&this.running)this.drawFootball(ctx);
   this.items.draw(ctx);
   const order=this.fighters.slice().sort((a,b)=>(a.alive?1:0)-(b.alive?1:0));
   for(const f of order)f.draw(ctx,this);
@@ -2128,13 +2300,13 @@ class Game{
   ctx.save();ctx.textBaseline='middle';
   const bar=(x,y,bw,bh,v,col,back,flip)=>{ctx.fillStyle=back||'rgba(0,0,0,.55)';ctx.fillRect(x,y,bw,bh);const ww=bw*U.clamp(v,0,1);ctx.fillStyle=col;ctx.fillRect(flip?x+bw-ww:x,y,ww,bh)};
   const list=F.filter(f=>f.team!==undefined);
-  const two=m.mode==='versus'||m.mode==='bot'||m.mode==='tournament'||m.mode==='training'||(m.mode==='free'&&list.length===2);
-  const show=m.mode==='survival'?list.filter(f=>f.team===1):list;
+  const waves=m.mode==='survival'||m.mode==='zombie';const two=!waves&&list.length===2;
+  const show=waves?list.filter(f=>f.team===1):list;
   const bw=two?Math.min(w*0.36,480*u):Math.min((w-20)/Math.max(show.length,2),230*u),bh=22*u;
   show.forEach((f,i)=>{
    let x,y=14*u,flip=false;
    if(two){flip=i===1;x=flip?w-bw-14*u:14*u}else{x=10+i*(bw+6*u);if(x+bw>w-6)return}
-   if(m.mode==='survival')x=14*u;
+   if(waves&&show.length===1)x=14*u;
    const r=f.hp/f.maxHp;let gh=this.hudHp[f.id];if(gh===undefined||gh<r)gh=r;else gh=Math.max(r,gh-0.4/60);this.hudHp[f.id]=gh;
    bar(x,y,bw,bh,gh,'#fff',null,flip);bar(x,y,bw,bh,r,r>0.5?'#46d36a':r>0.25?'#f0c030':'#e8453c',null,flip);
    ctx.strokeStyle='rgba(255,255,255,.7)';ctx.lineWidth=2;ctx.strokeRect(x,y,bw,bh);
@@ -2149,13 +2321,15 @@ class Game{
   });
   // center: timer, round, arena
   ctx.textAlign='center';
-  if(two&&m.mode!=='survival'){ctx.fillStyle='rgba(0,0,0,.55)';ctx.fillRect(w/2-34*u,10*u,68*u,34*u);ctx.fillStyle='#fff';ctx.font='bold '+24*u+'px Arial';ctx.fillText(m.timer>0?Math.ceil(m.timer):'∞',w/2,28*u);}
+  if(m.mode==='football'){ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(w/2-90*u,6*u,180*u,50*u);ctx.font='bold '+30*u+'px Arial';ctx.fillStyle='#fff';ctx.fillText((m.score[1]||0)+' : '+(m.score[2]||0),w/2,24*u);ctx.font='bold '+13*u+'px Arial';ctx.fillStyle='#ffd24a';ctx.fillText(m.timer>0?Math.ceil(m.timer)+' с':'',w/2,46*u)}
+  else if(two){ctx.fillStyle='rgba(0,0,0,.55)';ctx.fillRect(w/2-34*u,10*u,68*u,34*u);ctx.fillStyle='#fff';ctx.font='bold '+24*u+'px Arial';ctx.fillText(m.timer>0?Math.ceil(m.timer):'∞',w/2,28*u);}
   ctx.font=(11*u)+'px Arial';ctx.fillStyle='rgba(255,255,255,.85)';
   let info=SD.MODE_NAMES[m.mode]+' · '+this.arena.def.name;
   if(m.mode==='tournament')info+=' · Бой '+(m.bi+1)+'/7';
-  if(m.mode==='survival')info='Волна '+m.wave+' · Убито '+m.kills+' · Рекорд '+this.save.data.records.survivalBest;
+  if(waves)info=(m.mode==='zombie'?'Зомби · ':'')+'Волна '+m.wave+' · Убито '+m.kills+' · Рекорд '+(this.save.data.records[m.mode==='zombie'?'zombieBest':'survivalBest']||0);
+  if(m.mode==='football')info='Футбол · до '+this.cfg.goals+' голов · '+this.arena.def.name;
   if(m.roundsToWin<50&&m.mode!=='training'){const t1=m.wins[1]||0,t2=m.wins[2]||0;info+=' · Раунд '+m.round}
-  ctx.fillText(info,w/2,56*u);
+  ctx.fillText(info,w/2,(two||show.length<=1?56:116)*u);
   if(m.roundsToWin<50&&m.mode!=='training'&&two){const pip=(x,n,flip)=>{for(let i=0;i<m.roundsToWin;i++){ctx.fillStyle=i<n?'#ffd24a':'rgba(255,255,255,.25)';ctx.beginPath();ctx.arc(x+(flip?-1:1)*i*18*u,0,6*u,0,6.3);ctx.fill()}};
    ctx.save();ctx.translate(0,82*u);pip(14*u+8*u,m.wins[F[0].team]||0,false);pip(w-14*u-8*u,m.wins[F[1].team]||0,true);ctx.restore()}
   // training stats
@@ -2172,16 +2346,26 @@ SD.Game=Game;
 
 </script><script>
 'use strict';
-// UIManager: menus, character/weapon/arena selection, settings, editor, results, touch controls.
+// UI: main menu, lobby (1-4 players), encyclopedia, settings, results, per-player touch pads.
 (function(SD){
 const U=SD.U,S=SD.Save;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const pg={time:0,quality:'medium',arena:null,combat:{},particles:{add(){},ring(){},sparks(){}},nearestEnemy:()=>null,audio:SD.Audio};
-const UI=SD.UI={s:{screen:'main',tab:'p1',wcat:0,off:false,mode:null},prev:new Map(),raf:0,lastT:0};
-const CHAR_LOCK={yellow:1,purple:2,victim:3,chosen:5,kingorange:7,darklord:10};
-const ARENA_LOCK={cave:1,ice:2,lava:3,sky:4,future:5,bridge:6,traps:8,final:10};
-const MODE_INFO={versus:['1 VS 1','Два игрока на одной клавиатуре. Лучший из 3 раундов.'],bot:['1 VS BOT','Бой против компьютера. Выберите сложность.'],tournament:['Tournament','Турнирная сетка: 7 боёв, соперники всё сильнее. Финал — до 2 побед.'],survival:['Survival','Волны врагов. Побеждайте как можно больше — между волнами восстанавливается часть здоровья.'],chaos:['Weapon Chaos','Оружие постоянно падает с неба в случайных местах. 1 против 2 ботов.'],team:['Team Battle','Команды 2×2 или 3×3. Вы с союзниками-ботами против команды врага.'],free:['Free Fight','Настраиваемая свалка каждый за себя (2–6 бойцов) — см. «Редактор боя».'],training:['Training','Манекен с настройкой поведения, урон и DPS на экране, перезапуск и выдача оружия.']};
+const UI=SD.UI={s:{screen:'main',wiki:'chars',optsOpen:false,lobby:null},prev:new Map(),lastT:0};
+const touchy=()=>('ontouchstart' in window)||(window.matchMedia&&matchMedia('(pointer:coarse)').matches);
+const MODE=[ // id, title, icon, desc, min,max,bots,teams
+ ['versus','Дуэль','⚔','Бой до победы: 1–4 игрока и боты. Каждый сам за себя.',2,4,1,0],
+ ['team','Команды','🛡','Команды А и Б (до 6 бойцов).',4,6,1,'ab'],
+ ['free','Свободный бой','💥','Все против всех, 2–6 бойцов, команды по желанию.',2,6,1,'num'],
+ ['football','Футбол','⚽','Забейте мяч в ворота соперника. Команды А и Б.',2,6,1,'ab'],
+ ['survival','Выживание','🏹','Волны врагов. Играйте до последнего. 1–4 игрока вместе.',1,4,0,0],
+ ['zombie','Зомби','🧟','Волны зомби. После каждой волны выбирайте улучшение!',1,4,0,0],
+ ['tournament','Турнир','🏆','7 боёв против всё более сильных бойцов.',1,1,0,0],
+ ['chaos','Хаос оружия','🎲','Оружие падает с неба — подбирайте и сражайтесь.',2,4,1,0],
+ ['training','Тренировка','🎯','Манекен, урон и DPS на экране, выдача оружия.',1,1,0,0]];
+const MI=Object.fromEntries(MODE.map(m=>[m[0],m]));
+const CTRLS=['k1','k2','k3','g0','g1','g2','g3','t0','t1','t2','t3'];
 UI.game=null;
 UI.init=function(game){
  this.game=game;this.root=$('#ui');
@@ -2189,200 +2373,223 @@ UI.init=function(game){
  this.root.addEventListener('input',e=>{const el=e.target;if(el.dataset.inp)this.inp(el.dataset.inp,el)});
  this.root.addEventListener('change',e=>{const el=e.target;if(el.dataset.chg)this.inp(el.dataset.chg,el,true)});
  SD.Input.onKey=code=>{if(code==='Escape'||code==='KeyP'){if(game.running)game.pause()}if(code==='KeyT'&&game.running&&game.cfg.mode==='training')this.trainReset();};
- document.addEventListener('pointerdown',()=>SD.Audio.resume(),{once:false});
- this.initTouch();this.show('main');
+ document.addEventListener('pointerdown',()=>SD.Audio.resume());
+ this.fixSlots();this.show('main');
  const tick=t=>{const dt=Math.min(0.05,(t-this.lastT)/1000||0);this.lastT=t;this.previewTick(dt);requestAnimationFrame(tick)};requestAnimationFrame(tick);
 };
 UI.toast=function(t){const d=document.createElement('div');d.className='toastItem';d.textContent=t;$('#toast').appendChild(d);setTimeout(()=>d.remove(),4200)};
 UI.hideOverlay=function(){this.root.classList.add('hidden');this.root.innerHTML=''};
-UI.show=function(name){this.s.screen=name;this.root.classList.remove('hidden');this.prev.clear();this.root.innerHTML=(this['r_'+name]?this['r_'+name]():'');document.body.classList.toggle('playing',false);$('#trainPanel').innerHTML='';$('#trainPanel').classList.add('hidden')};
-UI.rerender=function(){const sc=this.root.querySelector('.scroll'),st=sc?sc.scrollTop:0;this.show(this.s.screen);const n=this.root.querySelector('.scroll');if(n)n.scrollTop=st};
-const back='<button class="btn small" data-act="show" data-v="main">← Меню</button>';
+UI.show=function(name){this.s.screen=name;this.root.classList.remove('hidden');this.prev.clear();this.root.innerHTML=(this['r_'+name]?this['r_'+name]():'');document.body.classList.remove('playing');$('#trainPanel').innerHTML='';$('#trainPanel').classList.add('hidden')};
+UI.rerender=function(){const sc=this.root.querySelector('.scroll,.slots'),st=sc?sc.scrollLeft:0,sy=sc?sc.scrollTop:0;this.show(this.s.screen);const n=this.root.querySelector('.scroll,.slots');if(n){n.scrollLeft=st;n.scrollTop=sy}};
 const cfg=()=>UI.game.cfg;
-UI.r_main=function(){const c=cfg();return `<div class="center"><h1 class="title">STICKMAN<br><span>DUEL ARENA</span></h1>
- <div class="sub">Режим: <b>${MODE_INFO[c.mode][0]}</b> · Арена: <b>${SD.ARENAS[c.arena].name}</b> · ${SD.CHARS[c.p1.char].name}</div>
- <div class="menu">
- <button class="btn big" data-act="play">▶ Play</button>
- <button class="btn" data-act="show" data-v="chars">Character Selection</button>
- <button class="btn" data-act="show" data-v="modes">Game Modes</button>
- <button class="btn" data-act="show" data-v="arenas">Arena Selection</button>
- <button class="btn" data-act="show" data-v="weapons">Weapon Selection</button>
- <button class="btn" data-act="show" data-v="editor">Редактор боя</button>
- <button class="btn" data-act="show" data-v="training">Training</button>
- <button class="btn" data-act="show" data-v="settings">Settings</button>
- <button class="btn" data-act="show" data-v="stats">Статистика и достижения</button>
- <button class="btn" data-act="show" data-v="credits">Credits</button></div></div>`};
-// ---------- characters ----------
+const back='<button class="btn small" data-act="show" data-v="main">← Меню</button>';
+// make sure saved cfg is valid for the new slot model
+UI.fixSlots=function(){const c=cfg();if(!c.slots||c.slots.length<6){c.slots=SD.defaultSlots()}
+ c.slots.forEach((s,i)=>{if(!SD.CHARS[s.char]&&s.char!=='rand')s.char='second';if(s.weapon!=='auto'&&s.weapon!=='none'&&s.weapon!=='random'&&!SD.WEAPONS[s.weapon])s.weapon='auto';if(s.off!=='none'&&!SD.WEAPONS[s.off])s.off='none';if(!MODE.some(m=>m[0]===c.mode))c.mode='versus'})};
+// ---------- main menu ----------
+UI.r_main=function(){
+ const tile=m=>`<button class="tile" data-act="lobby" data-v="${m[0]}:${Math.min(m[5],Math.max(m[4],m[0]==='football'||m[0]==='team'?2:1))}"><span class="ti">${m[2]}</span><b>${m[1]}</b></button>`;
+ const pl=n=>`<button class="btn big pl${n}" data-act="lobby" data-v="versus:${n}"><span class="num">${n}</span>${['','игрок','игрока','игрока','игрока'][n]}</button>`;
+ return `<div class="center main"><h1 class="title">STICKMAN<br><span>DUEL ARENA</span></h1>
+ <div class="plrow">${[1,2,3,4].map(pl).join('')}</div>
+ <div class="tiles">${['survival','zombie','football','team','tournament','chaos','free','training'].map(id=>tile(MI[id])).join('')}</div>
+ <div class="menu row"><button class="btn" data-act="show" data-v="wiki">📖 Бойцы и оружие</button><button class="btn" data-act="show" data-v="settings">⚙ Настройки</button><button class="btn" data-act="show" data-v="stats">🏆 Статистика</button><button class="btn" data-act="show" data-v="credits">ℹ Credits</button></div></div>`};
+// ---------- lobby ----------
+UI.openLobby=function(mode,players){const c=cfg(),m=MI[mode];c.mode=mode;const useTouch=touchy();
+ const hc=useTouch?['t0','t1','t2','t3']:['k1','k2','k3','g0'];
+ let n=m[4];let humans=players;
+ if(mode==='versus'){n=Math.max(2,Math.min(4,players))}
+ else if(mode==='team'){n=4;humans=Math.min(players,4)}
+ else if(mode==='free'){n=Math.max(3,players)}
+ else if(mode==='football'){n=Math.max(2,Math.ceil(players/2)*2);if(players===1)n=2}
+ else if(mode==='chaos'){n=Math.max(2,Math.min(4,players+1))}
+ else n=Math.min(m[5],Math.max(m[4],players));
+ c.count=n;if(!m[6]||m[5]===1)humans=Math.min(players,m[5]);
+ const sl=c.slots;
+ for(let i=0;i<6;i++){const s=sl[i];s.ctrl=i<n?(i<humans?hc[i]:'bot'):'off';if(m[6]===0&&i>=humans)s.ctrl=i<n&&i<humans?hc[i]:'off';
+  if(mode==='survival'||mode==='zombie'){s.ctrl=i<players?hc[i]:'off'}
+  s.team=m[7]==='ab'?(i%2)+1:(mode==='versus'||mode==='chaos'||mode==='free'?i+1:1);
+  if(mode==='team')s.team=i<2?1:2}
+ if(mode==='team'){sl[0].team=1;sl[1].team=1;sl[2].team=2;sl[3].team=2}
+ if(c.arena==='stadium'&&mode!=='football')c.arena='training';
+ if(mode==='football')c.arena='stadium';
+ if(mode==='football'){c.time=90}else if(c.time===90&&c.mode!=='versus')c.time=60;
+ this.s.optsOpen=false;this.show('lobby')};
+const weaponIds=()=>{const cats=SD.WEAPON_CATS,ids=Object.values(SD.WEAPONS).filter(w=>w.slot==='main').sort((a,b)=>cats.indexOf(a.cat)-cats.indexOf(b.cat));return ids.map(w=>w.id)};
+const offIds=()=>['none',...Object.values(SD.WEAPONS).filter(w=>w.slot==='off').map(w=>w.id)];
+const wLabel=(s)=>s.weapon==='auto'?'По умолчанию':s.weapon==='none'?'Без оружия':s.weapon==='random'?'Случайное':SD.WEAPONS[s.weapon].name;
+UI.slotCard=function(s,i,c,spec){
+ const char=s.char==='rand'?null:SD.CHARS[s.char];const bot=s.ctrl==='bot';const dummy=c.mode==='training'&&i===1;
+ const wid=s.weapon==='auto'?(char&&char.weapon)||'none':s.weapon;
+ const team=spec[7]==='ab'?`<button class="chip t${s.team}" data-act="team" data-v="${i}">${s.team===1?'А':'Б'}</button>`:spec[7]==='num'?`<button class="chip t${s.team}" data-act="team" data-v="${i}">Ком.${s.team}</button>`:'';
+ const ctl=dummy?'<span class="chip">🎯 Манекен</span>':`<button class="chip ctl ${bot?'bot':''}" data-act="ctrl" data-v="${i}">${esc(SD.Input.label(s.ctrl))}</button>`;
+ const lvl=bot&&!dummy?`<button class="chip" data-act="level" data-v="${i}">${esc(SD.BOT_LEVELS[s.level!==undefined?s.level:c.botLevel].name)}</button>`:'';
+ const offRow=(wid&&SD.WEAPONS[wid]&&SD.WEAPONS[wid].two)?'':`<div class="wrow"><button class="ar" data-act="off" data-v="${i}:-1">◀</button><span>${s.off==='none'?'Без щита':esc(SD.WEAPONS[s.off].name)}</span><button class="ar" data-act="off" data-v="${i}:1">▶</button></div>`;
+ return `<div class="slot st${s.team}"><div class="sh"><b>${dummy?'Цель':'P'+(i+1)}</b>${ctl}${lvl}${team}</div>
+ <div class="sp"><button class="ar" data-act="char" data-v="${i}:-1">◀</button><canvas data-pc="${s.char==='rand'?'second':s.char}" data-w="${wid}" width="150" height="170"></canvas><button class="ar" data-act="char" data-v="${i}:1">▶</button></div>
+ <div class="sn">${s.char==='rand'?'🎲 Случайный':esc(char.name)}</div><div class="sd">${s.char==='rand'?'Случайный боец в начале раунда':esc(char.style)}</div>
+ <div class="wrow"><button class="ar" data-act="wpn" data-v="${i}:-1">◀</button><span><b>${esc(wLabel(s))}</b></span><button class="ar" data-act="wpn" data-v="${i}:1">▶</button></div>
+ <canvas class="wcv" data-pw="${wid&&SD.WEAPONS[wid]?wid:''}" width="170" height="40"></canvas>${offRow}</div>`};
+UI.r_lobby=function(){const c=cfg(),spec=MI[c.mode],n=c.count;
+ const shown=c.slots.slice(0,n);const A=SD.ARENAS[c.arena];const p=A.pal;
+ const canAdd=n<spec[5],canDel=n>spec[4];
+ const cards=shown.map((s,i)=>this.slotCard(s,i,c,spec)).join('');
+ const optsModal=this.s.optsOpen?this.optsHtml(c,spec):'';
+ return `<div class="lobby"><div class="lh">${back}<h2>${spec[2]} ${spec[1]}</h2><span class="ld">${esc(spec[3])}</span>
+  <div class="mapsel"><button class="ar" data-act="map" data-v="-1">◀</button><div class="mp" style="background:linear-gradient(${p.sky1},${p.sky2})"><i style="background:${p.top}"></i><span>${esc(A.name)}</span></div><button class="ar" data-act="map" data-v="1">▶</button></div>
+  <button class="btn small" data-act="opts">⚙ Настройки боя</button></div>
+ <div class="slots">${cards}</div>
+ <div class="lf">${spec[4]<spec[5]?`<div class="cnt"><button class="ar" data-act="cnt" data-v="-1" ${canDel?'':'disabled'}>−</button><span>Бойцов: <b>${n}</b></span><button class="ar" data-act="cnt" data-v="1" ${canAdd?'':'disabled'}>＋</button></div>`:''}
+  <button class="btn small" data-act="savecfg">💾 Сохранить</button>${Object.keys(S.data.configs).length?`<select data-chg="loadcfg"><option value="">Загрузить сетап…</option>${Object.keys(S.data.configs).map(k=>`<option>${esc(k)}</option>`).join('')}</select>`:''}
+  <button class="btn big go" data-act="play">▶ В БОЙ</button></div>${optsModal}</div>`};
+UI.optsHtml=function(c,spec){
+ const sel=(k,arr,fmt)=>`<select data-chg="o.${k}">${arr.map(v=>`<option value="${v}" ${c[k]==v?'selected':''}>${fmt?fmt(v):v}</option>`).join('')}</select>`;
+ const chk=(k,l)=>`<label class="ck"><input type="checkbox" data-chg="o.${k}" ${c[k]?'checked':''}>${l}</label>`;
+ const lvl=`<select data-chg="o.botLevel">${SD.BOT_LEVELS.map((l,i)=>`<option value="${i}" ${c.botLevel===i?'selected':''}>${l.name}</option>`).join('')}</select>`;
+ const wave=c.mode==='survival'||c.mode==='zombie',tr=c.mode==='training';
+ return `<div class="modal"><div class="mbox"><h3>Настройки боя</h3><div class="scroll">
+  <div class="orow"><span>Сложность ботов</span>${lvl}</div>
+  ${!wave&&!tr&&c.mode!=='football'&&c.mode!=='tournament'?`<div class="orow"><span>Раундов до победы</span>${sel('rounds',[1,2,3,5])}</div>`:''}
+  ${c.mode==='football'?`<div class="orow"><span>Голов до победы</span>${sel('goals',[1,3,5,10])}</div>`:''}
+  ${!wave&&!tr&&c.mode!=='tournament'?`<div class="orow"><span>Время раунда</span>${sel('time',[30,60,90,120,0],v=>v?v+' c':'∞')}</div>`:''}
+  <div class="orow"><span>Здоровье бойцов</span>${sel('hp',[50,100,150,200,300],v=>v+'%')}</div>
+  <div class="orow"><span>Скорость игры</span>${sel('speed',[0.7,0.85,1,1.15,1.3],v=>v+'×')}</div>
+  <div class="orow"><span>Гравитация</span>${sel('gravity',[0.3,0.6,1,1.4],v=>v===1?'Обычная':v<1?'Низкая '+v+'×':'Высокая '+v+'×')}</div>
+  <div class="orow"><span>Отбрасывание</span>${sel('knockback',[0.5,1,1.5,2.5],v=>v+'×')}</div>
+  ${chk('instaKO','Мгновенный КО от лавы и шипов')}${chk('pickups','Оружие появляется на арене')}${chk('destruct','Разрушаемые объекты')}
+  ${tr?`<div class="orow"><span>Манекен</span><select data-chg="o.dummy">${[['stand','Стоит'],['block','Блокирует'],['crouch','Присел'],['jump','Прыгает'],['walk','Ходит'],['attack','Атакует'],['bot','Полный бот']].map(([v,n])=>`<option value="${v}" ${c.dummy===v?'selected':''}>${n}</option>`).join('')}</select></div>${chk('infHp','Манекен не умирает')}`:''}
+  </div><button class="btn big" data-act="opts">Готово</button></div></div>`};
+// ---------- wiki ----------
 const bar=(v,max,col)=>`<div class="sbar"><i style="width:${Math.min(100,v/max*100)}%;background:${col}"></i></div>`;
-UI.charCard=function(id,sel,lock){const c=SD.CHARS[id],rig=SD.RigImporter.rigs[c.rig+' SF.nodes'],col=rig?SD.RigImporter.toProfile(rig).color:'#888';
- return `<div class="card ${sel?'sel':''} ${lock?'lock':''}" data-act="pickchar" data-v="${id}"><canvas data-pc="${id}" width="120" height="150"></canvas><div class="cn"><i class="dot" style="background:${col}"></i>${esc(c.name)}</div>${lock?`<div class="lk">🔒 ${lock} поб.</div>`:''}</div>`};
-UI.r_chars=function(){const c=cfg(),tab=this.s.tab,cur=tab==='bot'?c.bot.char:c[tab].char;
- const tabs=['p1','p2','bot'].map(t=>`<button class="tab ${tab===t?'on':''}" data-act="tab" data-v="${t}">${{p1:'Игрок 1',p2:'Игрок 2',bot:'Соперник (бот)'}[t]}</button>`).join('');
- const ids=SD.CHAR_ORDER;const grid=ids.map(id=>this.charCard(id,id===cur,S.isCharUnlocked(id)?0:CHAR_LOCK[id])).join('')+(tab==='bot'?`<div class="card ${cur==='rand'?'sel':''}" data-act="pickchar" data-v="rand"><div class="big">?</div><div class="cn">Случайный</div></div>`:'');
- const cd=SD.CHARS[cur==='rand'?'second':cur];const rig=SD.RigImporter.rigs[cd.rig+' SF.nodes'];
- const ab=cd.ab;
- const abl=[['n','E','нейтрально'],['f','E + →','вперёд'],['a','E в воздухе','воздух'],['u','E + ↓','ультимейт (100 энергии)']].map(([k,key,lab])=>`<div class="ab"><b>${esc(ab[k].name)}</b> <span class="k">${key}</span><br><small>${esc(ab[k].desc)} · ${ab[k].cost} эн.</small></div>`).join('');
- return `<div class="panel"><div class="hdr">${back}<h2>Выбор персонажа</h2><div class="tabs">${tabs}</div></div>
- <div class="two"><div class="scroll grid">${grid}</div>
- <div class="detail"><canvas data-pc="${cur==='rand'?'second':cur}" data-big="1" width="260" height="300"></canvas><h3>${esc(cur==='rand'?'Случайный боец':cd.name)}</h3><p class="muted">${esc(cd.style)}</p>
- <div class="stats"><span>Здоровье</span>${bar(cd.hp,130,'#46d36a')}<span>Сила</span>${bar(cd.power,1.2,'#e8453c')}<span>Защита</span>${bar(cd.def,0.12,'#4aa3ff')}<span>Скорость</span>${bar(cd.speed,1.2,'#ffd24a')}<span>Прыжок</span>${bar(cd.jump,1.1,'#9f6')}<span>Выносл.</span>${bar(cd.stamina,110,'#4ac3ff')}<span>Сопр. отбр.</span>${bar(cd.kbRes,0.5,'#c8a')}</div>
- <div class="abl">${abl}</div><p class="tiny muted">Риг: ${esc(cd.rig)} SF.nodes · узлов: ${rig?rig.nodeCount:'?'}${rig&&rig.accents.length?' · акцент '+rig.accents[0]:''}</p>
- <label class="imp">Импорт .nodes<input type="file" accept=".nodes" data-chg="import"></label></div></div></div>`};
-// ---------- modes ----------
-UI.r_modes=function(){const c=cfg();const cards=Object.keys(MODE_INFO).map(m=>`<div class="card wide ${c.mode===m?'sel':''}" data-act="pickmode" data-v="${m}"><h3>${MODE_INFO[m][0]}</h3><p>${MODE_INFO[m][1]}</p></div>`).join('');
- const lvl=SD.BOT_LEVELS.map((l,i)=>`<option value="${i}" ${c.botLevel===i?'selected':''}>${l.name}</option>`).join('');
- return `<div class="panel"><div class="hdr">${back}<h2>Режимы игры</h2></div><div class="scroll"><div class="grid2">${cards}</div>
- <div class="opts"><label>Сложность ботов <select data-chg="botLevel">${lvl}</select></label>
- <label>Раундов до победы <select data-chg="rounds">${[1,2,3].map(n=>`<option ${c.rounds===n?'selected':''}>${n}</option>`).join('')}</select></label>
- <label>Время раунда <select data-chg="time">${[30,60,90,0].map(n=>`<option value="${n}" ${c.time===n?'selected':''}>${n?n+' c':'∞'}</option>`).join('')}</select></label>
- <label>Команда <select data-chg="teamSize">${[2,3].map(n=>`<option value="${n}" ${c.teamSize===n?'selected':''}>${n} × ${n}</option>`).join('')}</select></label></div>
- <button class="btn big" data-act="play">▶ Начать: ${MODE_INFO[c.mode][0]}</button></div></div>`};
-// ---------- arenas ----------
-UI.r_arenas=function(){const c=cfg();const cards=SD.ARENA_ORDER.map(id=>{const a=SD.ARENAS[id],lock=S.isArenaUnlocked(id)?0:ARENA_LOCK[id];const p=a.pal;return `<div class="card wide ${c.arena===id?'sel':''} ${lock?'lock':''}" data-act="pickarena" data-v="${id}"><div class="ap" style="background:linear-gradient(${p.sky1},${p.sky2})"><i style="background:${p.top}"></i></div><h3>${esc(a.name)}</h3><p>${esc(a.desc)}</p>${lock?`<div class="lk">🔒 ${lock} поб.</div>`:''}</div>`}).join('');
- return `<div class="panel"><div class="hdr">${back}<h2>Выбор арены</h2></div><div class="scroll"><div class="grid2">${cards}</div></div></div>`};
-// ---------- weapons ----------
-UI.r_weapons=function(){const c=cfg(),tab=this.s.tab,sl=tab==='bot'?c.bot:c[tab],off=this.s.off;
- const tabs=['p1','p2','bot'].map(t=>`<button class="tab ${tab===t?'on':''}" data-act="tab" data-v="${t}">${{p1:'Игрок 1',p2:'Игрок 2',bot:'Бот'}[t]}</button>`).join('');
- const cat=SD.WEAPON_CATS[this.s.wcat];const cats=SD.WEAPON_CATS.map((n,i)=>`<button class="tab ${this.s.wcat===i?'on':''}" data-act="wcat" data-v="${i}">${n}</button>`).join('');
- const list=Object.values(SD.WEAPONS).filter(w=>w.cat===cat);
- const cur=off?sl.off:sl.weapon;
- const items=list.map(w=>{const dis=(w.slot==='off')!==off;return `<div class="card wep ${cur===w.id?'sel':''} ${dis?'dim':''}" data-act="pickweapon" data-v="${w.id}"><canvas data-pw="${w.id}" width="150" height="50"></canvas><div class="cn">${esc(w.name)}</div><small>Урон ${w.dmg||'—'} · Длина ${w.len} · Скор. ${w.speed.toFixed(2)}${w.two?' · 2 руки':''}${w.slot==='off'?' · off-hand':''}</small></div>`}).join('');
- const none=`<div class="card ${cur==='none'?'sel':''}" data-act="pickweapon" data-v="none"><div class="big">∅</div><div class="cn">Без оружия</div></div>`+(off?'':`<div class="card ${cur==='auto'?'sel':''}" data-act="pickweapon" data-v="auto"><div class="big">★</div><div class="cn">По умолчанию</div></div><div class="card ${cur==='random'?'sel':''}" data-act="pickweapon" data-v="random"><div class="big">🎲</div><div class="cn">Случайное</div></div>`);
- return `<div class="panel"><div class="hdr">${back}<h2>Выбор оружия</h2><div class="tabs">${tabs}</div></div>
- <div class="hdr"><div class="tabs">${cats}</div><div class="tabs"><button class="tab ${!off?'on':''}" data-act="slot" data-v="0">Основная рука</button><button class="tab ${off?'on':''}" data-act="slot" data-v="1">Вторая рука (щиты)</button></div></div>
- <div class="scroll grid">${none}${items}</div></div>`};
-// ---------- settings ----------
-const KEYNAMES={left:'Влево',right:'Вправо',jump:'Прыжок',down:'Присесть',light:'Быстрая атака',heavy:'Сильная атака',block:'Блок',ability:'Способность',throw:'Бросок оружия',interact:'Взять/бросить оружие'};
+UI.r_wiki=function(){const tab=this.s.wiki;
+ const tabs=`<div class="tabs"><button class="tab ${tab==='chars'?'on':''}" data-act="wiki" data-v="chars">Бойцы</button><button class="tab ${tab==='weapons'?'on':''}" data-act="wiki" data-v="weapons">Оружие</button></div>`;
+ let body='';
+ if(tab==='chars'){body=SD.CHAR_ORDER.map(id=>{const c=SD.CHARS[id],r=SD.RigImporter.rigs[c.rig+' SF.nodes'];const wn=c.weapon&&c.weapon!=='none'&&SD.WEAPONS[c.weapon]?SD.WEAPONS[c.weapon].name:'без оружия';
+  const abl=[['n','E'],['f','E + →'],['a','E в воздухе'],['u','E + ↓ (100 энергии)']].map(([k,key])=>`<div class="ab"><b>${esc(c.ab[k].name)}</b> <span class="k">${key}</span><br><small>${esc(c.ab[k].desc)} · ${c.ab[k].cost} эн.</small></div>`).join('');
+  return `<div class="wcard"><canvas data-pc="${id}" width="130" height="160"></canvas><div class="wb"><h3>${esc(c.name)} <small>${esc(c.group)}</small></h3><p>${esc(c.lore)}</p><p class="muted">Стартовое оружие: ${esc(wn)} · риг ${esc(c.rig)} (${r?r.nodeCount:'?'} узлов)</p>
+  <div class="stats"><span>Здоровье</span>${bar(c.hp,130,'#46d36a')}<span>Сила</span>${bar(c.power,1.2,'#e8453c')}<span>Защита</span>${bar(c.def,0.12,'#4aa3ff')}<span>Скорость</span>${bar(c.speed,1.2,'#ffd24a')}<span>Прыжок</span>${bar(c.jump,1.1,'#9f6')}</div><div class="abl">${abl}</div></div></div>`}).join('')}
+ else{body=SD.WEAPON_CATS.map(cat=>`<h3 class="cat">${esc(cat==='AvM'?'Animation vs. Minecraft':cat)}</h3>`+Object.values(SD.WEAPONS).filter(w=>w.cat===cat).map(w=>`<div class="wrow2"><canvas data-pw="${w.id}" width="150" height="46"></canvas><div><b>${esc(w.name)}</b> <small class="muted">${w.slot==='off'?'вторая рука · ':''}${w.two?'двуручное · ':''}${w.ammo?'дальний бой · ':''}урон ${w.dmg||'—'} · длина ${w.len}</small><p>${esc(w.desc||'')}</p></div></div>`).join('')).join('')}
+ return `<div class="panel"><div class="hdr">${back}<h2>Бойцы и оружие</h2>${tabs}</div><div class="scroll">${body}</div></div>`};
+// ---------- settings / stats / credits ----------
+const KEYNAMES={left:'Влево',right:'Вправо',jump:'Прыжок',down:'Присесть / вниз',light:'Быстрая атака',heavy:'Сильная атака',block:'Блок',ability:'Способность',throw:'Бросок оружия',interact:'Взять / бросить'};
 UI.r_settings=function(){const st=S.data.settings,keys=st.keys;
  const kt=p=>`<table class="keys">${Object.keys(KEYNAMES).map(a=>`<tr><td>${KEYNAMES[a]}</td><td><button class="btn small key" data-act="rebind" data-v="${p}.${a}">${esc(keys[p][a].replace('Key','').replace('Arrow','↔'))}</button></td></tr>`).join('')}</table>`;
  return `<div class="panel"><div class="hdr">${back}<h2>Настройки</h2></div><div class="scroll">
  <div class="opts"><label>Общая громкость <input type="range" min="0" max="1" step="0.05" value="${st.master}" data-inp="master"></label>
  <label>Громкость эффектов <input type="range" min="0" max="1" step="0.05" value="${st.sfx}" data-inp="sfx"></label>
  <label>Качество эффектов <select data-chg="quality">${['auto','high','medium','low'].map(q=>`<option value="${q}" ${st.quality===q?'selected':''}>${{auto:'Авто',high:'Высокое',medium:'Среднее',low:'Низкое (слабые устройства)'}[q]}</option>`).join('')}</select></label>
- <label>Тряска экрана <input type="checkbox" ${st.shake?'checked':''} data-chg="shake"></label>
- <label>Сенсорное управление <select data-chg="touch">${['auto','on','off'].map(q=>`<option value="${q}" ${st.touch===q?'selected':''}>${{auto:'Авто',on:'Всегда',off:'Выкл'}[q]}</option>`).join('')}</select></label></div>
- <h3>Управление (нажмите кнопку и затем клавишу)</h3><div class="two"><div><h4>Игрок 1</h4>${kt('p1')}</div><div><h4>Игрок 2</h4>${kt('p2')}</div></div>
- <p class="muted">Общие: Esc / P — пауза · T — перезапуск в тренировке. Перекат: ↓ + движение. Уклонение: назад + блок. Парирование: блок прямо перед ударом.</p>
+ <label>Тряска экрана <input type="checkbox" ${st.shake?'checked':''} data-chg="shake"></label></div>
+ <h3>Клавиатура (нажмите кнопку, затем клавишу)</h3><div class="three"><div><h4>⌨ WASD (P1)</h4>${kt('p1')}</div><div><h4>⌨ Стрелки (P2)</h4>${kt('p2')}</div><div><h4>⌨ Numpad (P3)</h4>${kt('p3')}</div></div>
+ <p class="muted">Геймпад: стик/крестовина — ход, A — прыжок, X — быстрая, Y — сильная, B/LB/LT — блок, RB/RT — способность, L3 — бросок, R3 — взять. Подключите геймпад и выберите его в слоте. Сенсор: у каждого игрока своя панель на экране. Esc / P — пауза, T — сброс тренировки.</p>
  <div class="opts"><button class="btn small" data-act="defkeys">Сбросить клавиши</button><button class="btn small" data-act="unlockall">Открыть всё</button><button class="btn small danger" data-act="resetsave">Сбросить прогресс</button></div></div></div>`};
 UI.r_credits=function(){const rows=SD.CHAR_ORDER.map(id=>{const c=SD.CHARS[id],r=SD.RigImporter.rigs[c.rig+' SF.nodes'];const p=r?SD.RigImporter.toProfile(r):{};return `<tr><td>${esc(c.rig)} SF.nodes</td><td>${r?r.nodeCount:'-'}</td><td><i class="dot" style="background:${p.color}"></i>${p.rawColor||''}</td><td>${r&&r.accents.length?r.accents.join(', '):'—'}</td></tr>`}).join('');
- const sw=SD.RigImporter.rigs['The Dark Lord Sword SF.nodes'];
- return `<div class="panel"><div class="hdr">${back}<h2>Credits</h2></div><div class="scroll"><p>Stickman Duel Arena — HTML5 Canvas 2D · Web Audio API · localStorage. Персонажи основаны на ригах Alan Becker Character Pack (.nodes), предоставленных пользователем.</p>
- <p class="muted">Файлы .nodes читаются встроенным RigImporter (цвета, структура узлов, акценты). Геометрия скелета и анимации — собственная игровая интерпретация: PNG-кадры/спрайтшиты из Stick Nodes в пакете отсутствовали.</p>
- <table class="keys"><tr><th>Риг</th><th>Узлов</th><th>Цвет</th><th>Акценты</th></tr>${rows}<tr><td>The Dark Lord Sword SF.nodes</td><td>${sw?sw.nodeCount:'-'}</td><td>оружие</td><td>${sw?sw.accents.join(', '):''}</td></tr></table></div></div>`};
+ return `<div class="panel"><div class="hdr">${back}<h2>Credits</h2></div><div class="scroll"><p>Stickman Duel Arena — HTML5 Canvas 2D · Web Audio · localStorage. Персонажи и оружие вдохновлены вселенной Alan Becker (Animator vs. Animation, Animation vs. Minecraft); режимы и управление — по мотивам Supreme Duelist Stickman. Фанатский проект, не связан с авторами.</p>
+ <p class="muted">Из файлов .nodes читаются цвета, число узлов и акценты; скелет и анимации — собственные (процедурные).</p><table class="keys"><tr><th>Риг</th><th>Узлов</th><th>Цвет</th><th>Акценты</th></tr>${rows}</table></div></div>`};
 UI.r_stats=function(){const d=S.data,st=d.stats;const ach=Object.keys(SD.ACHIEVEMENTS).map(k=>`<div class="ach ${d.achievements[k]?'got':''}">${d.achievements[k]?'🏆':'🔒'} ${esc(SD.ACHIEVEMENTS[k])}</div>`).join('');
- return `<div class="panel"><div class="hdr">${back}<h2>Статистика</h2></div><div class="scroll"><table class="keys"><tr><td>Матчей</td><td>${st.matches}</td></tr><tr><td>Побед</td><td>${st.wins}</td></tr><tr><td>Попаданий</td><td>${Math.round(st.hits)}</td></tr><tr><td>Урона нанесено</td><td>${Math.round(st.damage)}</td></tr><tr><td>Убийств</td><td>${st.kills}</td></tr><tr><td>Макс. комбо</td><td>${st.maxCombo}</td></tr><tr><td>Парирований</td><td>${st.parries}</td></tr><tr><td>Выбито оружия</td><td>${st.disarms}</td></tr><tr><td>Рекорд Survival (убийств)</td><td>${d.records.survivalBest}</td></tr><tr><td>Побед в турнире</td><td>${d.records.tournamentWins}</td></tr><tr><td>Открыто бойцов</td><td>${d.unlockedChars.length}/10</td></tr><tr><td>Открыто арен</td><td>${d.unlockedArenas.length}/12</td></tr></table><h3>Достижения</h3>${ach}</div></div>`};
-// ---------- training ----------
-UI.r_training=function(){const c=cfg();const dm=[['stand','Стоит'],['block','Блокирует'],['crouch','Присел'],['jump','Прыгает'],['walk','Ходит'],['attack','Атакует'],['bot','Полный бот']].map(([v,n])=>`<option value="${v}" ${c.dummy===v?'selected':''}>${n}</option>`).join('');
- return `<div class="panel"><div class="hdr">${back}<h2>Training</h2></div><div class="scroll"><p class="muted">Тренировочный режим: манекен с настройкой поведения, урон/DPS на экране, перезапуск (T), выдача оружия кнопкой во время боя.</p>
- <div class="opts"><label>Поведение манекена <select data-chg="dummy">${dm}</select></label><label>Бесконечное здоровье манекена <input type="checkbox" ${c.infHp?'checked':''} data-chg="infHp"></label></div>
- <p>Ваш боец: <b>${esc(SD.CHARS[c.p1.char].name)}</b> · Манекен: <b>${esc(SD.CHARS[c.p2.char].name)}</b> · Арена: <b>${esc(SD.ARENAS[c.arena].name)}</b></p>
- <div class="opts"><button class="btn" data-act="show" data-v="chars">Выбрать бойцов</button><button class="btn" data-act="show" data-v="weapons">Оружие</button><button class="btn" data-act="show" data-v="arenas">Арена</button></div>
- <button class="btn big" data-act="starttrain">▶ Начать тренировку</button></div></div>`};
-// ---------- editor ----------
-UI.r_editor=function(){const c=cfg();const sl=c.fslots;const charOpt=sel=>SD.CHAR_ORDER.map(id=>`<option value="${id}" ${sel===id?'selected':''}>${SD.CHARS[id].name}</option>`).join('')+`<option value="rand" ${sel==='rand'?'selected':''}>Случайный</option>`;
- const wOpt=sel=>`<option value="none" ${sel==='none'?'selected':''}>Без оружия</option><option value="auto" ${sel==='auto'?'selected':''}>По умолч.</option><option value="random" ${sel==='random'?'selected':''}>Случайное</option>`+Object.values(SD.WEAPONS).filter(w=>w.slot==='main').map(w=>`<option value="${w.id}" ${sel===w.id?'selected':''}>${w.name}</option>`).join('');
- const rows=sl.slice(0,c.count).map((s,i)=>`<tr><td>${i+1}</td><td><select data-chg="fs.${i}.char">${charOpt(s.char)}</select></td><td><select data-chg="fs.${i}.weapon">${wOpt(s.weapon)}</select></td><td><select data-chg="fs.${i}.ctrl">${[['p1','Игрок 1'],['p2','Игрок 2'],['bot','Бот']].map(([v,n])=>`<option value="${v}" ${s.ctrl===v?'selected':''}>${n}</option>`).join('')}</select></td><td><select data-chg="fs.${i}.team">${[1,2,3,4,5,6].map(t=>`<option ${s.team===t?'selected':''}>${t}</option>`).join('')}</select></td></tr>`).join('');
- const sld=(k,l,min,max,step,fmt)=>`<label>${l}: <b>${fmt(c[k])}</b><input type="range" min="${min}" max="${max}" step="${step}" value="${c[k]}" data-inp="cfg.${k}"></label>`;
- const saved=Object.keys(S.data.configs).map(n=>`<div class="saved"><b>${esc(n)}</b><button class="btn small" data-act="loadcfg" data-v="${esc(n)}">Загрузить</button><button class="btn small danger" data-act="delcfg" data-v="${esc(n)}">✕</button></div>`).join('')||'<p class="muted">Нет сохранённых конфигураций.</p>';
- return `<div class="panel"><div class="hdr">${back}<h2>Редактор боя</h2></div><div class="scroll">
- <div class="opts"><label>Количество бойцов <select data-chg="count">${[2,3,4,5,6].map(n=>`<option ${c.count===n?'selected':''}>${n}</option>`).join('')}</select></label>
- <label>Арена <select data-chg="arena">${SD.ARENA_ORDER.map(id=>`<option value="${id}" ${c.arena===id?'selected':''} ${S.isArenaUnlocked(id)?'':'disabled'}>${SD.ARENAS[id].name}${S.isArenaUnlocked(id)?'':' 🔒'}</option>`).join('')}</select></label>
- <label>Сложность ботов <select data-chg="botLevel">${SD.BOT_LEVELS.map((l,i)=>`<option value="${i}" ${c.botLevel===i?'selected':''}>${l.name}</option>`).join('')}</select></label></div>
- <table class="keys ed"><tr><th>#</th><th>Боец</th><th>Оружие</th><th>Управление</th><th>Команда</th></tr>${rows}</table>
- <div class="opts">${sld('hp','Здоровье %',25,300,5,v=>v+'%')}${sld('speed','Скорость боя',0.5,1.5,0.05,v=>v.toFixed(2)+'×')}${sld('gravity','Гравитация',0.4,1.6,0.05,v=>v.toFixed(2)+'×')}${sld('knockback','Сила отбрасывания',0.5,2.5,0.1,v=>v.toFixed(1)+'×')}
- <label>Подбор оружия <input type="checkbox" ${c.pickups?'checked':''} data-chg="pickups"></label><label>Разрушаемость <input type="checkbox" ${c.destruct?'checked':''} data-chg="destruct"></label></div>
- <div class="opts"><input id="cfgname" placeholder="Название конфигурации" maxlength="24"><button class="btn small" data-act="savecfg">💾 Сохранить</button></div>${saved}
- <button class="btn big" data-act="startfree">⚔ В бой!</button></div></div>`};
-// ---------- results / pause / bracket ----------
-UI.showResults=function(d,game){const m=game.m;const rows=d.fighters.map(f=>`<tr class="${f.team===d.win?'win':''}"><td>${esc(f.name)}</td><td>${f.hits}</td><td>${f.damage}</td><td>${f.maxCombo}</td></tr>`).join('');
- const wf=d.fighters.find(f=>f.team===d.win),lf=d.fighters.filter(f=>f.team!==d.win);
- const title=d.mode==='survival'?`Выживание: волна ${d.wave}`:d.win===null?'Ничья':(d.humanWon?'ПОБЕДА!':'ПОРАЖЕНИЕ');
- const sub=d.mode==='survival'?`Убито врагов: <b>${d.kills}</b> · Рекорд: <b>${d.record}</b>`:(wf?`Победитель: <b>${esc(wf.name)}</b> · Проигравший: <b>${esc(lf.map(x=>x.name).join(', '))}</b>`:'');
+ return `<div class="panel"><div class="hdr">${back}<h2>Статистика</h2></div><div class="scroll"><table class="keys"><tr><td>Матчей</td><td>${st.matches}</td></tr><tr><td>Побед</td><td>${st.wins}</td></tr><tr><td>Попаданий</td><td>${Math.round(st.hits)}</td></tr><tr><td>Урона нанесено</td><td>${Math.round(st.damage)}</td></tr><tr><td>Убийств</td><td>${st.kills}</td></tr><tr><td>Макс. комбо</td><td>${st.maxCombo}</td></tr><tr><td>Парирований</td><td>${st.parries}</td></tr><tr><td>Выбито оружия</td><td>${st.disarms}</td></tr><tr><td>Рекорд Выживания</td><td>${d.records.survivalBest||0}</td></tr><tr><td>Рекорд Зомби</td><td>${d.records.zombieBest||0}</td></tr><tr><td>Побед в турнире</td><td>${d.records.tournamentWins}</td></tr></table><h3>Достижения</h3>${ach}</div></div>`};
+// ---------- results / pause / bracket / upgrade ----------
+UI.showResults=function(d,game){
+ const rows=d.fighters.map(f=>`<tr class="${f.team===d.win?'win':''}"><td>${esc(f.name)}</td><td>${f.hits}</td><td>${f.damage}</td><td>${f.maxCombo}</td></tr>`).join('');
+ const wf=d.fighters.find(f=>f.team===d.win);
+ const wave=d.mode==='survival'||d.mode==='zombie';
+ const title=wave?'Волна '+d.wave:d.win===null?'Ничья':(wf?esc(wf.name)+' побеждает!':'Победа');
+ const sub=wave?`Убито врагов: <b>${d.kills}</b> · Рекорд: <b>${d.record}</b>`:'';
  this.root.classList.remove('hidden');document.body.classList.remove('playing');
- this.root.innerHTML=`<div class="center"><div class="resbox"><h1 class="${d.humanWon?'win':'lose'}">${title}</h1><p>${sub}</p><p>Длительность боя: <b>${U.fmtTime(d.duration)}</b></p>
- <table class="keys"><tr><th>Боец</th><th>Попаданий</th><th>Урон</th><th>Макс. комбо</th></tr>${rows}</table>${d.unlocked&&d.unlocked.length?`<p class="unl">🔓 Открыто: ${d.unlocked.map(esc).join(', ')}</p>`:''}
- <div class="menu row"><button class="btn big" data-act="rematch">Реванш</button><button class="btn" data-act="show" data-v="chars">Выбор персонажей</button><button class="btn" data-act="tomenu">В меню</button></div></div></div>`;
- $('#trainPanel').classList.add('hidden')};
+ this.root.innerHTML=`<div class="center"><div class="resbox"><h1 class="${d.humanWon||wave?'win':'lose'}">${title}</h1><p>${sub}</p><p>Длительность боя: <b>${U.fmtTime(d.duration)}</b></p>
+ <table class="keys"><tr><th>Боец</th><th>Попаданий</th><th>Урон</th><th>Макс. комбо</th></tr>${rows}</table>
+ <div class="menu row"><button class="btn big" data-act="rematch">Реванш</button><button class="btn" data-act="lobbyback">Выбор бойцов</button><button class="btn" data-act="tomenu">В меню</button></div></div></div>`;
+ $('#trainPanel').classList.add('hidden');this.hideTouch()};
 UI.showBracket=function(game){const m=game.m;this.root.classList.remove('hidden');
  const rows=m.bracket.map((b,i)=>`<div class="br ${i<m.bi?'done':i===m.bi?'cur':''}">${i<m.bi?'✔':i===m.bi?'▶':'•'} Бой ${i+1}: ${esc(SD.CHARS[b.char].name)} <small>(${SD.BOT_LEVELS[b.level].name})</small></div>`).join('');
  this.root.innerHTML=`<div class="center"><div class="resbox"><h1 class="win">Бой ${m.bi+1} выигран!</h1><p>Турнирная сетка:</p>${rows}<div class="menu row"><button class="btn big" data-act="nextbracket">Следующий бой →</button><button class="btn" data-act="tomenu">Выйти</button></div></div></div>`};
-UI.onPause=function(p){if(p){this.root.classList.remove('hidden');this.root.innerHTML=`<div class="center"><div class="resbox"><h1>Пауза</h1><div class="menu"><button class="btn big" data-act="resume">Продолжить</button><button class="btn" data-act="restart">Рестарт</button><label class="pl">Громкость <input type="range" min="0" max="1" step="0.05" value="${S.data.settings.master}" data-inp="master"></label><button class="btn" data-act="tomenu">В главное меню</button></div><p class="muted tiny">P1: A/D ходьба, W прыжок, S присесть, F/G атаки, H блок, E способность (вперёд/в воздухе/вниз+E — разные), Q бросок, R взять/бросить<br>P2: стрелки, K/L, J, O, U, I</p></div></div>`}else this.hideOverlay()};
+UI.showUpgrade=function(game,opts){this.root.classList.remove('hidden');
+ this.root.innerHTML=`<div class="center"><div class="resbox"><h1 class="win">Волна ${game.m.wave} пройдена!</h1><p>Выберите улучшение для всей команды:</p><div class="upg">${opts.map((o,i)=>`<button class="card up" data-act="upgrade" data-v="${i}"><h3>${esc(o.name)}</h3><p>${esc(o.desc)}</p></button>`).join('')}</div></div></div>`};
+UI.onPause=function(p){if(p){this.root.classList.remove('hidden');this.root.innerHTML=`<div class="center"><div class="resbox"><h1>Пауза</h1><div class="menu"><button class="btn big" data-act="resume">Продолжить</button><button class="btn" data-act="restart">Рестарт</button><label class="pl">Громкость <input type="range" min="0" max="1" step="0.05" value="${S.data.settings.master}" data-inp="master"></label><button class="btn" data-act="lobbyback">Выбор бойцов</button><button class="btn" data-act="tomenu">В главное меню</button></div><p class="muted tiny">P1: A/D, W прыжок, S вниз, F/G атаки, H блок, E способность (E+→ / в воздухе / E+↓), Q бросок, R взять<br>P2: стрелки, K/L, J, O, U, I · P3: Numpad 4/8/6/5, 1/2, 3, 0, 7, 9</p></div></div>`;this.hideTouch()}else{this.hideOverlay();this.setupTouch()}};
 UI.onMatchStart=function(game){this.hideOverlay();document.body.classList.add('playing');this.setupTouch();this.trainPanel(game)};
-UI.onMatchStop=function(){document.body.classList.remove('playing');$('#trainPanel').classList.add('hidden')};
+UI.onMatchStop=function(){document.body.classList.remove('playing');$('#trainPanel').classList.add('hidden');this.hideTouch()};
 UI.trainPanel=function(game){const p=$('#trainPanel');if(game.cfg.mode!=='training'){p.classList.add('hidden');return}p.classList.remove('hidden');
  const wl=Object.values(SD.WEAPONS).map(w=>`<option value="${w.id}">${w.name}</option>`).join('');
  p.innerHTML=`<select id="tdm">${[['stand','Стоит'],['block','Блокирует'],['crouch','Присел'],['jump','Прыгает'],['walk','Ходит'],['attack','Атакует'],['bot','Полный бот']].map(([v,n])=>`<option value="${v}" ${game.train.dummy===v?'selected':''}>${n}</option>`).join('')}</select><button data-tr="reset">↺ Сброс (T)</button><select id="tw">${wl}</select><button data-tr="spawn">+ Оружие</button><button data-tr="exit">Меню</button>`;
  p.onclick=e=>{const b=e.target.closest('button');if(!b)return;const a=b.dataset.tr;if(a==='reset')this.trainReset();if(a==='spawn'){const f=game.fighters[0];game.items.spawn(f.root.x+f.face*120,f.root.y-60,$('#tw').value,{rarity:0,life:60})}if(a==='exit')this.act('tomenu')};
  p.onchange=e=>{if(e.target.id==='tdm'){game.train.dummy=e.target.value;game.cfg.dummy=e.target.value;if(game.fighters[1]&&game.fighters[1].ctrl.dummy)game.fighters[1].ctrl.dummy.mode=e.target.value}}};
-UI.trainReset=function(){const g=this.game;g.train.total=0;g.train.hits=0;g.train.last=0;g.train.dps=[];g.placeAll();g.fighters.forEach((f,i)=>{f.main=null;f.off=null;g.loadout(f,i?{weapon:g.cfg.p2.weapon,off:g.cfg.p2.off}:{weapon:g.cfg.p1.weapon,off:g.cfg.p1.off})});g.items.reset();g.proj.reset()};
+UI.trainReset=function(){const g=this.game;g.train.total=0;g.train.hits=0;g.train.last=0;g.train.dps=[];g.placeAll();g.fighters.forEach(f=>{f.hp=f.maxHp;f.main=null;f.off=null;g.loadout(f,f.slotCfg||{weapon:'none',off:'none'})});g.items.reset();g.proj.reset()};
 // ---------- actions ----------
+const cyc=(arr,cur,d)=>{let i=arr.indexOf(cur);if(i<0)i=0;return arr[(i+d+arr.length)%arr.length]};
 UI.act=function(a,v,el){const g=this.game,c=g.cfg;
  switch(a){
  case 'show':this.show(v);break;
- case 'play':if(c.mode==='training'&&false){}g.start(c);S.data.last=JSON.parse(JSON.stringify(c));S.save();break;
- case 'starttrain':c.mode='training';g.start(c);break;
- case 'startfree':c.mode='free';g.start(c);break;
- case 'tab':this.s.tab=v;this.rerender();break;
- case 'wcat':this.s.wcat=+v;this.rerender();break;
- case 'slot':this.s.off=v==='1';this.rerender();break;
- case 'pickchar':{if(v!=='rand'&&!S.isCharUnlocked(v)){this.toast('Персонаж заблокирован — выигрывайте матчи');return}const t=this.s.tab;(t==='bot'?c.bot:c[t]).char=v;if(t==='p1'||t==='p2'){const i=c.fslots.findIndex(s=>s.ctrl===t);if(i>=0)c.fslots[i].char=v}this.rerender();break}
- case 'pickmode':c.mode=v;if(v==='tournament')c.rounds=1;if(v==='versus'||v==='bot')c.rounds=Math.max(c.rounds,2);this.rerender();S.data.last=c;S.save();break;
- case 'pickarena':if(!S.isArenaUnlocked(v)){this.toast('Арена заблокирована — выигрывайте матчи');return}c.arena=v;this.rerender();break;
- case 'pickweapon':{const t=this.s.tab,sl=t==='bot'?c.bot:c[t];const w=SD.WEAPONS[v];if(v!=='none'&&v!=='auto'&&v!=='random'&&(w.slot==='off')!==this.s.off){this.toast(this.s.off?'Выберите щит':'Это оружие для основной руки');return}if(this.s.off)sl.off=v;else sl.weapon=v;this.rerender();break}
- case 'resume':g.pause(false);break;
- case 'restart':g.paused=false;this.hideOverlay();g.restart();break;
+ case 'lobby':{const [m,n]=v.split(':');this.openLobby(m,+n);break}
+ case 'lobbyback':g.paused=false;g.stop();this.show('lobby');break;
+ case 'wiki':this.s.wiki=v;this.rerender();break;
+ case 'opts':this.s.optsOpen=!this.s.optsOpen;this.rerender();break;
+ case 'play':{const act=c.slots.slice(0,c.count).filter(s=>s.ctrl!=='off'),hum=act.filter(s=>s.ctrl!=='bot'),ids=hum.map(s=>s.ctrl);
+  if(!hum.length&&c.mode!=='versus'&&c.mode!=='free'&&c.mode!=='team'&&c.mode!=='football'){this.toast('Нужен хотя бы один игрок');return}
+  if(new Set(ids).size!==ids.length){this.toast('Два игрока используют одно управление');return}
+  c.slots.forEach((s,i)=>{if(i>=c.count)s.ctrl='off'});
+  S.data.last=JSON.parse(JSON.stringify(c));S.save();g.start(c);break}
  case 'rematch':g.restart();break;
+ case 'restart':g.paused=false;this.hideOverlay();g.restart();break;
+ case 'resume':g.pause(false);break;
  case 'tomenu':g.paused=false;g.stop();this.show('main');break;
  case 'nextbracket':g.nextBracket();break;
+ case 'upgrade':{const o=g.m.upg[+v];this.hideOverlay();g.applyUpgrade(o);break}
+ case 'ctrl':{const i=+v,s=c.slots[i],spec=MI[c.mode];let opts=[...CTRLS];if(spec[6])opts.push('bot');if(c.mode!=='training'&&c.mode!=='tournament')opts.push('off');if(!spec[6]&&s.ctrl==='bot')s.ctrl='k1';
+  const used=new Set(c.slots.slice(0,c.count).map((o,j)=>j===i?null:o.ctrl));let n=s.ctrl,tries=0;do{n=cyc(opts,n,1);tries++}while(used.has(n)&&n!=='bot'&&n!=='off'&&tries<20);s.ctrl=n;this.rerender();break}
+ case 'level':{const i=+v,s=c.slots[i];s.level=((s.level!==undefined?s.level:c.botLevel)+1)%SD.BOT_LEVELS.length;this.rerender();break}
+ case 'team':{const i=+v,s=c.slots[i],spec=MI[c.mode];s.team=spec[7]==='ab'?(s.team===1?2:1):(s.team%6)+1;this.rerender();break}
+ case 'char':{const [i,d]=v.split(':').map(Number),s=c.slots[i];s.char=cyc([...SD.CHAR_ORDER,'rand'],s.char,d);this.rerender();break}
+ case 'wpn':{const [i,d]=v.split(':').map(Number),s=c.slots[i];s.weapon=cyc(['auto','none','random',...weaponIds()],s.weapon,d);this.rerender();break}
+ case 'off':{const [i,d]=v.split(':').map(Number),s=c.slots[i];s.off=cyc(offIds(),s.off,d);this.rerender();break}
+ case 'map':{const ids=SD.ARENA_ORDER.filter(id=>c.mode==='football'?id==='stadium':id!=='stadium');c.arena=cyc(ids,c.arena,+v);this.rerender();break}
+ case 'cnt':{const spec=MI[c.mode];const n=Math.max(spec[4],Math.min(spec[5],c.count+(+v)));if(n>c.count){const s=c.slots[n-1];if(s.ctrl==='off')s.ctrl=spec[6]?'bot':'k1'}else c.slots[c.count-1].ctrl='off';c.count=n;this.rerender();break}
  case 'rebind':{const [p,k]=v.split('.');el.textContent='…';SD.Input.rebind=code=>{SD.Input.rebind=null;if(code!=='Escape'){S.data.settings.keys[p][k]=code;S.save()}this.rerender()};break}
  case 'defkeys':S.data.settings.keys=JSON.parse(JSON.stringify(S.defaultKeys));S.save();this.rerender();break;
- case 'unlockall':S.unlockAll();this.toast('Всё открыто');this.rerender();break;
+ case 'unlockall':S.unlockAll();this.toast('Всё открыто');break;
  case 'resetsave':if(confirm('Сбросить весь прогресс?')){S.reset();this.rerender()}break;
- case 'savecfg':{const n=($('#cfgname').value||'Бой '+(Object.keys(S.data.configs).length+1)).trim();S.data.configs[n]=JSON.parse(JSON.stringify(c));S.save();this.rerender();this.toast('Сохранено: '+n);break}
- case 'loadcfg':{const o=S.data.configs[v];if(o){Object.assign(g.cfg,JSON.parse(JSON.stringify(o)));this.rerender();this.toast('Загружено')}break}
- case 'delcfg':delete S.data.configs[v];S.save();this.rerender();break;
+ case 'savecfg':{const n=prompt('Название сетапа:','Сетап '+(Object.keys(S.data.configs).length+1));if(n){S.data.configs[n]=JSON.parse(JSON.stringify(c));S.save();this.rerender();this.toast('Сохранено: '+n)}break}
  }};
 UI.inp=function(k,el,chg){const g=this.game,c=g.cfg,st=S.data.settings;let v=el.type==='checkbox'?el.checked:el.value;
  if(k==='master'){st.master=+v;SD.Audio.setVol(st.master,st.sfx);S.save();return}
  if(k==='sfx'){st.sfx=+v;SD.Audio.setVol(st.master,st.sfx);S.save();return}
  if(k==='quality'){st.quality=v;S.save();g.setQuality(v);return}
  if(k==='shake'){st.shake=v;S.save();return}
- if(k==='touch'){st.touch=v;S.save();this.setupTouch();return}
- if(k==='import'){const f=el.files[0];if(f)SD.RigImporter.importFile(f,(err,rig,name)=>{if(err){this.toast('Ошибка импорта: '+err.error);return}this.importRig(rig,name)});return}
- if(k.startsWith('cfg.')){const kk=k.slice(4);c[kk]=+v;const lab=el.parentElement.querySelector('b');if(lab)lab.textContent=({hp:v+'%',speed:(+v).toFixed(2)+'×',gravity:(+v).toFixed(2)+'×',knockback:(+v).toFixed(1)+'×'})[kk];return}
- if(k.startsWith('fs.')){const [,i,f]=k.split('.');const s=c.fslots[+i];s[f]=f==='team'?+v:v;if(f==='ctrl'&&(v==='p1'||v==='p2'))c.fslots.forEach((o,j)=>{if(j!==+i&&o.ctrl===v)o.ctrl='bot'});if(chg)this.rerender();return}
- if(['botLevel','rounds','time','teamSize','count'].includes(k)){c[k]=+v;if(k==='count')while(c.fslots.length<c.count)c.fslots.push({char:'rand',weapon:'auto',ctrl:'bot',team:c.fslots.length+1});if(chg)this.rerender();return}
- if(k==='arena'){c.arena=v;return}
- if(k==='dummy'||k==='infHp'||k==='pickups'||k==='destruct'){c[k]=v;return}
+ if(k==='loadcfg'){const o=S.data.configs[v];if(o){Object.assign(g.cfg,JSON.parse(JSON.stringify(o)));this.fixSlots();this.rerender();this.toast('Загружено')}return}
+ if(k.startsWith('o.')){const kk=k.slice(2);c[kk]=el.type==='checkbox'?v:(isNaN(+v)?v:+v);return}
 };
-UI.importRig=function(rig,name){const prof=SD.RigImporter.toProfile(rig,name);
- if(rig.nodeCount>100){ // looks like a weapon rig
-  const id='imp_'+name.replace(/\W/g,'_').toLowerCase();SD.WEAPONS[id]=Object.assign({},SD.WEAPONS.sword,{id,name:name+' (импорт)',cat:'Особое',col:prof.color==='#222222'?(prof.accent||'#ff2222'):prof.color,glow:prof.accent||prof.color,dmg:16,len:130,speed:0.85,w:5,sil:id});this.toast('Оружие импортировано: '+name);return}
- const id='imp_'+name.replace(/\W/g,'_').toLowerCase();SD.CHARS[id]={id,name:name+' (импорт)',rig:name,group:'IMP',style:'Импортированный риг: цвет и дополнительные узлы из .nodes.',hp:100,power:1,def:0.03,kbRes:0.1,speed:1,jump:1,stamina:100,scale:1,color:prof.color,acc:prof.extraNodes>=20&&prof.accent?{cape:prof.accent}:{hair:prof.color},ab:JSON.parse(JSON.stringify(SD.CHARS.second.ab))};
- SD.RigImporter.rigs[name+' SF.nodes']=rig;SD.CHAR_ORDER.push(id);S.data.unlockedChars.push(id);this.toast('Персонаж импортирован: '+name);this.rerender()};
 // ---------- previews ----------
 UI.previewTick=function(dt){
- pg.time+=dt;const cs=this.root.querySelectorAll('canvas[data-pc],canvas[data-pw]');
+ pg.time+=dt;if(!this.root||this.root.classList.contains('hidden'))return;const cs=this.root.querySelectorAll('canvas[data-pc],canvas[data-pw]');
  cs.forEach(cv=>{const ctx=cv.getContext('2d');ctx.clearRect(0,0,cv.width,cv.height);
-  if(cv.dataset.pc){let pf=this.prev.get(cv);if(!pf){const sl=this.s.tab==='bot'?this.game.cfg.bot:this.game.cfg[this.s.tab]||this.game.cfg.p1;pf=new SD.PreviewFighter(pg,cv.dataset.pc,this.s.screen==='chars'&&cv.dataset.big?sl.weapon==='auto'?SD.CHARS[cv.dataset.pc].weapon:sl.weapon:SD.CHARS[cv.dataset.pc].weapon,{});this.prev.set(cv,pf)}
+  if(cv.dataset.pc){let pf=this.prev.get(cv);if(!pf){const id=cv.dataset.pc;let w=cv.dataset.w;if(!w)w=SD.CHARS[id].weapon;pf=new SD.PreviewFighter(pg,id,w==='none'||!SD.WEAPONS[w]?'none':w,{});this.prev.set(cv,pf)}
    pf.update(dt,pg);ctx.save();const sc=cv.height/175;ctx.translate(cv.width/2,cv.height*0.92);ctx.scale(sc,sc);pf.draw(ctx,pg);ctx.restore()}
-  else{const d=SD.WEAPONS[cv.dataset.pw];ctx.save();const sc=Math.min(1.4,(cv.width-20)/(d.len*1.1),(cv.height-6)/50);ctx.translate(cv.width/2-(0.5-d.pivot)*d.len*sc,cv.height/2);ctx.scale(sc,sc);if(d.slot==='off'||d.style==='bow'){ctx.rotate(0)}else ctx.rotate(0);SD.Weapons.drawShape(ctx,d,pg.time,0,'medium');ctx.restore()}
+  else if(cv.dataset.pw){const d=SD.WEAPONS[cv.dataset.pw];if(!d)return;ctx.save();const sc=Math.min(1.4,(cv.width-20)/(d.len*1.1),(cv.height-6)/50);ctx.translate(cv.width/2-(0.5-d.pivot)*d.len*sc,cv.height/2);ctx.scale(sc,sc);SD.Weapons.drawShape(ctx,d,pg.time,0,'medium');ctx.restore()}
  })};
-// ---------- touch controls ----------
-UI.initTouch=function(){
- const T=SD.Input.touch,el=$('#touch');const joy=$('#joy'),knob=$('#knob');let jid=null,jc=null;
- const jr=()=>Math.max(40,Math.min(innerWidth,innerHeight)*0.11);
+// ---------- touch pads (one per touch player) ----------
+UI.hideTouch=function(){const t=$('#touch');t.innerHTML='';SD.Input.touchActive=false;document.body.classList.remove('touchon')};
+UI.setupTouch=function(){const g=this.game,t=$('#touch');t.innerHTML='';
+ const act=g.running&&g.m?g.cfg.slots.filter(s=>s.ctrl&&s.ctrl[0]==='t'):[];
+ const mode=g.cfg.mode;const list=(mode==='tournament'||mode==='training')?act.slice(0,1):act;
+ if(!list.length){SD.Input.touchActive=false;document.body.classList.remove('touchon');return}
+ SD.Input.touchActive=true;document.body.classList.add('touchon');
+ const single=list.length===1;
+ list.forEach((s,k)=>{const idx=+s.ctrl[1];t.appendChild(this.buildPad(idx,k,list.length,single))});
+ const pb=document.createElement('button');pb.className='tb pause';pb.textContent='❚❚';pb.dataset.b='pause';t.appendChild(pb);this.bindButtons(t)};
+UI.buildPad=function(idx,k,total,single){const T=SD.Input.touches[idx];const pad=document.createElement('div');
+ const cls=single?'pos0 single':'pos'+k;pad.className='pad '+cls+(total>2?' small':'');pad.innerHTML=`<div class="joy"><div class="knob"></div></div><div class="pbtns"><button data-b="light" data-i="${idx}" class="tb">👊<small>Удар</small></button><button data-b="heavy" data-i="${idx}" class="tb">💥<small>Сильн.</small></button><button data-b="block" data-i="${idx}" class="tb">🛡<small>Блок</small></button><button data-b="ability" data-i="${idx}" class="tb">✨<small>Спец</small></button><button data-b="interact" data-i="${idx}" class="tb">✋<small>Взять</small></button><button data-b="throw" data-i="${idx}" class="tb">🎯<small>Бросок</small></button></div>`;
+ const joy=pad.querySelector('.joy'),knob=pad.querySelector('.knob');let jid=null,jc=null;
+ const jr=()=>joy.getBoundingClientRect().width*0.5;
  const jmove=e=>{if(e.pointerId!==jid)return;const r=jr();let dx=e.clientX-jc[0],dy=e.clientY-jc[1];const l=Math.hypot(dx,dy);if(l>r){dx*=r/l;dy*=r/l}knob.style.transform=`translate(${dx}px,${dy}px)`;T.x=Math.abs(dx)>r*0.3?Math.sign(dx):0;T.y=dy/r;T.jumpHeld=dy<-r*0.55};
  joy.addEventListener('pointerdown',e=>{e.preventDefault();jid=e.pointerId;joy.setPointerCapture(jid);const rc=joy.getBoundingClientRect();jc=[rc.left+rc.width/2,rc.top+rc.height/2];jmove(e);SD.Audio.resume()});
  joy.addEventListener('pointermove',jmove);
  const jend=e=>{if(e.pointerId!==jid)return;jid=null;knob.style.transform='';T.x=0;T.y=0;T.jumpHeld=false};joy.addEventListener('pointerup',jend);joy.addEventListener('pointercancel',jend);
- el.querySelectorAll('[data-b]').forEach(b=>{const k=b.dataset.b;
+ return pad};
+UI.bindButtons=function(root){root.querySelectorAll('[data-b]').forEach(b=>{const k=b.dataset.b,T=SD.Input.touches[+b.dataset.i||0];
   b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);b.classList.add('on');SD.Audio.resume();
-   if(k==='block')T.block=true;else if(k==='light'){T.ev.light=true;T.lightHeld=true}else if(k==='heavy'){T.ev.heavy=true;T.heavyHeld=true}else if(k==='jump'){T.ev.jump=true;T.jumpHeld=true}else if(k==='pause'){UI.game.pause()}else T.ev[k]=true});
-  const up=e=>{b.classList.remove('on');if(k==='block')T.block=false;if(k==='light')T.lightHeld=false;if(k==='heavy')T.heavyHeld=false;if(k==='jump')T.jumpHeld=false};b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up)});
- ['gesturestart','dblclick','contextmenu'].forEach(n=>el.addEventListener(n,e=>e.preventDefault()));
-};
-UI.setupTouch=function(){const st=S.data.settings.touch;const touchy='ontouchstart' in window||(window.matchMedia&&matchMedia('(pointer:coarse)').matches);const on=st==='on'||(st==='auto'&&touchy);SD.Input.touch.active=on;document.body.classList.toggle('touchon',on)};
+   if(k==='pause'){UI.game.pause();return}
+   if(k==='block')T.block=true;else if(k==='light'){T.ev.light=true;T.lightHeld=true}else if(k==='heavy'){T.ev.heavy=true;T.heavyHeld=true}else T.ev[k]=true});
+  const up=()=>{b.classList.remove('on');if(k==='pause')return;if(k==='block')T.block=false;if(k==='light')T.lightHeld=false;if(k==='heavy')T.heavyHeld=false};b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up)});
+ ['gesturestart','dblclick','contextmenu'].forEach(n=>root.addEventListener(n,e=>e.preventDefault()))};
+UI.initTouch=function(){};
 })(window.SD);
 
 </script><script>

@@ -392,6 +392,7 @@ class Fighter{
   ctx.save();ctx.translate(h.x,h.y);
   // eyes
   const ec=a.eyes||(this.color==='#1c1c1c'?'#fff':'#111');ctx.fillStyle=flash?'#000':ec;ctx.beginPath();ctx.arc(f*hr*0.45,-hr*0.1,hr*0.18,0,6.3);ctx.arc(f*hr*0.05,-hr*0.1,hr*0.15,0,6.3);ctx.fill();
+  if(a.band){ctx.fillStyle=a.band;ctx.fillRect(-hr,-hr*0.62,hr*2,hr*0.3);ctx.fillRect(-hr-hr*0.6,-hr*0.5,hr*0.7,hr*0.14)}
   if(a.crown){ctx.fillStyle=a.crown;ctx.strokeStyle='#000';ctx.lineWidth=1.5;ctx.beginPath();const y0=-hr+1,w=hr*0.9;ctx.moveTo(-w,y0);ctx.lineTo(-w,y0-hr*0.9);ctx.lineTo(-w/2,y0-hr*0.4);ctx.lineTo(0,y0-hr*1.1);ctx.lineTo(w/2,y0-hr*0.4);ctx.lineTo(w,y0-hr*0.9);ctx.lineTo(w,y0);ctx.closePath();ctx.fill();ctx.stroke()}
   if(a.horns){ctx.fillStyle='#222';ctx.strokeStyle='#600';ctx.lineWidth=1.5;for(const sx of [-1,1]){ctx.beginPath();ctx.moveTo(sx*hr*0.5,-hr*0.8);ctx.quadraticCurveTo(sx*hr*1.3,-hr*1.3,sx*hr*0.9,-hr*2);ctx.lineTo(sx*hr*0.2,-hr*0.9);ctx.fill();ctx.stroke()}}
   ctx.restore()}
